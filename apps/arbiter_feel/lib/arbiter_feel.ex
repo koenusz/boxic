@@ -24,8 +24,13 @@ defmodule Arbiter.FEEL do
           | {:path, ast(), String.t()}
           | {:filter, ast(), ast()}
           | {:range, boolean(), boolean(), ast(), ast()}
+          | {:in, ast(), ast()}
+          | {:unary_test, atom(), ast()}
+          | {:unary_tests, [ast()]}
+          | {:sequence, ast(), ast()}
           | {:if, ast(), ast(), ast()}
           | {:for, String.t(), ast(), ast()}
+          | {:for, [{String.t(), ast()}], ast()}
           | {:quantifier, :some | :every, String.t(), ast(), ast()}
           | {:function, [String.t()], ast()}
           | {:call, ast(), [ast()]}
@@ -244,16 +249,40 @@ defmodule Arbiter.FEEL do
 
   defp parse_if(_tokens), do: {:error, error(:invalid_syntax, "invalid if-expression")}
 
-  defp parse_for([:for, {:identifier, var}, :in | rest]) do
-    with {:ok, source, [:return | rest2]} <- parse_expression(rest),
-         {:ok, body, rest3} <- parse_expression(rest2) do
-      {:ok, {:for, var, source, body}, rest3}
+  defp parse_for([:for, {:identifier, variable}, :in | rest]) do
+    with {:ok, source, rest2} <- parse_for_source(rest),
+         {:ok, bindings, [:return | rest3]} <-
+           parse_for_bindings([{variable, source}], rest2),
+         {:ok, body, rest4} <- parse_expression(rest3) do
+      {:ok, {:for, bindings, body}, rest4}
     else
       _ -> {:error, error(:invalid_syntax, "invalid for-expression")}
     end
   end
 
   defp parse_for(_tokens), do: {:error, error(:invalid_syntax, "invalid for-expression")}
+
+  defp parse_for_source(tokens) do
+    with {:ok, source, rest} <- parse_expression(tokens) do
+      case rest do
+        [:range_dots | rest2] ->
+          with {:ok, finish, rest3} <- parse_expression(rest2) do
+            {:ok, {:sequence, source, finish}, rest3}
+          end
+
+        _ ->
+          {:ok, source, rest}
+      end
+    end
+  end
+
+  defp parse_for_bindings(bindings, [:comma, {:identifier, variable}, :in | rest]) do
+    with {:ok, source, rest2} <- parse_for_source(rest) do
+      parse_for_bindings(bindings ++ [{variable, source}], rest2)
+    end
+  end
+
+  defp parse_for_bindings(bindings, rest), do: {:ok, bindings, rest}
 
   defp parse_quantifier([kind, {:identifier, var}, :in | rest]) when kind in [:some, :every] do
     with {:ok, source, [:satisfies | rest2]} <- parse_expression(rest),
@@ -317,24 +346,68 @@ defmodule Arbiter.FEEL do
   defp parse_and_tail(left, rest), do: {:ok, left, rest}
 
   defp parse_equality(tokens) do
-    with {:ok, left, rest} <- parse_comparison(tokens) do
+    with {:ok, left, rest} <- parse_in_expression(tokens) do
       parse_equality_tail(left, rest)
     end
   end
 
   defp parse_equality_tail(left, [:eq | rest]) do
-    with {:ok, right, rest2} <- parse_comparison(rest) do
+    with {:ok, right, rest2} <- parse_in_expression(rest) do
       parse_equality_tail({:binary, :eq, left, right}, rest2)
     end
   end
 
   defp parse_equality_tail(left, [:neq | rest]) do
-    with {:ok, right, rest2} <- parse_comparison(rest) do
+    with {:ok, right, rest2} <- parse_in_expression(rest) do
       parse_equality_tail({:binary, :neq, left, right}, rest2)
     end
   end
 
   defp parse_equality_tail(left, rest), do: {:ok, left, rest}
+
+  defp parse_in_expression(tokens) do
+    with {:ok, left, rest} <- parse_comparison(tokens) do
+      case rest do
+        [:in | rest2] ->
+          with {:ok, tests, rest3} <- parse_in_tests(rest2) do
+            {:ok, {:in, left, tests}, rest3}
+          end
+
+        _ ->
+          {:ok, left, rest}
+      end
+    end
+  end
+
+  defp parse_in_tests([:lparen | _] = tokens) do
+    case parse_postfix(tokens) do
+      {:ok, expression, rest} -> {:ok, expression, rest}
+      {:error, _error} -> parse_unary_test_list(tl(tokens), [])
+    end
+  end
+
+  defp parse_in_tests(tokens), do: parse_unary_test(tokens)
+
+  defp parse_unary_test([op | rest]) when op in [:eq, :neq, :lt, :lte, :gt, :gte] do
+    with {:ok, operand, rest2} <- parse_addition(rest) do
+      {:ok, {:unary_test, op, operand}, rest2}
+    end
+  end
+
+  defp parse_unary_test(tokens), do: parse_comparison(tokens)
+
+  defp parse_unary_test_list([:rparen | rest], tests) when tests != [],
+    do: {:ok, {:unary_tests, Enum.reverse(tests)}, rest}
+
+  defp parse_unary_test_list(tokens, tests) do
+    with {:ok, test, rest} <- parse_unary_test(tokens) do
+      case rest do
+        [:comma | rest2] -> parse_unary_test_list(rest2, [test | tests])
+        [:rparen | rest2] -> {:ok, {:unary_tests, Enum.reverse([test | tests])}, rest2}
+        _ -> {:error, error(:invalid_syntax, "invalid unary-test list")}
+      end
+    end
+  end
 
   defp parse_comparison(tokens) do
     with {:ok, left, rest} <- parse_addition(tokens) do
@@ -469,6 +542,16 @@ defmodule Arbiter.FEEL do
   defp parse_primary([{:identifier, name} | rest]), do: {:ok, {:identifier, name}, rest}
   defp parse_primary([:lbrace | rest]), do: parse_context_literal(rest)
   defp parse_primary([:lbracket | rest]), do: parse_list_or_range(rest)
+  defp parse_primary([:rbracket | rest]), do: parse_alternative_range(rest)
+
+  defp parse_primary([:lparen, op | rest]) when op in [:eq, :neq, :lt, :lte, :gt, :gte] do
+    with {:ok, operand, [:rparen | rest2]} <- parse_addition(rest) do
+      {:ok, {:unary_test, op, operand}, rest2}
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid unary-test value")}
+    end
+  end
+
   defp parse_primary([:lparen | rest]), do: parse_group_or_range(rest)
 
   defp parse_primary(_tokens), do: {:error, error(:invalid_syntax, "expected expression")}
@@ -548,6 +631,14 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp parse_alternative_range(tokens) do
+    with {:ok, first, [:range_dots | rest]} <- parse_expression(tokens) do
+      parse_range_rest(false, first, rest)
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid alternative range literal")}
+    end
+  end
+
   defp parse_group_or_range(tokens) do
     with {:ok, expr, rest} <- parse_expression(tokens) do
       case rest do
@@ -565,6 +656,9 @@ defmodule Arbiter.FEEL do
           {:ok, {:range, start_inclusive, true, start_ast, finish_ast}, rest2}
 
         [:rparen | rest2] ->
+          {:ok, {:range, start_inclusive, false, start_ast, finish_ast}, rest2}
+
+        [:lbracket | rest2] ->
           {:ok, {:range, start_inclusive, false, start_ast, finish_ast}, rest2}
 
         _ ->
@@ -657,6 +751,25 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp eval({:in, value_ast, tests_ast}, context) do
+    with {:ok, value} <- eval(value_ast, context) do
+      evaluate_in(value, tests_ast, context)
+    end
+  end
+
+  defp eval({:unary_test, operator, operand_ast}, context) do
+    with {:ok, operand} <- eval(operand_ast, context) do
+      {:ok, {:unary_test_value, operator, operand}}
+    end
+  end
+
+  defp eval({:sequence, first_ast, last_ast}, context) do
+    with {:ok, first} <- eval(first_ast, context),
+         {:ok, last} <- eval(last_ast, context) do
+      {:ok, {:sequence, first, last}}
+    end
+  end
+
   defp eval({:for, var, source_ast, body_ast}, context) do
     with {:ok, source} <- eval(source_ast, context) do
       case source do
@@ -674,6 +787,17 @@ defmodule Arbiter.FEEL do
         _ ->
           {:error, error(:type_error, "for-expression source must be a list")}
       end
+    end
+  end
+
+  defp eval({:for, bindings, body_ast}, context) when is_list(bindings) do
+    with {:ok, contexts} <- expand_for_contexts(bindings, [context]) do
+      Enum.reduce_while(contexts, {:ok, []}, fn scoped_context, {:ok, acc} ->
+        case eval(body_ast, Map.put(scoped_context, "partial", acc)) do
+          {:ok, value} -> {:cont, {:ok, acc ++ [value]}}
+          {:error, %Error{} = error} -> {:halt, {:error, error}}
+        end
+      end)
     end
   end
 
@@ -741,6 +865,56 @@ defmodule Arbiter.FEEL do
 
     with {:ok, value} <- eval(value_ast, scoped_context) do
       eval_context_entries(rest, context, Map.put(acc, key, value))
+    end
+  end
+
+  defp expand_for_contexts([], contexts), do: {:ok, contexts}
+
+  defp expand_for_contexts([{variable, source_ast} | rest], contexts) do
+    contexts
+    |> Enum.reduce_while({:ok, []}, fn scoped_context, {:ok, acc} ->
+      with {:ok, source} <- eval(source_ast, scoped_context),
+           {:ok, values} <- iteration_values(source) do
+        expanded = Enum.map(values, &Map.put(scoped_context, variable, &1))
+        {:cont, {:ok, acc ++ expanded}}
+      else
+        {:error, %Error{} = error} -> {:halt, {:error, error}}
+      end
+    end)
+    |> case do
+      {:ok, expanded} -> expand_for_contexts(rest, expanded)
+      {:error, %Error{} = error} -> {:error, error}
+    end
+  end
+
+  defp iteration_values(values) when is_list(values), do: {:ok, values}
+
+  defp iteration_values({:sequence, %Decimal{} = first, %Decimal{} = last}) do
+    numeric_sequence(first, last, true)
+  end
+
+  defp iteration_values(%Range{start: %Decimal{} = first, end: %Decimal{} = last}) do
+    numeric_sequence(first, last, false)
+  end
+
+  defp iteration_values(_source),
+    do: {:error, error(:type_error, "for-expression source must be a list or numeric range")}
+
+  defp numeric_sequence(first, last, descending_allowed?) do
+    with {:ok, first_integer} <- decimal_integer(first),
+         {:ok, last_integer} <- decimal_integer(last),
+         true <- descending_allowed? or first_integer <= last_integer do
+      step = if first_integer <= last_integer, do: 1, else: -1
+
+      values =
+        first_integer
+        |> Elixir.Range.new(last_integer, step)
+        |> Enum.map(&decimal_new/1)
+
+      {:ok, values}
+    else
+      false -> {:error, error(:evaluation_error, "range start must not exceed its end")}
+      :error -> {:error, error(:type_error, "numeric iteration range requires integers")}
     end
   end
 
@@ -1073,6 +1247,16 @@ defmodule Arbiter.FEEL do
       feel_equal(left.end, right.end) == true
   end
 
+  defp feel_equal(
+         {:unary_test_value, left_operator, left_operand},
+         {:unary_test_value, right_operator, right_operand}
+       ) do
+    left_operator == right_operator and feel_equal(left_operand, right_operand) == true
+  end
+
+  defp feel_equal({:unary_test_value, _operator, _operand}, %Range{}), do: false
+  defp feel_equal(%Range{}, {:unary_test_value, _operator, _operand}), do: false
+
   defp feel_equal(left, right) when is_list(left) and is_list(right) do
     if length(left) == length(right) do
       left |> Enum.zip(right) |> Enum.map(fn {l, r} -> feel_equal(l, r) end) |> equality_all()
@@ -1159,6 +1343,11 @@ defmodule Arbiter.FEEL do
     unary_compare_result(op, DateTime.compare(lhs, rhs))
   end
 
+  defp compare_for_unary_test(op, lhs, rhs)
+       when is_binary(lhs) and is_binary(rhs) and op in [">", ">=", "<", "<=", "=", "!="] do
+    unary_compare_result(op, compare_strings(lhs, rhs))
+  end
+
   defp compare_for_unary_test(op, lhs, rhs) when op in ["=", "!="] do
     eq = equal_semantic?(lhs, rhs)
     {:ok, if(op == "=", do: eq, else: not eq)}
@@ -1181,11 +1370,69 @@ defmodule Arbiter.FEEL do
     {:ok, result}
   end
 
+  defp range_contains?(%Range{}, nil), do: nil
+  defp range_contains?(%Range{start: nil}, _value), do: nil
+  defp range_contains?(%Range{end: nil}, _value), do: nil
+
   defp range_contains?(%Range{} = range, value) do
     lower_ok = range_lower_ok?(range, value)
     upper_ok = range_upper_ok?(range, value)
     lower_ok and upper_ok
   end
+
+  defp evaluate_in(value, {:unary_test, operator, operand_ast}, context) do
+    with {:ok, operand} <- eval(operand_ast, context) do
+      compare_for_unary_test(unary_operator(operator), value, operand)
+    end
+  end
+
+  defp evaluate_in(value, {:unary_tests, tests}, context) do
+    tests
+    |> Enum.reduce_while({:ok, []}, fn test, {:ok, results} ->
+      case evaluate_in(value, test, context) do
+        {:ok, true} -> {:halt, {:ok, true}}
+        {:ok, result} -> {:cont, {:ok, [result | results]}}
+        {:error, %Error{} = error} -> {:halt, {:error, error}}
+      end
+    end)
+    |> case do
+      {:ok, true} -> {:ok, true}
+      {:ok, results} -> {:ok, equality_any(results)}
+      {:error, %Error{} = error} -> {:error, error}
+    end
+  end
+
+  defp evaluate_in(value, tests_ast, context) do
+    with {:ok, tests} <- eval(tests_ast, context) do
+      {:ok, membership_result(value, tests)}
+    end
+  end
+
+  defp membership_result(value, tests) when is_list(tests) do
+    tests
+    |> Enum.map(&membership_candidate(value, &1))
+    |> equality_any()
+  end
+
+  defp membership_result(value, test), do: membership_candidate(value, test)
+
+  defp membership_candidate(value, %Range{} = range), do: range_contains?(range, value)
+  defp membership_candidate(value, test), do: feel_equal(value, test)
+
+  defp equality_any(results) do
+    cond do
+      Enum.any?(results, &(&1 == true)) -> true
+      Enum.any?(results, &(&1 == false)) -> false
+      true -> nil
+    end
+  end
+
+  defp unary_operator(:eq), do: "="
+  defp unary_operator(:neq), do: "!="
+  defp unary_operator(:lt), do: "<"
+  defp unary_operator(:lte), do: "<="
+  defp unary_operator(:gt), do: ">"
+  defp unary_operator(:gte), do: ">="
 
   defp range_lower_ok?(%Range{start: nil}, _value), do: true
 

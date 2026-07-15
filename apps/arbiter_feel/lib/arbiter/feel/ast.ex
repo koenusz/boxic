@@ -56,8 +56,30 @@ defmodule Arbiter.FEEL.AST do
   defp validate_node({:if, condition, then_branch, else_branch}),
     do: validate_children([condition, then_branch, else_branch])
 
+  defp validate_node({:in, value, tests}), do: validate_children([value, tests])
+
+  defp validate_node({:unary_test, operator, operand})
+       when operator in [:eq, :neq, :lt, :lte, :gt, :gte],
+       do: validate_node(operand)
+
+  defp validate_node({:unary_tests, tests}) when is_list(tests) and tests != [],
+    do: validate_children(tests)
+
+  defp validate_node({:sequence, first, last}), do: validate_children([first, last])
+
   defp validate_node({:for, variable, source, body}) when is_binary(variable) and variable != "",
     do: validate_children([source, body])
+
+  defp validate_node({:for, bindings, body}) when is_list(bindings) and bindings != [] do
+    variables = Enum.map(bindings, fn {variable, _source} -> variable end)
+
+    if Enum.all?(variables, &(is_binary(&1) and &1 != "")) and
+         length(variables) == length(Enum.uniq(variables)) do
+      validate_children(Enum.map(bindings, &elem(&1, 1)) ++ [body])
+    else
+      {:error, "for bindings must use unique, non-empty names"}
+    end
+  end
 
   defp validate_node({:quantifier, kind, variable, source, predicate})
        when kind in [:some, :every] and is_binary(variable) and variable != "",

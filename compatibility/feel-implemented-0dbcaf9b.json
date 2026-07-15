@@ -8,27 +8,45 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T18:28:40.342978Z",
+    "execution_date": "2026-07-15T18:57:31.792323Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
   "summary": {
     "error": 0,
-    "disabled": 1897,
-    "total": 162,
+    "disabled": 1885,
+    "total": 175,
     "unsupported": 0,
-    "supported": 162,
+    "supported": 175,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
-    "suite_total": 2059,
-    "excluded_by_suite": 1486,
-    "passed": 162,
+    "suite_total": 2060,
+    "excluded_by_suite": 1485,
+    "passed": 175,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 7.87,
-    "coverage_percent": 4.57
+    "suite_coverage_percent": 8.5,
+    "coverage_percent": 4.94
   },
   "results": [
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0001-filter",
+      "actual": [
+        "Adams",
+        "Ford"
+      ],
+      "expected": [
+        "Adams",
+        "Ford"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0001-filter/0001-filter-test-01.xml",
+      "decision": "filter01",
+      "expected_error": false
+    },
     {
       "error": null,
       "id": "001",
@@ -1597,6 +1615,54 @@
     },
     {
       "error": null,
+      "id": "nested_list_001",
+      "status": "passed",
+      "group": "0090-feel-paths",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0090-feel-paths/0090-feel-paths-test-01.xml",
+      "decision": "nested_list_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested_list_002",
+      "status": "passed",
+      "group": "0090-feel-paths",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0090-feel-paths/0090-feel-paths-test-01.xml",
+      "decision": "nested_list_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested_list_003",
+      "status": "passed",
+      "group": "0090-feel-paths",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0090-feel-paths/0090-feel-paths-test-01.xml",
+      "decision": "nested_list_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested_list_004",
+      "status": "passed",
+      "group": "0090-feel-paths",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0090-feel-paths/0090-feel-paths-test-01.xml",
+      "decision": "nested_list_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "001/Decision1",
       "status": "passed",
       "group": "0100-feel-constants",
@@ -2566,6 +2632,134 @@
       "case_file": "TestCases/compliance-level-2/0107-feel-ternary-logic-not/0107-feel-ternary-logic-not-test-01.xml",
       "decision": "DecisionNot",
       "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "001",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "002",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "003",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision003",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "invalid_syntax",
+        "message": "invalid token",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "attempted to call a non-function value",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1131-feel-function-invocation",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
     }
   ]
 }

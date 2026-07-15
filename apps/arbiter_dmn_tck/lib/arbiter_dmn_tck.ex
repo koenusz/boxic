@@ -8,21 +8,24 @@ defmodule Arbiter.DMN.TCK do
   alias Arbiter.DMN.TCK.Runner
 
   @feel_implemented_groups ~w(
+    0001-filter
     0032-conditionals
     0057-feel-context
     0064-feel-conjunction
     0065-feel-disjunction
     0066-feel-negation
     0069-feel-list
+    0090-feel-paths
     0100-feel-constants
     0101-feel-constants
     0102-feel-constants
     0105-feel-math
     0106-feel-ternary-logic
     0107-feel-ternary-logic-not
+    1131-feel-function-invocation
   )
 
-  @feel_additional_groups ~w(0032-conditionals)
+  @feel_additional_groups ~w(0001-filter 0032-conditionals)
 
   @spec run(keyword()) :: %{cases: list(), results: list(), summary: map()}
   def run(opts \\ []) do
