@@ -3,6 +3,7 @@ defmodule Arbiter.DMN.TCKTest do
 
   alias Arbiter.DMN.TCK.Loader
   alias Arbiter.DMN.TCK.Runner
+  alias Arbiter.DMN.TCK
 
   test "loads the complete pinned upstream corpus" do
     cases = Loader.load_all()
@@ -57,5 +58,32 @@ defmodule Arbiter.DMN.TCKTest do
 
     result = Runner.execute(case_entry)
     assert result.status in [:passed, :failed, :unsupported, :missing, :error]
+  end
+
+  test "implemented profile is an explicit passing baseline" do
+    result = TCK.run(suite: "feel", profile: "implemented")
+
+    assert result.summary.corpus_total == 3_545
+    assert result.summary.suite_total > 27
+    assert result.summary.total == 27
+    assert result.summary.disabled == result.summary.suite_total - 27
+    assert result.summary.excluded_by_suite == 3_545 - result.summary.suite_total
+    assert result.summary.passed == 27
+    assert result.summary.failed == 0
+    assert result.summary.error == 0
+
+    assert Enum.sort(Enum.uniq_by(result.selected_cases, & &1.group) |> Enum.map(& &1.group)) ==
+             Enum.sort(TCK.profile_groups("feel", "implemented"))
+  end
+
+  test "DMN implemented profile is explicitly empty until an official group passes" do
+    result = TCK.run(suite: "dmn", profile: "implemented")
+
+    assert result.summary.corpus_total == 3_545
+    assert result.summary.suite_total > 0
+    assert result.summary.total == 0
+    assert result.summary.disabled == result.summary.suite_total
+    assert result.results == []
+    assert TCK.profile_groups("dmn", "implemented") == []
   end
 end

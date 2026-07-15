@@ -24,7 +24,7 @@ defmodule Arbiter.MixProject do
     [
       test: [
         "test",
-        "tck --all --soft-fail"
+        "tck --suite feel --profile implemented"
       ]
     ]
   end

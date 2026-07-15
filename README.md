@@ -31,6 +31,14 @@ mix test
 mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 ```
 
-`mix test` runs the ExUnit suite and then prints a non-blocking compatibility
-summary for the complete pinned TCK corpus. Use `mix tck` directly when TCK
-failures should make the command exit non-zero.
+`mix test` runs ExUnit and the strict, targeted FEEL `implemented` profile.
+FEEL and DMN selections are distinct: use `--suite feel` for FEEL-focused
+groups and `--suite dmn` for DMN-focused groups. Cases outside an implemented
+profile are counted as disabled rather than executed.
+
+Run complete suite snapshots explicitly:
+
+```bash
+mix tck --suite feel --all --soft-fail
+mix tck --suite dmn --all --soft-fail
+```

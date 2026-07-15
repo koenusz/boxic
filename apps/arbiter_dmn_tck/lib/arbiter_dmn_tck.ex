@@ -7,19 +7,72 @@ defmodule Arbiter.DMN.TCK do
   alias Arbiter.DMN.TCK.Reporter
   alias Arbiter.DMN.TCK.Runner
 
+  @feel_implemented_groups ~w(
+    0100-feel-constants
+    0102-feel-constants
+    0106-feel-ternary-logic
+    0107-feel-ternary-logic-not
+  )
+
   @spec run(keyword()) :: %{cases: list(), results: list(), summary: map()}
   def run(opts \\ []) do
     cases = Loader.load_all(opts)
 
-    results =
-      cases
+    suite_cases = maybe_filter_suite(cases, opts)
+
+    selected_cases =
+      suite_cases
+      |> maybe_filter_profile(opts)
       |> maybe_filter_group(opts)
       |> maybe_filter_label(opts)
+
+    results =
+      selected_cases
       |> Enum.map(&Runner.execute/1)
 
-    summary = summarize(results)
+    summary = summarize(results, length(cases), length(suite_cases))
     Reporter.write(results, summary, opts)
-    %{cases: cases, results: results, summary: summary}
+
+    %{
+      cases: cases,
+      selected_cases: selected_cases,
+      results: results,
+      summary: summary
+    }
+  end
+
+  @spec profile_groups(String.t(), String.t()) :: [String.t()]
+  def profile_groups("feel", "implemented"), do: @feel_implemented_groups
+  def profile_groups("dmn", "implemented"), do: []
+  def profile_groups(_suite, _profile), do: []
+
+  defp maybe_filter_suite(cases, opts) do
+    case Keyword.get(opts, :suite) do
+      nil -> cases
+      "feel" -> Enum.filter(cases, &feel_case?/1)
+      "dmn" -> Enum.reject(cases, &feel_case?/1)
+      suite -> raise ArgumentError, "unknown TCK suite: #{suite}"
+    end
+  end
+
+  defp feel_case?(test_case) do
+    test_case.group
+    |> String.downcase()
+    |> String.contains?("feel")
+  end
+
+  defp maybe_filter_profile(cases, opts) do
+    case Keyword.get(opts, :profile) do
+      nil ->
+        cases
+
+      "implemented" ->
+        groups = profile_groups(Keyword.get(opts, :suite), "implemented")
+        Enum.filter(cases, &(&1.group in groups))
+
+      profile ->
+        raise ArgumentError, "unknown TCK profile: #{profile}"
+    end
   end
 
   defp maybe_filter_group(cases, opts) do
@@ -36,11 +89,16 @@ defmodule Arbiter.DMN.TCK do
     end
   end
 
-  defp summarize(results) do
+  defp summarize(results, corpus_total, suite_total) do
     counts = Enum.frequencies_by(results, & &1.status)
+    selected_total = length(results)
 
     %{
-      total: length(results),
+      total: selected_total,
+      corpus_total: corpus_total,
+      suite_total: suite_total,
+      excluded_by_suite: corpus_total - suite_total,
+      disabled: suite_total - selected_total,
       passed: Map.get(counts, :passed, 0),
       failed: Map.get(counts, :failed, 0),
       unsupported: Map.get(counts, :unsupported, 0),
@@ -48,7 +106,8 @@ defmodule Arbiter.DMN.TCK do
       error: Map.get(counts, :error, 0),
       supported: supported_count(counts),
       compatibility_percent: compatibility_percent(counts),
-      coverage_percent: coverage_percent(counts, length(results))
+      suite_coverage_percent: coverage_percent(counts, suite_total),
+      coverage_percent: coverage_percent(counts, corpus_total)
     }
   end
 
