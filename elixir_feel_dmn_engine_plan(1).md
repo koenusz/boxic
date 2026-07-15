@@ -876,6 +876,27 @@ Deliverable:
 
 ---
 
+## Phase 9 — Compliance Phase
+
+Close the gap between the passing implemented profiles and the complete pinned
+TCK corpus. This phase owns every official group not enabled by Phases 0–8.
+
+Implement and verify:
+
+- remaining FEEL numeric, aggregate, string, type, context, and temporal semantics;
+- portability decisions for platform-specific external functions;
+- remaining DMN core-expression, decision-table, graph, import, and boxed-expression behavior;
+- explicit execution status for all 3,545 pinned result entries;
+- profile expansion only when an assigned group passes completely.
+
+Deliverable:
+
+- all 150 official groups have one explicit work-package owner and disposition;
+- every implemented group passes completely and is published;
+- remaining `unsupported` results are deliberate, documented portability decisions rather than disabled or silently skipped cases.
+
+---
+
 ## 14. Versioning and Publication
 
 Publish `arbiter_feel` and `arbiter_dmn` independently.
@@ -1006,6 +1027,8 @@ Each requirement must be testable and map to one or more implementation work pac
 | RQ-TCK-005     | Compatibility execution and CI do not require Java runners or Java orchestration.                            | CI job definitions and execution-path integration tests. |
 | RQ-CI-001      | PR and nightly pipelines enforce quality gates and publish artifacts.                                        | CI workflow runs and artifact retention checks.          |
 | RQ-REL-001     | Releases document compatibility deltas and pinned TCK revision.                                              | Release checklist verification.                          |
+| RQ-COMP-001    | Every pinned official group has exactly one feature owner and explicit implementation disposition.          | Compliance inventory reconciliation.                    |
+| RQ-COMP-002    | Disabled corpus entries are reduced through completely passing, published feature groups.                    | Per-work-package strict TCK gates.                       |
 
 ---
 
@@ -1029,6 +1052,17 @@ Each work package is independently reviewable and tied to explicit outputs.
 | WP-11        | Hit policy module.                             | WP-10        | all target hit policy reducers                          | Every mapped group for each target hit policy passes; per-policy compatibility is published independently. |
 | WP-12        | Full DMN graph features.                       | WP-11, WP-07 | DRG execution, BKMs, invocations, services              | Every mapped advanced-DMN group passes completely and coverage is published. |
 | WP-13        | CI maturity and release gates.                 | WP-03, WP-12 | PR/nightly workflows, release checklist                 | No regression gate and reporting gate enforced.         |
+| WP-14        | FEEL numeric completion.                       | WP-07        | advanced numeric functions and edge values              | All 15 mapped groups pass 209/209 and are published.     |
+| WP-15        | FEEL aggregate statistics.                    | WP-07        | boolean aggregates and statistical functions            | All 5 mapped groups pass 75/75 and are published.        |
+| WP-16        | FEEL strings, Unicode, and regular expressions.| WP-07        | remaining string and regex functions                    | All 8 mapped groups pass 169/169 and are published.      |
+| WP-17        | FEEL types, coercion, predicates, and contexts.| WP-06, WP-07 | type tests, coercion, metadata and context functions     | All 10 mapped groups pass 354/354 and are published.     |
+| WP-18        | FEEL calendar and interval completion.         | WP-07        | at-literals, calendar functions, intervals, clock values| All 9 mapped groups pass 135/135 and are published.      |
+| WP-19        | FEEL external-function portability.            | WP-07        | platform interop policy and external-function contract  | `0076` has an implemented portable path or an explicit documented unsupported disposition for all 18 entries. |
+| WP-20        | DMN core expressions and collections.          | WP-09, WP-16 | remaining literal models, collections and arithmetic    | All 21 mapped groups pass 1,213/1,213 and are published. |
+| WP-21        | DMN decision-table completion.                 | WP-10, WP-11 | remaining policies, tables, variable inputs and examples| All 9 mapped groups pass 60/60 and are published.        |
+| WP-22        | DMN functions, scopes, and recursion.          | WP-12        | invocations, user functions, scopes, nesting, recursion | All 8 mapped groups pass 31/31 and are published.        |
+| WP-23        | DMN imports and reference semantics.           | WP-12        | imports, local references and no-logic models            | All 4 mapped groups pass 5/5 and are published.          |
+| WP-24        | Boxed expressions and remaining collections.   | WP-12, WP-20 | boxed control forms, list replacement and range function| All 8 mapped groups pass 99/99 and are published.        |
 
 ---
 
@@ -1056,6 +1090,8 @@ Each work package is independently reviewable and tied to explicit outputs.
 | RQ-TCK-005     | WP-03, WP-13   | CI and execution-path verification |
 | RQ-CI-001      | WP-13          | PR/nightly workflow verification   |
 | RQ-REL-001     | WP-13          | Release checklist sign-off         |
+| RQ-COMP-001    | WP-14–WP-24    | Reconciled compliance inventory    |
+| RQ-COMP-002    | WP-14–WP-24    | Expanded strict profiles/reports   |
 
 No requirement should exist without both a work package and a validation path.
 
@@ -1075,6 +1111,7 @@ Each milestone is complete only when all included requirements are verified.
 | M5 Tables and Policies | WP-10, WP-11           | Decision-table and hit-policy groups execute with independent compatibility metrics. |
 | M6 Advanced DMN        | WP-12                  | DRG and advanced features reported with compatibility deltas.                        |
 | M7 Release Readiness   | WP-13                  | Regression gates active; release checklist complete; compatibility report published. |
+| M8 Compliance          | WP-14–WP-24            | All remaining groups have a verified passing result or explicit portability disposition; no entry is disabled without an owner. |
 
 ---
 
@@ -1126,6 +1163,7 @@ Status date: **2026-07-15**
 | Phase 6 — Decision Tables                           | `done` | Normalized input/output clauses and rules, table validation, multi-column unary-test conjunction, UNIQUE matching, single/multiple outputs, and defaults are implemented. Official `0004-simpletable-U` and `0010-multi-output-U` pass 6/6 in the first strict DMN profile. | None for the WP-10 table-engine scope; additional hit policies belong to WP-11. |
 | Phase 7 — Hit Policies                              | `done` | FIRST, ANY, PRIORITY, RULE ORDER, OUTPUT ORDER, and COLLECT reducers are implemented, including unaggregated collection and COUNT/SUM/MIN/MAX aggregation. Twelve official policy groups pass 36/36; together with WP-10 the strict DMN profile passes 42/42. | None for the targeted hit-policy scope. |
 | Phase 8 — Full DMN Graph Features                   | `done` | DRG dependencies, boxed contexts and relations, item definitions, BKMs, invocations, boxed functions, and decision services are normalized, validated, and executable. The strict profiles publish all applicable mapped groups at 100%: 71 newly enabled FEEL-suite entries and 35 newly enabled DMN-suite entries. | None for the current Phase 8 scope. |
+| Phase 9 — Compliance Phase                          | `not_started` | The pinned corpus contains 3,545 entries across 150 groups. Existing strict profiles publish 1,177 entries across 52 groups; 98 groups containing 2,368 entries remain disabled and are now assigned exactly once across WP-14–WP-24. | Complete the eleven compliance work packages; publish every passing group and explicitly disposition platform-specific cases. |
 
 ### 23.3 Work-package roll-up
 
@@ -1138,13 +1176,24 @@ Status date: **2026-07-15**
 | WP-04        | `done`        | Public parse/evaluate APIs, a recursive AST validation boundary, structured syntax/AST errors, and parser/validator regression tests exist. | None for the current WP-04 scope. |
 | WP-05        | `done`        | Conditionals, constants, arithmetic, contexts, lists, scalar equality, and boolean/null logic pass `0032`, `0057`, `0064`, `0065`, `0066`, `0069`, `0100`, `0101`, `0102`, `0105`, `0106`, and `0107` (162/162). The pinned core report is published. | None for the current WP-05 scope; cross-type `0068` cases are tracked by WP-06/WP-07. |
 | WP-06        | `done`        | Structural semantics are implemented; official filter, path, and direct function-invocation groups pass 13/13. Structural portions of `0068`, `0072`, and `0084` now pass, while their remaining cases require WP-07 temporal values or WP-09/WP-12 DMN dependencies. | None for the current WP-06 scope; reassigned cross-feature cases remain visible in the exit matrix. |
-| WP-07        | `done` | Numeric/string groups pass 116/116; temporal constructors pass 273/273; equality passes 114/114; membership passes 327/327; all are enabled. Complete IANA resolution, DST-aware date-time duration arithmetic, general string conversion, and core list operations are implemented. Properties now pass 53/53 with WP-12 boxed contexts, and iteration passes 24/24 with WP-09. | None for the defined WP-07 scope; the full interval-relation family requires a separately defined package. |
+| WP-07        | `done` | Numeric/string groups pass 116/116; temporal constructors pass 273/273; equality passes 114/114; membership passes 327/327; all are enabled. Complete IANA resolution, DST-aware date-time duration arithmetic, general string conversion, and core list operations are implemented. Properties now pass 53/53 with WP-12 boxed contexts, and iteration passes 24/24 with WP-09. | None for the defined WP-07 scope; remaining temporal/calendar semantics are assigned to WP-18. |
 | WP-08        | `done`        | Namespace-independent parsing produces explicit definitions, input-data, variable, decision, information-requirement, and literal-expression structs. Validation reports missing/duplicate identifiers and names, unresolved references, missing variables/text, unsupported expression kinds/languages, and malformed documents. A pinned official literal model loads and validates. | None for WP-08; dependency execution belongs to WP-09. |
 | WP-09        | `done`        | Recursive input/decision requirement resolution, declared-name context injection, dependency memoization, cycle detection, and execution by ID/name are implemented. Official `0084-feel-for-loops` passes 24/24 and is enabled in the pinned strict profile. | None for the minimal literal-expression execution scope. |
 | WP-10        | `done`        | Decision tables normalize into explicit clauses/rules; validation covers missing components, entry cardinality, expressions, and unsupported policies. UNIQUE tables evaluate inputs once, conjunctively match unary tests, reject multiple hits, and return scalar, context, default, or null outputs. Official single/multi-output groups pass 6/6. | None for WP-10; non-UNIQUE reducers remain WP-11 work. |
 | WP-11        | `done`        | Hit policies are normalized and validated independently. Deterministic reducers cover FIRST, ANY consistency, priority ordering, rule/output ordering, collection, and numeric/count aggregations. All twelve mapped official groups pass 3/3 and are enabled. | None for WP-11. |
 | WP-12        | `done` | Normalized models and recursive execution cover contexts, relations, item definitions, BKMs, invocations, function values, and decision services. Official `0016`, `0033`, `0037`, `0038`, `0074`, `0085`, and `0092` pass 106/106 and are published across the strict profiles. | None for the advanced-DMN scope. |
 | WP-13        | `done` | PR/push CI verifies the pin, format, warning-free compilation, tests, both strict profiles, and regression thresholds. A scheduled/manual nightly workflow runs the full corpus and retains complete and strict CSV/JSON artifacts. `RELEASE_CHECKLIST.md` and the compatibility-delta script define release evidence. | None for the current CI and release-gate scope. |
+| WP-14        | `not_started` | Inventory assigns 15 FEEL numeric groups (209 entries). | Implement advanced numeric operations, rounding, product, decimal, NaN/infinity behavior; pass and publish 209/209. |
+| WP-15        | `not_started` | Inventory assigns 5 FEEL aggregate/statistical groups (75 entries). | Implement all/any, median, mode, and standard deviation; pass and publish 75/75. |
+| WP-16        | `not_started` | Inventory assigns 8 FEEL string/Unicode/regex groups (169 entries). | Complete string conversion/join/split/search/replace/matches and Unicode behavior; pass and publish 169/169. |
+| WP-17        | `not_started` | Inventory assigns 10 FEEL type/coercion/predicate/context groups (354 entries). | Complete type tests, coercion, comments, metadata, predicates, and context operations; pass and publish 354/354. |
+| WP-18        | `not_started` | Inventory assigns 9 FEEL calendar/interval groups (135 entries). | Complete at-literals, calendar extraction, year-month durations, interval relations, `now`, and `today`; pass and publish 135/135. |
+| WP-19        | `not_started` | Inventory isolates the platform-specific external-Java group (18 entries). | Establish the Elixir portability disposition and ensure all 18 entries are explicitly reported rather than disabled. |
+| WP-20        | `not_started` | Inventory assigns 21 DMN core-expression/collection groups (1,213 entries). | Complete literal-model arithmetic and collection behavior; pass and publish 1,213/1,213. |
+| WP-21        | `not_started` | Inventory assigns 9 remaining decision-table groups (60 entries). | Complete ANY/PRIORITY table variants, variable inputs, list semantics, and end-to-end examples; pass and publish 60/60. |
+| WP-22        | `not_started` | Inventory assigns 8 DMN function/scope/recursion groups (31 entries). | Complete invocation, user-function, nested-scope, DRG-scope, and recursion semantics; pass and publish 31/31. |
+| WP-23        | `not_started` | Inventory assigns 4 DMN import/reference groups (5 entries). | Complete imports, nested imports, local hrefs, and no-decision-logic handling; pass and publish 5/5. |
+| WP-24        | `not_started` | Inventory assigns 8 boxed-expression/collection groups (99 entries). | Complete boxed conditional/filter/for/quantifier/list forms plus list replacement and range construction; pass and publish 99/99. |
 
 ### 23.4 Detailed active task register
 
@@ -1183,6 +1232,9 @@ Task IDs are stable references for commits, reports, and weekly updates. A task 
 | CI-02   | WP-13        | `done` | `.github/workflows/tck-nightly.yml` runs the complete pinned corpus daily and on manual dispatch, writes full and strict CSV/JSON reports, and retains them for 30 days even when a gate fails. |
 | CI-03   | WP-13        | `done` | `scripts/check_tck_regression.exs` rejects a changed pin, reduced pass count, supported compatibility, or suite coverage, and any strict-profile failed/error/missing/unsupported entry. PR/push CI and nightly apply it to both suites. |
 | CI-04   | WP-13        | `done` | `RELEASE_CHECKLIST.md` requires pinned reports, compatibility deltas, known gaps, dependency ranges, and breaking-change disclosure; `scripts/tck_compatibility_delta.exs` produces the release-note metric table. |
+| COMP-01 | WP-14–WP-24  | `done` | Reconciled all 150 groups and 3,545 entries against the implemented profiles: 52 groups/1,177 entries published, 98 groups/2,368 entries assigned exactly once below, with no unassigned group. |
+| COMP-02 | WP-14–WP-19  | `not_started` | Complete the remaining FEEL compliance inventory and expand the FEEL strict profile group-by-group. |
+| COMP-03 | WP-20–WP-24  | `not_started` | Complete the remaining DMN/boxed compliance inventory and expand the DMN strict profile group-by-group. |
 
 ### 23.5 Official TCK feature exit matrix
 
@@ -1202,7 +1254,7 @@ An applicable feature is complete only when every group assigned to it passes in
 | WP-07/WP-12 | Temporal and range properties | `0074-feel-properties` | `53/53`; enabled in the FEEL profile. Boxed DMN contexts supply the final ten results. | Group remains fully passing. |
 | WP-09/WP-12 | DMN-dependent structural expressions | `0016-some-every`, `0033-for-loops`, `0092-feel-lambda` | `8/8`, `4/4`, and `18/18`; all enabled in the appropriate strict profile. | All three groups remain fully passing. |
 | WP-12 | BKMs and decision services | `0037-dt-on-bkm-implicit-params`, `0038-dt-on-bkm-explicit-params`, `0085-decision-services` | `2/2`, `2/2`, and `19/19`; all enabled in the DMN profile. | All three groups remain fully passing. |
-| Future FEEL interval relations | Allen-style interval relation built-ins | `1130-feel-interval` | Scope review found that boxed contexts now execute, but the group exercises the FEEL `before`, `after`, `meets`, `overlaps`, and related interval functions rather than WP-12 graph behavior. It remains 0/14 pending a dedicated FEEL interval-relation package. | Define an owning work package, implement the complete interval-relation family, and enable the group only at 14/14. |
+| WP-18 | Allen-style interval relation built-ins | `1130-feel-interval` | Scope review found that boxed contexts now execute, but the group exercises the FEEL `before`, `after`, `meets`, `overlaps`, and related interval functions rather than WP-12 graph behavior. It remains outside the profile pending WP-18. | Implement the complete interval-relation family and enable the group only at 14/14. |
 | WP-07 | Numeric built-ins | `0050-feel-abs-function`, `0058-feel-number-function`, `0105-feel-math`, `1101-feel-floor-function`, `1102-feel-ceiling-function` | `17/17`, `21/21`, `33/33`, `17/17`, `17/17`; all enabled | All five groups remain fully passing. |
 | WP-07 | String built-ins | `1103-feel-substring-function`, `1104-feel-string-length-function`, `1105-feel-upper-case-function`, `1106-feel-lower-case-function`, `1110-feel-contains-function` | `11/11`, `6/6`, `8/8`, `9/9`, `10/10`; all enabled | All five groups remain fully passing. |
 | WP-07 | Temporal constructors | `1115-feel-date-function`, `1116-feel-time-function`, `1117-feel-date-and-time-function`, `1120-feel-duration-function` | `52/52`, `83/83`, `88/88`, `50/50`; all enabled | All four groups remain fully passing. |
@@ -1215,14 +1267,37 @@ An applicable feature is complete only when every group assigned to it passes in
 
 Counts above are result-entry counts from the vendored TestCases corpus at `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13`, measured on 2026-07-15. Failed and errored entries remain visible in diagnostic runs; only wholly passing groups enter the strict implemented profile.
 
-### 23.6 Next execution sequence
+### 23.6 Compliance inventory
+
+This inventory is derived from the pinned loader output, not directory estimates. The eleven work packages below contain all 98 groups and all 2,368 entries currently outside the implemented profiles. Group counts in parentheses are result-entry counts. A group may enter a strict profile only when every assigned entry passes.
+
+| Work package | Logical feature set | Assigned official groups | Total |
+| ------------ | ------------------- | ------------------------ | ----: |
+| WP-14 | FEEL advanced numeric functions and edge values | `0051-feel-sqrt-function` (15), `0052-feel-exp-function` (15), `0053-feel-log-function` (15), `0054-feel-even-function` (17), `0055-feel-odd-function` (17), `0056-feel-modulo-function` (28), `0075-feel-exponent` (12), `0077-feel-nan` (1), `0078-feel-infinity` (2), `0094-feel-product-function` (13), `1100-feel-decimal-function` (10), `1141-feel-round-up-function` (16), `1142-feel-round-down-function` (16), `1143-feel-round-half-up-function` (16), `1144-feel-round-half-down-function` (16) | 15 groups / 209 entries |
+| WP-15 | FEEL boolean aggregates and statistics | `0059-feel-all-function` (19), `0060-feel-any-function` (17), `0061-feel-median-function` (14), `0062-feel-mode-function` (13), `0063-feel-stddev-function` (12) | 5 groups / 75 entries |
+| WP-16 | FEEL strings, Unicode, and regular expressions | `0067-feel-split-function` (9), `0079-feel-string-function` (37), `0083-feel-unicode` (14), `1107-feel-substring-before-function` (9), `1108-feel-substring-after-function` (10), `1109-feel-replace-function` (28), `1111-feel-matches-function` (40), `1140-feel-string-join-function` (22) | 8 groups / 169 entries |
+| WP-17 | FEEL types, coercion, predicates, metadata, and contexts | `0070-feel-instance-of` (142), `0071-feel-between` (38), `0073-feel-comments` (3), `0080-feel-getvalue-function` (14), `0081-feel-getentries-function` (9), `0082-feel-coercion` (36), `0103-feel-is-function` (50), `1145-feel-context-function` (18), `1146-feel-context-put-function` (30), `1147-feel-context-merge-function` (14) | 10 groups / 354 entries |
+| WP-18 | FEEL calendar, duration, interval, and clock semantics | `0093-feel-at-literals` (19), `0095-feel-day-of-year-function` (19), `0096-feel-day-of-week-function` (12), `0097-feel-month-of-year-function` (12), `0098-feel-week-of-year-function` (19), `1121-feel-years-and-months-duration-function` (36), `1130-feel-interval` (14), `1148-feel-now-function` (2), `1149-feel-today-function` (2) | 9 groups / 135 entries |
+| WP-19 | Platform-specific external functions | `0076-feel-external-java` (18) | 1 group / 18 entries |
+| WP-20 | DMN core expressions, input data, arithmetic, and collections | `0001-input-data-string` (1), `0002-input-data-number` (1), `0002-string-functions` (4), `0003-input-data-string-allowed-values` (1), `0003-iteration` (1), `0006-join` (1), `0007-date-time` (19), `0008-LX-arithmetic` (3), `0008-listGen` (10), `0009-append-flatten` (10), `0010-concatenate` (6), `0011-insert-remove` (6), `0012-list-functions` (19), `0013-sort` (3), `0014-loan-comparison` (2), `0015-all-any` (10), `0020-vacation-days` (7), `0021-singleton-list` (5), `0035-test-structure-output` (3), `0099-arithmetic-negation` (14), `0100-arithmetic` (1,087) | 21 groups / 1,213 entries |
+| WP-21 | Remaining decision tables and end-to-end examples | `0004-lending` (11), `0005-simpletable-A` (3), `0006-simpletable-P1` (3), `0007-simpletable-P2` (3), `0017-tableTests` (4), `0019-flight-rebooking` (1), `0036-dt-variable-input` (24), `0039-dt-list-semantics` (2), `0087-chapter-11-example` (9) | 9 groups / 60 entries |
+| WP-22 | DMN functions, invocation, scopes, nesting, and recursion | `0005-literal-invocation` (3), `0009-invocation-arithmetic` (3), `0030-user-defined-functions` (2), `0031-user-defined-functions` (3), `0034-drg-scopes` (12), `0040-singlenestedcontext` (3), `0041-multiple-nestedcontext` (3), `0088-recursion` (2) | 8 groups / 31 entries |
+| WP-23 | DMN imports, references, and no-logic models | `0086-import` (2), `0088-no-decision-logic` (1), `0089-nested-inputdata-imports` (1), `0091-local-hrefs` (1) | 4 groups / 5 entries |
+| WP-24 | Boxed expressions and remaining collection functions | `1150-boxed-conditional` (3), `1151-boxed-filter` (4), `1152-boxed-for` (2), `1153-boxed-some` (5), `1154-boxed-every` (5), `1155-list-replace-function` (22), `1156-range-function` (56), `1161-boxed-list-expression` (2) | 8 groups / 99 entries |
+| **Total** | **Complete remaining inventory** | **Every group outside the implemented profiles, assigned once** | **98 groups / 2,368 entries** |
+
+`0076-feel-external-java` is isolated because an Elixir engine cannot honestly claim Java interoperation by accident. WP-19 must decide and document whether Arbiter supplies an equivalent external-function adapter or reports these cases as an intentional platform limitation. That decision affects full-corpus coverage but must not weaken supported-scope compatibility.
+
+### 23.7 Next execution sequence
 
 Work should proceed in this order because the upstream corpus is the evidence base for all FEEL and DMN completion claims:
 
-1. define and implement the deferred FEEL interval-relation package mapped to `1130-feel-interval`;
-2. use the completed CI and release gates to protect every subsequent profile expansion.
+1. begin WP-14 numeric completion, which includes several already partially implemented functions and provides fast profile growth;
+2. complete the remaining FEEL packages WP-15–WP-18, while resolving WP-19 independently as a portability decision;
+3. execute WP-20 before WP-21–WP-24 because its core-expression and collection semantics are dependencies for most remaining DMN groups;
+4. use the completed CI and release gates to protect every group added to either strict profile.
 
-### 23.7 Progress update record
+### 23.8 Progress update record
 
 Each progress update should change this section in one commit and include:
 
