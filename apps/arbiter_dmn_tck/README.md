@@ -15,9 +15,8 @@ mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 ```
 
 The umbrella `mix test` command follows ExUnit with the strict, targeted FEEL
-`implemented` profile. It currently contains 27 passing cases from four
-official groups. The DMN `implemented` profile is intentionally empty until
-Arbiter passes a DMN-focused upstream group.
+`implemented` profile. The tracked strict baselines currently pass 1,100 FEEL
+entries and 77 DMN entries against the pinned corpus.
 
 FEEL and DMN are selected independently:
 
@@ -40,3 +39,9 @@ built; direct `mix tck` runs remain strict by default.
 Results use the explicit statuses `passed`, `failed`, `unsupported`, `missing`,
 and `error`. Unsupported engine behavior must not be counted as passing or
 silently skipped.
+
+CI regenerates both strict reports and compares compatibility, suite coverage,
+pass counts, and the pinned TCK revision with the tracked baselines. The
+scheduled nightly workflow additionally runs the complete corpus in diagnostic
+mode and retains CSV/JSON artifacts for 30 days. Release preparation and delta
+commands are documented in `RELEASE_CHECKLIST.md` at the repository root.

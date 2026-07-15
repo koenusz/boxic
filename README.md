@@ -17,7 +17,8 @@ DMN TCK harness.
 - official namespaced test documents are discovered and normalized by the
   native Elixir loader;
 - native Elixir TCK runner with explicit statuses;
-- machine-readable CSV and JSON report generation.
+- machine-readable CSV and JSON report generation;
+- strict compatibility regression gates and retained nightly full-corpus reports.
 
 Engine compatibility with the official corpus is still in progress. A loaded
 test is not treated as passing unless it executes through Arbiter and its
@@ -42,3 +43,8 @@ Run complete suite snapshots explicitly:
 mix tck --suite feel --all --soft-fail
 mix tck --suite dmn --all --soft-fail
 ```
+
+CI compares fresh implemented-profile reports with the tracked compatibility
+baselines. The scheduled nightly workflow runs the complete corpus and retains
+CSV/JSON artifacts. See [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) for the
+release compatibility and delta-report procedure.

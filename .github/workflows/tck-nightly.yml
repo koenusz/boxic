@@ -1,0 +1,53 @@
+name: Nightly DMN TCK
+
+on:
+  schedule:
+    - cron: "23 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-corpus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.19.1"
+          otp-version: "28.1"
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Verify vendored TCK pin
+        run: bash scripts/verify_tck_pin.sh
+
+      - name: Run complete corpus diagnostic
+        run: mix tck --all --soft-fail --report artifacts/tck-full --format both
+
+      - name: Run strict FEEL profile
+        run: mix tck --suite feel --profile implemented --report artifacts/feel-implemented --format both
+
+      - name: Run strict DMN profile
+        run: mix tck --suite dmn --profile implemented --report artifacts/dmn-implemented --format both
+
+      - name: Enforce FEEL regression gate
+        run: mix run scripts/check_tck_regression.exs compatibility/feel-implemented-0dbcaf9b.json artifacts/feel-implemented.json
+
+      - name: Enforce DMN regression gate
+        run: mix run scripts/check_tck_regression.exs compatibility/dmn-implemented-0dbcaf9b.json artifacts/dmn-implemented.json
+
+      - name: Retain TCK reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tck-reports-${{ github.run_id }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 30

@@ -1144,7 +1144,7 @@ Status date: **2026-07-15**
 | WP-10        | `done`        | Decision tables normalize into explicit clauses/rules; validation covers missing components, entry cardinality, expressions, and unsupported policies. UNIQUE tables evaluate inputs once, conjunctively match unary tests, reject multiple hits, and return scalar, context, default, or null outputs. Official single/multi-output groups pass 6/6. | None for WP-10; non-UNIQUE reducers remain WP-11 work. |
 | WP-11        | `done`        | Hit policies are normalized and validated independently. Deterministic reducers cover FIRST, ANY consistency, priority ordering, rule/output ordering, collection, and numeric/count aggregations. All twelve mapped official groups pass 3/3 and are enabled. | None for WP-11. |
 | WP-12        | `done` | Normalized models and recursive execution cover contexts, relations, item definitions, BKMs, invocations, function values, and decision services. Official `0016`, `0033`, `0037`, `0038`, `0074`, `0085`, and `0092` pass 106/106 and are published across the strict profiles. | None for the advanced-DMN scope. |
-| WP-13        | `in_progress` | PR/push CI runs format, compile, tests, pin verification, and official-corpus loader regression tests.                    | Add nightly/full-corpus jobs, artifact retention, compatibility regression gates, and release checklist/reporting.                                                     |
+| WP-13        | `done` | PR/push CI verifies the pin, format, warning-free compilation, tests, both strict profiles, and regression thresholds. A scheduled/manual nightly workflow runs the full corpus and retains complete and strict CSV/JSON artifacts. `RELEASE_CHECKLIST.md` and the compatibility-delta script define release evidence. | None for the current CI and release-gate scope. |
 
 ### 23.4 Detailed active task register
 
@@ -1180,9 +1180,9 @@ Task IDs are stable references for commits, reports, and weekly updates. A task 
 | DMN-08  | WP-12        | `done`        | Boxed contexts, relation expressions, recursive graph dependencies, and item-definition-backed values pass `0074-feel-properties` 53/53, `0016-some-every` 8/8, and `0033-for-loops` 4/4. |
 | DMN-09  | WP-12        | `done`        | BKM definitions, implicit/explicit invocation parameters, first-class built-ins/lambdas/BKMs, and decision-service invocation pass `0037` 2/2, `0038` 2/2, `0092-feel-lambda` 18/18, and `0085-decision-services` 19/19. |
 | CI-01   | WP-13        | `done`        | Fabricated fixture profiles and reports were removed; CI verifies the official pinned corpus, and the root test alias runs only the targeted official FEEL implemented profile. |
-| CI-02   | WP-13        | `not_started` | Add scheduled full-corpus execution with retained CSV/JSON artifacts.                                                                      |
-| CI-03   | WP-13        | `not_started` | Add supported-scope compatibility and total-coverage regression thresholds.                                                                |
-| CI-04   | WP-13        | `not_started` | Add release checklist and compatibility-delta report requirements.                                                                         |
+| CI-02   | WP-13        | `done` | `.github/workflows/tck-nightly.yml` runs the complete pinned corpus daily and on manual dispatch, writes full and strict CSV/JSON reports, and retains them for 30 days even when a gate fails. |
+| CI-03   | WP-13        | `done` | `scripts/check_tck_regression.exs` rejects a changed pin, reduced pass count, supported compatibility, or suite coverage, and any strict-profile failed/error/missing/unsupported entry. PR/push CI and nightly apply it to both suites. |
+| CI-04   | WP-13        | `done` | `RELEASE_CHECKLIST.md` requires pinned reports, compatibility deltas, known gaps, dependency ranges, and breaking-change disclosure; `scripts/tck_compatibility_delta.exs` produces the release-note metric table. |
 
 ### 23.5 Official TCK feature exit matrix
 
@@ -1220,7 +1220,7 @@ Counts above are result-entry counts from the vendored TestCases corpus at `0dbc
 Work should proceed in this order because the upstream corpus is the evidence base for all FEEL and DMN completion claims:
 
 1. define and implement the deferred FEEL interval-relation package mapped to `1130-feel-interval`;
-2. mature CI through CI-02 to CI-04 as upstream profiles become reliable.
+2. use the completed CI and release gates to protect every subsequent profile expansion.
 
 ### 23.7 Progress update record
 

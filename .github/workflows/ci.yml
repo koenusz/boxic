@@ -32,3 +32,22 @@ jobs:
 
       - name: Test
         run: mix test
+
+      - name: Generate strict compatibility reports
+        run: |
+          mix tck --suite feel --profile implemented --report artifacts/feel-implemented --format json
+          mix tck --suite dmn --profile implemented --report artifacts/dmn-implemented --format json
+
+      - name: Enforce compatibility regression gates
+        run: |
+          mix run scripts/check_tck_regression.exs compatibility/feel-implemented-0dbcaf9b.json artifacts/feel-implemented
+          mix run scripts/check_tck_regression.exs compatibility/dmn-implemented-0dbcaf9b.json artifacts/dmn-implemented
+
+      - name: Retain compatibility reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compatibility-reports-${{ github.run_id }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 14
