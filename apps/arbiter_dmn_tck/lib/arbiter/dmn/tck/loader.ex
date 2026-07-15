@@ -41,6 +41,7 @@ defmodule Arbiter.DMN.TCK.Loader do
       test_documents: root |> Path.join(@test_document_glob) |> Path.wildcard() |> length(),
       dmn_models: root |> Path.join("TestCases/**/*.dmn") |> Path.wildcard() |> length(),
       result_entries: length(cases),
+      expected_errors: Enum.count(cases, & &1.expect_error),
       load_errors: Enum.count(cases, &(not is_nil(&1.load_error))),
       missing_models: length(missing_models)
     }
@@ -96,6 +97,7 @@ defmodule Arbiter.DMN.TCK.Loader do
       decision_name: "",
       inputs: %{},
       expected: nil,
+      expect_error: false,
       load_error: reason,
       metadata: %{
         case_file: Path.relative_to(path, root),
@@ -137,9 +139,12 @@ defmodule Arbiter.DMN.TCK.Loader do
       decision_name =
         xpath_string(result_node, "./@name") || raise("TCK resultNode has no name")
 
+      expect_error = xpath_string(result_node, "./@errorResult") == "true"
+
       expected_node =
         case xpath(result_node, "./*[local-name()='expected']") do
           [node] -> node
+          [] when expect_error -> nil
           [] -> raise "TCK resultNode has no expected value: #{group}/#{upstream_id}"
           _ -> raise "TCK resultNode has multiple expected values: #{group}/#{upstream_id}"
         end
@@ -151,7 +156,8 @@ defmodule Arbiter.DMN.TCK.Loader do
         model_path: Path.expand(model_name, Path.dirname(case_file)),
         decision_name: decision_name,
         inputs: inputs,
-        expected: parse_container(expected_node),
+        expected: if(expected_node, do: parse_container(expected_node), else: nil),
+        expect_error: expect_error,
         metadata: %{
           case_file: Path.relative_to(case_file, root),
           compliance_level: compliance_level(case_file, root),

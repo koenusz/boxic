@@ -14,7 +14,7 @@ Build a standards-oriented DMN implementation in Elixir, structured as an umbrel
 
 The implementation should use the upstream DMN Technology Compatibility Kit directly and report compatibility against a pinned upstream revision.
 
-The initial implementation will start from a fork of RodarFeel and progressively improve it until the relevant FEEL behaviour is compatible with the TCK.
+`arbiter_feel` is an independent implementation. Standards behavior and progress are validated against explicit groups from the pinned official DMN TCK rather than inherited implementation history or third-party test baselines.
 
 ---
 
@@ -127,7 +127,7 @@ Arbiter.FEEL.evaluate_ast(ast, context)
 
 The public API should remain small and stable.
 
-The initial codebase may be based on a fork of RodarFeel, but the fork should remain focused on FEEL only.
+The FEEL package owns its parser, AST, evaluator, built-ins, and value semantics directly. External implementations may be consulted as references where licensing permits, but no external fork or source import is a project requirement or completion criterion.
 
 ---
 
@@ -703,20 +703,18 @@ otp:
 
 ## 13. Implementation Phases
 
-## Phase 0 — Repository and Fork Setup
+## Phase 0 — Repository and Foundation Setup
 
 - create umbrella;
-- fork RodarFeel;
-- import the fork into `arbiter_feel`;
+- establish `arbiter_feel` as an independent implementation;
 - establish package naming and module namespaces;
 - add pinned vendored TCK snapshot;
-- add baseline CI;
-- record current RodarFeel behaviour.
+- add baseline CI.
 
 Deliverable:
 
 - umbrella builds;
-- existing RodarFeel tests pass;
+- FEEL, DMN, and TCK application boundaries compile and pass their foundation gates;
 - TCK corpus is discoverable.
 
 ---
@@ -1119,8 +1117,8 @@ Status date: **2026-07-15**
 
 | Phase                                               | Status        | Current assessment                                                                                                                                                                                                                                 | Completion condition                                                                                                 |
 | --------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Phase 0 — Repository and Fork Setup                 | `in_progress` | Umbrella, namespaces, baseline CI, narrow reproducible update scripts, and the verified official upstream corpus at `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13` are present. RodarFeel baseline/fork evidence is not recorded. | Record the FEEL baseline and satisfy the remaining Phase 0 deliverable. |
-| Phase 1 — TCK Harness Foundation                    | `in_progress` | The loader discovers and normalizes the official namespaced corpus into 3,545 result entries; malformed metadata and missing models receive explicit statuses; the runner, comparator, reporter, and Mix task exist. | Complete the remaining comparison/reporting work in WP-03 and publish compatibility/coverage reports. |
+| Phase 0 — Repository and Foundation Setup           | `done`        | The umbrella, independent `arbiter_feel` implementation boundary, namespaces, dependency-direction checks, baseline CI, reproducible TCK update scripts, and verified official corpus at `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13` are present. | None for the current Phase 0 scope. |
+| Phase 1 — TCK Harness Foundation                    | `done`        | All 3,545 pinned result entries are discovered and explicitly classifiable; expected errors and canonical nested values are normalized; semantic comparison, safe CLI selection, and versioned CSV/JSON reporting are verified. The pinned strict report is published under `compatibility/feel-implemented-0dbcaf9b.{csv,json}`. | None for the current Phase 1 scope. |
 | Phase 2 — FEEL Core Compliance                      | `in_progress` | The pinned strict profile passes 71/71 cases across constants and boolean/null logic groups. Arithmetic, equality, contexts, and lists remain only partially compatible; `if then else` is not implemented. | Make every WP-05 exit-matrix group pass, implement remaining core syntax, and publish the pinned core profile artifact. |
 | Phase 3 — FEEL Structural Features                  | `in_progress` | Ranges, unary tests, paths, filters, projections, quantifiers, closures, and scoping have unit tests. Upstream structural compatibility has not been established. | Execute the relevant pinned upstream groups and document remaining semantic gaps. |
 | Phase 4 — Built-in Functions and Temporal Semantics | `in_progress` | Initial string/list/numeric built-ins and date/time/duration operations exist. The fabricated `4/4` profile and its reports were removed; built-in and temporal semantics remain incomplete. | Complete the scoped built-ins and temporal semantics and publish feature-level upstream results and known gaps. |
@@ -1136,7 +1134,7 @@ Status date: **2026-07-15**
 | WP-00        | `done`        | Umbrella structure, executable dependency-boundary regression tests, documented internal-only TCK packaging, baseline CI, and passing local gates. | None for the current WP-00 scope. |
 | WP-01        | `done`        | The narrow official TestCases corpus, pin, upstream URL, tree identity, checksum manifest, reproducible updater, and byte-for-byte upstream CI verification are present. | None for the current WP-01 scope. |
 | WP-02        | `done`        | All numbered official test documents are discovered; namespaced XML, model layout, scalar/list/component values, identifiers, labels, and compliance levels are normalized; empty/malformed documents and missing models are explicit; the pin-specific integrity baseline is tested. | None for the current WP-02 scope. |
-| WP-03        | `in_progress` | Five result statuses and CSV/JSON output with JSON metadata exist.                                                        | Complete normalization, expected-error and collection comparison, compatibility/coverage metrics, report schema tests, and functional CLI format options.              |
+| WP-03        | `done`        | Five explicit statuses; expected-error handling; Decimal, temporal, duration, nested, ordered, and unordered comparison; separate compatibility/coverage metrics; safe CLI selection; and versioned typed CSV/JSON schemas are tested. The 71/71 strict report is tracked at `compatibility/feel-implemented-0dbcaf9b.{csv,json}`. | None for the current WP-03 scope. |
 | WP-04        | `done`        | Public parse/evaluate APIs, a recursive AST validation boundary, structured syntax/AST errors, and parser/validator regression tests exist. | None for the current WP-04 scope. |
 | WP-05        | `in_progress` | Constants and boolean/null logic pass official groups `0100`, `0102`, `0064`, `0065`, `0066`, `0106`, and `0107` (71/71 cases). | Add `if then else`; make the WP-05 exit-matrix groups for constants, math, equality, contexts, and lists pass completely; publish the pinned core report. |
 | WP-06        | `in_progress` | Structural expressions and focused unit/regression tests exist.                                                           | Validate official upstream structural groups and correct any discovered semantics or scoping gaps.                                                                     |
@@ -1159,10 +1157,10 @@ Task IDs are stable references for commits, reports, and weekly updates. A task 
 | TCK-03  | WP-02        | `done`        | Namespace-aware official XML/model discovery and scalar, list, and nested-component normalization are covered by tests.                   |
 | TCK-04  | WP-02        | `done`        | Every `*-test-*.xml` document is discovered; empty/malformed XML or metadata becomes an explicit error case; missing models receive `missing`; regression tests prevent silent omission. |
 | TCK-05  | WP-02        | `done`        | Pin-specific baseline verifies 150 official test documents, 154 DMN models, 3,545 normalized result entries, zero load errors, and zero missing referenced models. |
-| TCK-06  | WP-03        | `in_progress` | Extend semantic comparison for durations, expected errors, nested values, and ordered/unordered collections where required.                |
-| TCK-07  | WP-03        | `in_progress` | Report supported compatibility and total-corpus coverage separately.                                                                       |
-| TCK-08  | WP-03        | `in_progress` | Make `--all`, `--profile`, and `--format` behavior explicit and tested; reject unsupported CLI combinations.                               |
-| TCK-09  | WP-03        | `not_started` | Add report schema tests covering mandatory metadata and machine-readable values without relying on `inspect/1` serialization.              |
+| TCK-06  | WP-03        | `done`        | Comparator tests cover Decimal normalization, dates/times/date-times, durations, nested maps/lists, and ordered/unordered duplicate-preserving list semantics; 1,412 expected-error entries are normalized and runner-tested. |
+| TCK-07  | WP-03        | `done`        | Summary and report schemas expose supported compatibility, selected-suite coverage, and total-corpus coverage separately. |
+| TCK-08  | WP-03        | `done`        | `--all`, `--profile`, `--group`, `--label`, `--report`, and `--format csv|json|both` behavior is documented; unsafe, missing, and unsupported combinations are rejected by tests. |
+| TCK-09  | WP-03        | `done`        | Versioned CSV/JSON schema tests cover required runtime/pin metadata, summary metrics, case identity, expected/actual/error values, and typed machine-readable serialization without `inspect/1`. |
 | FEEL-01 | WP-05        | `in_progress` | Implement parser/evaluator support for `if then else` with null and type-error tests.                                                      |
 | FEEL-02 | WP-05        | `in_progress` | Strict pinned baseline passes 71/71 across `0064`, `0065`, `0066`, `0100`, `0102`, `0106`, and `0107`; complete every WP-05 exit-matrix group and publish the core report. |
 | FEEL-03 | WP-06        | `in_progress` | Use the WP-06 exit matrix as the structural completion gate; every mapped group must pass completely and appear in the published profile. |
@@ -1205,12 +1203,11 @@ Counts above are result-entry counts from the vendored TestCases corpus at `0dbc
 
 Work should proceed in this order because the upstream corpus is the evidence base for all FEEL and DMN completion claims:
 
-1. complete TCK-06 through TCK-09 so failures and unsupported behavior are measured accurately;
-2. complete FEEL-01 and publish the real core baseline in FEEL-02;
-3. use that baseline to drive FEEL-03 through FEEL-09 rather than expanding local fixtures as compatibility evidence;
-4. complete DMN-01 through DMN-05 and verify literal-expression execution against upstream cases;
-5. begin WP-10 only after the minimal DMN model and upstream execution path are stable;
-6. mature CI through CI-02 to CI-04 as upstream profiles become reliable.
+1. complete FEEL-01 and publish the real core baseline in FEEL-02;
+2. use that baseline to drive FEEL-03 through FEEL-09 rather than expanding local fixtures as compatibility evidence;
+3. complete DMN-01 through DMN-05 and verify literal-expression execution against upstream cases;
+4. begin WP-10 only after the minimal DMN model and upstream execution path are stable;
+5. mature CI through CI-02 to CI-04 as upstream profiles become reliable.
 
 ### 23.7 Progress update record
 

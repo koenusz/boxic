@@ -12,6 +12,7 @@ defmodule Arbiter.DMN.TCKTest do
              test_documents: 150,
              dmn_models: 154,
              result_entries: 3_545,
+             expected_errors: 1_412,
              load_errors: 0,
              missing_models: 0
            }
@@ -105,6 +106,7 @@ defmodule Arbiter.DMN.TCKTest do
              test_documents: 1,
              dmn_models: 0,
              result_entries: 1,
+             expected_errors: 0,
              load_errors: 1,
              missing_models: 0
            }
@@ -133,6 +135,40 @@ defmodule Arbiter.DMN.TCKTest do
     assert is_nil(test_case.load_error)
     assert Runner.execute(test_case).status == :missing
     assert Loader.corpus_stats(root: root).missing_models == 1
+  end
+
+  test "expected-error results pass only when evaluation returns an error" do
+    root = temporary_corpus_root()
+    model_path = Path.join(root, "error-model.dmn")
+
+    File.mkdir_p!(root)
+
+    File.write!(
+      model_path,
+      """
+      <definitions name="error model" namespace="urn:test">
+        <decision id="d1" name="Decision">
+          <literalExpression><text>1 +</text></literalExpression>
+        </decision>
+      </definitions>
+      """
+    )
+
+    test_case = %Arbiter.DMN.TCK.Case{
+      group: "expected-error",
+      id: "001",
+      labels: [],
+      model_path: model_path,
+      decision_name: "Decision",
+      inputs: %{},
+      expected: nil,
+      expect_error: true,
+      load_error: nil,
+      metadata: %{}
+    }
+
+    assert %{status: :passed, error: %Arbiter.FEEL.Error{}} = Runner.execute(test_case)
+    assert Runner.execute(%{test_case | expect_error: false}).status == :error
   end
 
   test "implemented profile is an explicit passing baseline" do

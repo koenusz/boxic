@@ -1,26 +1,65 @@
 defmodule Arbiter.DMN.TCK.Comparator do
   @moduledoc """
   Semantic comparator for expected and actual values.
+
+  Lists are ordered by default. Callers comparing a TCK result whose semantics
+  are explicitly unordered can pass `ordered: false`; duplicate values are
+  still significant.
   """
 
-  @spec semantic_equal?(term(), term()) :: boolean()
-  def semantic_equal?(%Decimal{} = left, %Decimal{} = right), do: Decimal.equal?(left, right)
-  def semantic_equal?(%Date{} = left, %Date{} = right), do: Date.compare(left, right) == :eq
-  def semantic_equal?(%Time{} = left, %Time{} = right), do: Time.compare(left, right) == :eq
+  alias Arbiter.FEEL.Duration
 
-  def semantic_equal?(%DateTime{} = left, %DateTime{} = right),
+  @spec semantic_equal?(term(), term(), keyword()) :: boolean()
+  def semantic_equal?(left, right, opts \\ []) do
+    compare(left, right, Keyword.get(opts, :ordered, true))
+  end
+
+  defp compare(%Decimal{} = left, %Decimal{} = right, _ordered),
+    do: Decimal.equal?(left, right)
+
+  defp compare(%Decimal{} = left, right, _ordered) when is_integer(right),
+    do: Decimal.equal?(left, Decimal.new(right))
+
+  defp compare(left, %Decimal{} = right, _ordered) when is_integer(left),
+    do: Decimal.equal?(Decimal.new(left), right)
+
+  defp compare(%Date{} = left, %Date{} = right, _ordered),
+    do: Date.compare(left, right) == :eq
+
+  defp compare(%Time{} = left, %Time{} = right, _ordered),
+    do: Time.compare(left, right) == :eq
+
+  defp compare(%DateTime{} = left, %DateTime{} = right, _ordered),
     do: DateTime.compare(left, right) == :eq
 
-  def semantic_equal?(left, right) when is_list(left) and is_list(right) do
+  defp compare(%Duration{} = left, %Duration{} = right, _ordered),
+    do: left.months == right.months and left.seconds == right.seconds
+
+  defp compare(left, right, true) when is_list(left) and is_list(right) do
     length(left) == length(right) and
-      Enum.zip(left, right) |> Enum.all?(fn {l, r} -> semantic_equal?(l, r) end)
+      Enum.zip(left, right) |> Enum.all?(fn {l, r} -> compare(l, r, true) end)
   end
 
-  def semantic_equal?(left, right)
-      when is_map(left) and is_map(right) and not is_struct(left) and not is_struct(right) do
+  defp compare(left, right, false) when is_list(left) and is_list(right) do
+    unordered_equal?(left, right)
+  end
+
+  defp compare(left, right, ordered)
+       when is_map(left) and is_map(right) and not is_struct(left) and not is_struct(right) do
     Map.keys(left) |> Enum.sort() == Map.keys(right) |> Enum.sort() and
-      Enum.all?(left, fn {k, v} -> semantic_equal?(v, Map.get(right, k)) end)
+      Enum.all?(left, fn {k, v} -> compare(v, Map.get(right, k), ordered) end)
   end
 
-  def semantic_equal?(left, right), do: left == right
+  defp compare(left, right, _ordered), do: left == right
+
+  defp unordered_equal?(left, right) when length(left) != length(right), do: false
+
+  defp unordered_equal?([], []), do: true
+
+  defp unordered_equal?([value | rest], right) do
+    case Enum.find_index(right, &compare(value, &1, true)) do
+      nil -> false
+      index -> unordered_equal?(rest, List.delete_at(right, index))
+    end
+  end
 end

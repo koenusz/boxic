@@ -11,6 +11,7 @@ defmodule Arbiter.DMN.TCK.Case do
     :decision_name,
     :inputs,
     :expected,
+    :expect_error,
     :load_error,
     :metadata
   ]
@@ -23,6 +24,7 @@ defmodule Arbiter.DMN.TCK.Case do
           decision_name: String.t(),
           inputs: map(),
           expected: term(),
+          expect_error: boolean(),
           load_error: term() | nil,
           metadata: map()
         }

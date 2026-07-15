@@ -17,6 +17,9 @@ defmodule Arbiter.DMN.TCK.Runner do
       {:failed, actual} ->
         %{case: test_case, status: :failed, actual: actual, error: nil}
 
+      {:passed_error, reason} ->
+        %{case: test_case, status: :passed, actual: nil, error: reason}
+
       {:missing, reason} ->
         %{case: test_case, status: :missing, actual: nil, error: reason}
 
@@ -35,16 +38,26 @@ defmodule Arbiter.DMN.TCK.Runner do
     if not File.exists?(model_path) do
       {:missing, {:model_not_found, model_path}}
     else
-      with {:ok, model} <- Arbiter.DMN.load(model_path),
-           {:ok, actual} <- Arbiter.DMN.evaluate(model, test_case.decision_name, test_case.inputs) do
-        if Comparator.semantic_equal?(actual, test_case.expected) do
-          {:passed, actual}
-        else
-          {:failed, actual}
-        end
-      else
+      case evaluate(test_case) do
+        {:ok, actual} when test_case.expect_error ->
+          if Comparator.semantic_equal?(actual, test_case.expected) do
+            {:passed, actual}
+          else
+            {:failed, actual}
+          end
+
+        {:ok, actual} ->
+          if Comparator.semantic_equal?(actual, test_case.expected) do
+            {:passed, actual}
+          else
+            {:failed, actual}
+          end
+
         {:error, %Arbiter.FEEL.Error{code: :unsupported_expression} = error} ->
           {:unsupported, error}
+
+        {:error, reason} when test_case.expect_error ->
+          {:passed_error, reason}
 
         {:error, reason} ->
           {:error, reason}
@@ -52,5 +65,11 @@ defmodule Arbiter.DMN.TCK.Runner do
     end
   rescue
     exception -> {:error, exception}
+  end
+
+  defp evaluate(test_case) do
+    with {:ok, model} <- Arbiter.DMN.load(test_case.model_path) do
+      Arbiter.DMN.evaluate(model, test_case.decision_name, test_case.inputs)
+    end
   end
 end
