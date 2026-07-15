@@ -8,6 +8,7 @@ defmodule Arbiter.FEEL do
   """
 
   alias Arbiter.FEEL.Error
+  alias Arbiter.FEEL.AST
   alias Arbiter.FEEL.Builtins
   alias Arbiter.FEEL.Function
   alias Arbiter.FEEL.Range
@@ -37,7 +38,8 @@ defmodule Arbiter.FEEL do
       {:error, error(:empty_expression, "expression cannot be empty")}
     else
       with {:ok, tokens} <- tokenize(trimmed),
-           {:ok, ast, []} <- parse_expression(tokens) do
+           {:ok, ast, []} <- parse_expression(tokens),
+           :ok <- AST.validate(ast) do
         {:ok, ast}
       else
         {:ok, _ast, rest} ->
@@ -58,7 +60,9 @@ defmodule Arbiter.FEEL do
 
   @spec evaluate_ast(ast(), context()) :: {:ok, term()} | {:error, Error.t()}
   def evaluate_ast(ast, context) when is_map(context) do
-    eval(ast, context)
+    with :ok <- AST.validate(ast) do
+      eval(ast, context)
+    end
   end
 
   @spec evaluate_unary_test(String.t(), term(), context()) ::

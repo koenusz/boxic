@@ -6,6 +6,19 @@ defmodule Arbiter.FEELTest do
              Arbiter.FEEL.parse("a + 1")
   end
 
+  test "AST validation accepts parser output and rejects malformed trees" do
+    assert {:ok, ast} = Arbiter.FEEL.parse("for x in [1, 2] return x + 1")
+    assert :ok = Arbiter.FEEL.AST.validate(ast)
+
+    assert {:error, %Arbiter.FEEL.Error{code: :invalid_ast, message: message}} =
+             Arbiter.FEEL.AST.validate({:binary, :unknown, {:literal, 1}, {:literal, 2}})
+
+    assert message =~ "invalid AST node"
+
+    assert {:error, %Arbiter.FEEL.Error{code: :invalid_ast}} =
+             Arbiter.FEEL.evaluate_ast({:call, :not_an_ast, []}, %{})
+  end
+
   test "arithmetic uses decimal semantics" do
     assert {:ok, %Decimal{} = result} = Arbiter.FEEL.evaluate("1 + 2 * 3", %{})
     assert Decimal.equal?(result, Decimal.new("7"))

@@ -1,4 +1,54 @@
 defmodule Mix.Tasks.Tck do
+  @moduledoc """
+  Runs the vendored official DMN TCK corpus through Arbiter.
+
+  By default, failed or errored cases make the task exit non-zero. Use
+  `--soft-fail` for diagnostic runs where the complete result should be shown
+  without failing the command. Soft-fail does not change, hide, or skip any
+  result; it only changes the task's exit behavior.
+
+  ## Targeted implemented profiles
+
+      mix tck --suite feel --profile implemented
+      mix tck --suite dmn --profile implemented
+
+  The FEEL implemented profile is the strict baseline used by `mix test`.
+  Cases in the selected suite but outside the profile are counted as disabled.
+  The DMN implemented profile remains empty until an official DMN-focused
+  group passes.
+
+  ## Complete diagnostic runs
+
+      mix tck --suite feel --all --soft-fail
+      mix tck --suite dmn --all --soft-fail
+      mix tck --all --soft-fail
+
+  Omit `--soft-fail` when failures and errors should fail the command, such as
+  for a strict CI compatibility gate.
+
+  ## Filters and reports
+
+      mix tck --group 0100-feel-constants
+      mix tck --label "Compliance Level 2"
+      mix tck --suite feel --all --soft-fail --report artifacts/tck-feel.csv
+
+  A CSV report path also produces a JSON report with the same base name.
+
+  ## Options
+
+    * `--suite feel|dmn` - select FEEL-focused or DMN-focused cases;
+    * `--profile implemented` - run the explicitly enabled baseline for a
+      suite; requires `--suite`;
+    * `--all` - run every case in the selected suite, or the entire corpus when
+      no suite is supplied;
+    * `--soft-fail` - report failures and errors without a non-zero task exit;
+    * `--group GROUP` - select an exact upstream test group;
+    * `--label LABEL` - select cases containing an exact upstream label;
+    * `--report PATH` - write CSV and JSON result reports.
+
+  `--all` and `--profile` are mutually exclusive.
+  """
+
   use Mix.Task
 
   @shortdoc "Run vendored DMN TCK cases through Arbiter"

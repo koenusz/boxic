@@ -6,9 +6,20 @@ defmodule Arbiter.DMN.TCKTest do
   alias Arbiter.DMN.TCK
 
   test "loads the complete pinned upstream corpus" do
-    cases = Loader.load_all()
+    stats = Loader.corpus_stats()
 
-    assert length(cases) == 3_545
+    assert stats == %{
+             test_documents: 150,
+             dmn_models: 154,
+             result_entries: 3_545,
+             load_errors: 0,
+             missing_models: 0
+           }
+
+    pin_path = Path.expand("../../../vendor/dmn-tck/PINNED_COMMIT", __DIR__)
+    assert File.read!(pin_path) |> String.trim() == "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13"
+
+    cases = Loader.load_all()
 
     assert Enum.any?(cases, fn test_case ->
              test_case.group == "0001-input-data-string" and
@@ -60,15 +71,80 @@ defmodule Arbiter.DMN.TCKTest do
     assert result.status in [:passed, :failed, :unsupported, :missing, :error]
   end
 
+  test "malformed test metadata becomes an explicit error case" do
+    root = temporary_corpus_root()
+    group = Path.join(root, "TestCases/compliance-level-3/broken-case")
+    File.mkdir_p!(group)
+
+    File.write!(
+      Path.join(group, "broken-case-test-01.xml"),
+      "<testCases><testCase id=\"001\"/></testCases>"
+    )
+
+    assert [test_case] = Loader.load_all(root: root)
+    assert {:invalid_test_document, message} = test_case.load_error
+    assert message =~ "modelName"
+    assert Runner.execute(test_case).status == :error
+  end
+
+  test "discovers every numbered test document and rejects empty documents explicitly" do
+    root = temporary_corpus_root()
+    group = Path.join(root, "TestCases/compliance-level-3/numbered-case")
+    File.mkdir_p!(group)
+
+    File.write!(
+      Path.join(group, "numbered-case-test-02.xml"),
+      "<testCases><modelName>numbered-case.dmn</modelName></testCases>"
+    )
+
+    assert [test_case] = Loader.load_all(root: root)
+    assert {:invalid_test_document, message} = test_case.load_error
+    assert message =~ "no testCase elements"
+
+    assert Loader.corpus_stats(root: root) == %{
+             test_documents: 1,
+             dmn_models: 0,
+             result_entries: 1,
+             load_errors: 1,
+             missing_models: 0
+           }
+  end
+
+  test "missing model artifacts receive missing status" do
+    root = temporary_corpus_root()
+    group = Path.join(root, "TestCases/compliance-level-2/missing-model")
+    File.mkdir_p!(group)
+
+    File.write!(
+      Path.join(group, "missing-model-test-01.xml"),
+      """
+      <testCases xmlns="http://www.omg.org/spec/DMN/20160719/testcase">
+        <modelName>missing-model.dmn</modelName>
+        <testCase id="001">
+          <resultNode name="Decision" type="decision">
+            <expected><value>expected</value></expected>
+          </resultNode>
+        </testCase>
+      </testCases>
+      """
+    )
+
+    assert [test_case] = Loader.load_all(root: root)
+    assert is_nil(test_case.load_error)
+    assert Runner.execute(test_case).status == :missing
+    assert Loader.corpus_stats(root: root).missing_models == 1
+  end
+
   test "implemented profile is an explicit passing baseline" do
     result = TCK.run(suite: "feel", profile: "implemented")
+    expected_passes = 71
 
     assert result.summary.corpus_total == 3_545
-    assert result.summary.suite_total > 27
-    assert result.summary.total == 27
-    assert result.summary.disabled == result.summary.suite_total - 27
+    assert result.summary.suite_total > expected_passes
+    assert result.summary.total == expected_passes
+    assert result.summary.disabled == result.summary.suite_total - expected_passes
     assert result.summary.excluded_by_suite == 3_545 - result.summary.suite_total
-    assert result.summary.passed == 27
+    assert result.summary.passed == expected_passes
     assert result.summary.failed == 0
     assert result.summary.error == 0
 
@@ -85,5 +161,16 @@ defmodule Arbiter.DMN.TCKTest do
     assert result.summary.disabled == result.summary.suite_total
     assert result.results == []
     assert TCK.profile_groups("dmn", "implemented") == []
+  end
+
+  defp temporary_corpus_root do
+    root =
+      Path.join(
+        System.tmp_dir!(),
+        "arbiter-tck-#{System.unique_integer([:positive, :monotonic])}"
+      )
+
+    on_exit(fn -> File.rm_rf!(root) end)
+    root
   end
 end

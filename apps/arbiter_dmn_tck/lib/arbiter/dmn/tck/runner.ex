@@ -28,6 +28,9 @@ defmodule Arbiter.DMN.TCK.Runner do
     end
   end
 
+  defp run_case(%Case{load_error: {:missing, reason}}), do: {:missing, reason}
+  defp run_case(%Case{load_error: reason}) when not is_nil(reason), do: {:error, reason}
+
   defp run_case(%Case{model_path: model_path} = test_case) do
     if not File.exists?(model_path) do
       {:missing, {:model_not_found, model_path}}

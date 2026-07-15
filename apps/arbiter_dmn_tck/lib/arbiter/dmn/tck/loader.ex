@@ -3,24 +3,57 @@ defmodule Arbiter.DMN.TCK.Loader do
   Discovers and normalizes the official vendored DMN TCK test corpus.
 
   The upstream XML uses a default namespace, so all XPath expressions match
-  elements by local name. Invalid test documents fail loudly instead of being
-  silently omitted from corpus totals.
+  elements by local name. Invalid test documents become explicit load-error
+  cases instead of being raised or silently omitted from corpus totals.
   """
 
   alias Arbiter.DMN.TCK.Case
   alias Arbiter.FEEL.Duration
 
   @default_root Path.expand("../../../../../../vendor/dmn-tck", __DIR__)
+  @test_document_glob "TestCases/**/*-test-*.xml"
 
   @spec load_all(keyword()) :: [Case.t()]
   def load_all(opts \\ []) do
     root = Keyword.get(opts, :root, @default_root)
 
     root
-    |> Path.join("TestCases/**/*-test-01.xml")
+    |> Path.join(@test_document_glob)
     |> Path.wildcard()
-    |> Enum.flat_map(&parse_case_file!(&1, root))
+    |> Enum.flat_map(&parse_case_file(&1, root))
     |> Enum.sort_by(&{&1.group, &1.id, &1.decision_name})
+  end
+
+  @spec corpus_stats(keyword()) :: map()
+  def corpus_stats(opts \\ []) do
+    root = Keyword.get(opts, :root, @default_root)
+    cases = load_all(opts)
+
+    missing_models =
+      cases
+      |> Enum.reject(& &1.load_error)
+      |> Enum.map(& &1.model_path)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.reject(&File.regular?/1)
+      |> Enum.uniq()
+
+    %{
+      test_documents: root |> Path.join(@test_document_glob) |> Path.wildcard() |> length(),
+      dmn_models: root |> Path.join("TestCases/**/*.dmn") |> Path.wildcard() |> length(),
+      result_entries: length(cases),
+      load_errors: Enum.count(cases, &(not is_nil(&1.load_error))),
+      missing_models: length(missing_models)
+    }
+  end
+
+  defp parse_case_file(path, root) do
+    parse_case_file!(path, root)
+  rescue
+    exception ->
+      [load_error_case(path, root, {:invalid_test_document, Exception.message(exception)})]
+  catch
+    :exit, reason ->
+      [load_error_case(path, root, {:invalid_test_document, reason})]
   end
 
   defp parse_case_file!(path, root) do
@@ -45,9 +78,31 @@ defmodule Arbiter.DMN.TCK.Loader do
     case_nodes =
       xpath(document, "/*[local-name()='testCases']/*[local-name()='testCase']")
 
+    if case_nodes == [] do
+      raise "TCK test document has no testCase elements: #{path}"
+    end
+
     Enum.flat_map(case_nodes, fn case_node ->
       build_cases(case_node, path, root, model_name, labels)
     end)
+  end
+
+  defp load_error_case(path, root, reason) do
+    %Case{
+      group: Path.basename(Path.dirname(path)),
+      id: "__load_error__",
+      labels: [],
+      model_path: nil,
+      decision_name: "",
+      inputs: %{},
+      expected: nil,
+      load_error: reason,
+      metadata: %{
+        case_file: Path.relative_to(path, root),
+        compliance_level: compliance_level(path, root),
+        root: root
+      }
+    }
   end
 
   defp parse_xml!(xml, path) do
