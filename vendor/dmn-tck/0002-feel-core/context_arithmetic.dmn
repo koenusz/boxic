@@ -1,0 +1,7 @@
+<definitions id="defs-context" name="Context Core" namespace="https://arbiter.example/dmn">
+  <decision id="d-context" name="Result">
+    <literalExpression>
+      <text>input + 1</text>
+    </literalExpression>
+  </decision>
+</definitions>

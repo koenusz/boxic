@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "elixir_version": "1.19.1",
+    "otp_version": "28",
+    "dmn_package_version": "0.1.0",
+    "dmn_specification_version": "1.4",
+    "dmn_tck_commit": "local-fixture-iteration-a",
+    "engine_version": "0.1.0",
+    "execution_date": "2026-07-15T14:43:52.583356Z",
+    "feel_package_version": "0.1.0"
+  },
+  "results": [
+    {
+      "error": "nil",
+      "id": "001",
+      "status": "passed",
+      "group": "0001-literal",
+      "actual": "\"hello from arbiter\"",
+      "expected": "\"hello from arbiter\"",
+      "decision": "Greeting"
+    }
+  ],
+  "summary": {
+    "error": 0,
+    "total": 1,
+    "unsupported": 0,
+    "missing": 0,
+    "failed": 0,
+    "passed": 1
+  }
+}

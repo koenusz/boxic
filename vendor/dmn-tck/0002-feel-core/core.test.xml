@@ -1,0 +1,58 @@
+<testCases>
+  <testCase id="001" group="0002-feel-core">
+    <labels>
+      <label>core</label>
+      <label>feel</label>
+    </labels>
+    <model>arithmetic.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="number">7</expected>
+  </testCase>
+
+  <testCase id="002" group="0002-feel-core">
+    <labels>
+      <label>core</label>
+      <label>feel</label>
+    </labels>
+    <model>comparison.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="boolean">true</expected>
+  </testCase>
+
+  <testCase id="003" group="0002-feel-core">
+    <labels>
+      <label>core</label>
+      <label>feel</label>
+    </labels>
+    <model>boolean_3vl.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="boolean">false</expected>
+  </testCase>
+
+  <testCase id="004" group="0002-feel-core">
+    <labels>
+      <label>core</label>
+      <label>feel</label>
+    </labels>
+    <model>null_propagation.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="null">null</expected>
+  </testCase>
+
+  <testCase id="005" group="0002-feel-core">
+    <labels>
+      <label>core</label>
+      <label>feel</label>
+    </labels>
+    <model>context_arithmetic.dmn</model>
+    <decision>Result</decision>
+    <inputs>
+      <input name="input" type="number">2</input>
+    </inputs>
+    <expected type="number">3</expected>
+  </testCase>
+</testCases>
