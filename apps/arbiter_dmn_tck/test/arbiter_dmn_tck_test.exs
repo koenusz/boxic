@@ -173,7 +173,7 @@ defmodule Arbiter.DMN.TCKTest do
 
   test "implemented profile is an explicit passing baseline" do
     result = TCK.run(suite: "feel", profile: "implemented")
-    expected_passes = 1_029
+    expected_passes = 1_100
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > expected_passes
@@ -193,13 +193,13 @@ defmodule Arbiter.DMN.TCKTest do
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > 0
-    assert result.summary.total == 42
-    assert result.summary.passed == 42
+    assert result.summary.total == 77
+    assert result.summary.passed == 77
     assert result.summary.failed == 0
     assert result.summary.error == 0
-    assert result.summary.disabled == result.summary.suite_total - 42
+    assert result.summary.disabled == result.summary.suite_total - 77
 
-    assert length(TCK.profile_groups("dmn", "implemented")) == 14
+    assert length(TCK.profile_groups("dmn", "implemented")) == 19
   end
 
   defp temporary_corpus_root do

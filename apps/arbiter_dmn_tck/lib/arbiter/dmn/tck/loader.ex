@@ -166,6 +166,8 @@ defmodule Arbiter.DMN.TCK.Loader do
           description: xpath_string(case_node, "./*[local-name()='description']/text()"),
           model_relative_path: model_name,
           result_type: xpath_string(result_node, "./@type"),
+          invocable_name: xpath_string(case_node, "./@invocableName"),
+          case_type: xpath_string(case_node, "./@type"),
           root: root,
           upstream_id: upstream_id
         }

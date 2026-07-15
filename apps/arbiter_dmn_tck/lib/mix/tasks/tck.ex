@@ -14,8 +14,8 @@ defmodule Mix.Tasks.Tck do
 
   The FEEL implemented profile is the strict baseline used by `mix test`.
   Cases in the selected suite but outside the profile are counted as disabled.
-  The DMN implemented profile remains empty until an official DMN-focused
-  group passes.
+  The DMN implemented profile is the strict baseline for normalized model,
+  decision-table, hit-policy, and advanced graph execution.
 
   ## Complete diagnostic runs
 

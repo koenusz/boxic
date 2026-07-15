@@ -69,7 +69,21 @@ defmodule Arbiter.DMN.TCK.Runner do
 
   defp evaluate(test_case) do
     with {:ok, model} <- Arbiter.DMN.load(test_case.model_path) do
-      Arbiter.DMN.evaluate(model, test_case.decision_name, test_case.inputs)
+      if test_case.metadata[:case_type] == "decisionService" do
+        case Arbiter.DMN.evaluate_service(
+               model,
+               test_case.metadata[:invocable_name],
+               test_case.inputs
+             ) do
+          {:ok, value} when is_map(value) ->
+            {:ok, Map.get(value, test_case.decision_name, value)}
+
+          result ->
+            result
+        end
+      else
+        Arbiter.DMN.evaluate(model, test_case.decision_name, test_case.inputs)
+      end
     end
   end
 end

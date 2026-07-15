@@ -25,15 +25,19 @@ defmodule Arbiter.FEEL.Builtins do
     insert_before
     remove
     reverse
+    sort
     index_of
     union
     distinct_values
     flatten
     sublist
     abs
+    sqrt
+    even
     round
     floor
     ceiling
+    decimal
     string
     number
     date
@@ -147,6 +151,12 @@ defmodule Arbiter.FEEL.Builtins do
       {"abs", [%Decimal{} = value]} ->
         {:ok, Decimal.abs(value)}
 
+      {"sqrt", [%Decimal{} = value]} ->
+        decimal_sqrt(value)
+
+      {"even", [%Decimal{} = value]} ->
+        {:ok, Decimal.equal?(Decimal.rem(value, Decimal.new(2)), Decimal.new(0))}
+
       {"abs", [%Duration{} = value]} ->
         {:ok, Duration.abs(value)}
 
@@ -164,6 +174,9 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"ceiling", [%Decimal{} = value, %Decimal{} = scale]} ->
         round_at_scale(value, scale, :ceiling)
+
+      {"decimal", [%Decimal{} = value, %Decimal{} = scale]} ->
+        round_at_scale(value, scale, :half_even)
 
       {"string", [value]} when is_binary(value) ->
         {:ok, value}
@@ -266,6 +279,13 @@ defmodule Arbiter.FEEL.Builtins do
     end
   end
 
+  defp decimal_sqrt(%Decimal{} = value) do
+    case Decimal.compare(value, Decimal.new(0)) do
+      :lt -> {:ok, nil}
+      _ -> {:ok, value |> Decimal.to_float() |> :math.sqrt() |> Decimal.from_float()}
+    end
+  end
+
   @parameters %{
     "string_length" => ["string"],
     "upper_case" => ["string"],
@@ -283,6 +303,7 @@ defmodule Arbiter.FEEL.Builtins do
     "sublist" => ["list", "start_position", "length"],
     "floor" => ["n", "scale"],
     "ceiling" => ["n", "scale"],
+    "decimal" => ["n", "scale"],
     "abs" => ["n"],
     "number" => ["from", "grouping_separator", "decimal_separator"],
     "duration" => ["from"],

@@ -8,9 +8,25 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T20:25:38.737313Z",
+    "execution_date": "2026-07-15T20:51:17.152325Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
+  },
+  "summary": {
+    "error": 0,
+    "disabled": 1408,
+    "total": 77,
+    "unsupported": 0,
+    "supported": 77,
+    "missing": 0,
+    "failed": 0,
+    "corpus_total": 3545,
+    "suite_total": 1485,
+    "excluded_by_suite": 2060,
+    "passed": 77,
+    "compatibility_percent": 100.0,
+    "suite_coverage_percent": 5.19,
+    "coverage_percent": 2.17
   },
   "results": [
     {
@@ -101,6 +117,640 @@
       "compliance_level": "compliance-level-2",
       "case_file": "TestCases/compliance-level-2/0010-multi-output-U/0010-multi-output-U-test-01.xml",
       "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/everyGtTen1",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "everyGtTen1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/everyGtTen2",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "everyGtTen2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/everyGtTen3",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "everyGtTen3",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/priceTable1",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": [
+        {
+          "itemName": "widget",
+          "price": {
+            "type": "number",
+            "value": "25"
+          }
+        },
+        {
+          "itemName": "sprocket",
+          "price": {
+            "type": "number",
+            "value": "15"
+          }
+        },
+        {
+          "itemName": "trinket",
+          "price": {
+            "type": "number",
+            "value": "1.5"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "itemName": "widget",
+          "price": {
+            "type": "number",
+            "value": "25"
+          }
+        },
+        {
+          "itemName": "sprocket",
+          "price": {
+            "type": "number",
+            "value": "15"
+          }
+        },
+        {
+          "itemName": "trinket",
+          "price": {
+            "type": "number",
+            "value": "1.5"
+          }
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "priceTable1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/someGtTen1",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "someGtTen1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/someGtTen2",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "someGtTen2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_014",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "decision_014",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_014a",
+      "status": "passed",
+      "group": "0016-some-every",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0016-some-every/0016-some-every-test-01.xml",
+      "decision": "decision_014a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0033-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "11"
+        },
+        {
+          "type": "number",
+          "value": "21"
+        },
+        {
+          "type": "number",
+          "value": "31"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "11"
+        },
+        {
+          "type": "number",
+          "value": "21"
+        },
+        {
+          "type": "number",
+          "value": "31"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0033-for-loops/0033-for-loops-test-01.xml",
+      "decision": "increase1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0033-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "20"
+        },
+        {
+          "type": "number",
+          "value": "30"
+        },
+        {
+          "type": "number",
+          "value": "40"
+        },
+        {
+          "type": "number",
+          "value": "60"
+        },
+        {
+          "type": "number",
+          "value": "60"
+        },
+        {
+          "type": "number",
+          "value": "90"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "20"
+        },
+        {
+          "type": "number",
+          "value": "30"
+        },
+        {
+          "type": "number",
+          "value": "40"
+        },
+        {
+          "type": "number",
+          "value": "60"
+        },
+        {
+          "type": "number",
+          "value": "60"
+        },
+        {
+          "type": "number",
+          "value": "90"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0033-for-loops/0033-for-loops-test-01.xml",
+      "decision": "areas",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0033-for-loops",
+      "actual": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "expected": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0033-for-loops/0033-for-loops-test-01.xml",
+      "decision": "check factors",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "0033-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "20"
+        },
+        {
+          "type": "number",
+          "value": "30"
+        },
+        {
+          "type": "number",
+          "value": "40"
+        },
+        {
+          "type": "number",
+          "value": "50"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "20"
+        },
+        {
+          "type": "number",
+          "value": "30"
+        },
+        {
+          "type": "number",
+          "value": "40"
+        },
+        {
+          "type": "number",
+          "value": "50"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0033-for-loops/0033-for-loops-test-01.xml",
+      "decision": "multiples",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_0de87bf9-0269-40b1-b7ac-767ae9a99b89",
+      "status": "passed",
+      "group": "0037-dt-on-bkm-implicit-params",
+      "actual": "Bob is a dad of 3 children.",
+      "expected": "Bob is a dad of 3 children.",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0037-dt-on-bkm-implicit-params/0037-dt-on-bkm-implicit-params-test-01.xml",
+      "decision": "Person's description",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20d7e21f-f58f-4a78-8074-a70cbf13de83",
+      "status": "passed",
+      "group": "0037-dt-on-bkm-implicit-params",
+      "actual": "Alice is a mother of 2 children.",
+      "expected": "Alice is a mother of 2 children.",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0037-dt-on-bkm-implicit-params/0037-dt-on-bkm-implicit-params-test-01.xml",
+      "decision": "Person's description",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_b224d5f5-006f-43bb-9ace-e6af924dc2b3",
+      "status": "passed",
+      "group": "0038-dt-on-bkm-explicit-params",
+      "actual": "Alice is a mother of 2 children.",
+      "expected": "Alice is a mother of 2 children.",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0038-dt-on-bkm-explicit-params/0038-dt-on-bkm-explicit-params-test-01.xml",
+      "decision": "Person's description",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_bf27c25d-18f6-4891-8370-42d440709d90",
+      "status": "passed",
+      "group": "0038-dt-on-bkm-explicit-params",
+      "actual": "Bob is a dad of 3 children.",
+      "expected": "Bob is a dad of 3 children.",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0038-dt-on-bkm-explicit-params/0038-dt-on-bkm-explicit-params-test-01.xml",
+      "decision": "Person's description",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "foo baz",
+      "expected": "foo baz",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "decision_service_argument_mismatch"
+          },
+          [
+            "decision_002_input"
+          ],
+          []
+        ],
+        "type": "tuple"
+      },
+      "id": "002_a",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "002_b",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "addition requires compatible values",
+        "type": "feel_error"
+      },
+      "id": "002_c",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "A B C D",
+      "expected": "A B C D",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_004_1",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:decision_service_arity, 0, 1}",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_005_1",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "foo bar",
+      "expected": "foo bar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_006_1",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:decision_service_type_error, \"decision_007_3\", \"string\"}",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_007_1",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:decision_service_argument_mismatch, [\"decision_008_3\"], []}",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_008_1",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "009",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "foo bar",
+      "expected": "foo bar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_009_1",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:decision_service_argument_mismatch, [\"decision_010_3\"], [\"foo\"]}",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_010_1",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "011",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "A B C D",
+      "expected": "A B C D",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_011_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "012",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "A B C D",
+      "expected": "A B C D",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_012_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "013",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": {
+        "decisionService_013": "A B",
+        "decision_013_3": "D",
+        "inputData_013_1": "C"
+      },
+      "expected": {
+        "decisionService_013": "A B",
+        "decision_013_3": "D",
+        "inputData_013_1": "C"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_013_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "014",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": {
+        "decisionService_014": "A B",
+        "decision_014_3": "D",
+        "inputData_014_1": "C"
+      },
+      "expected": {
+        "decisionService_014": "A B",
+        "decision_014_3": "D",
+        "inputData_014_1": "C"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_014_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "015/decision_015_1",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "15_1",
+      "expected": "15_1",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_015_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "015/decision_015_2",
+      "status": "passed",
+      "group": "0085-decision-services",
+      "actual": "15_2",
+      "expected": "15_2",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
+      "decision": "decision_015_2",
       "expected_error": false
     },
     {
@@ -789,21 +1439,5 @@
       "decision": "Approval Status",
       "expected_error": false
     }
-  ],
-  "summary": {
-    "error": 0,
-    "disabled": 1443,
-    "total": 42,
-    "unsupported": 0,
-    "supported": 42,
-    "missing": 0,
-    "failed": 0,
-    "corpus_total": 3545,
-    "suite_total": 1485,
-    "excluded_by_suite": 2060,
-    "passed": 42,
-    "compatibility_percent": 100.0,
-    "suite_coverage_percent": 2.83,
-    "coverage_percent": 1.18
-  }
+  ]
 }

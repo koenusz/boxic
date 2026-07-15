@@ -8,7 +8,7 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T20:04:22.771994Z",
+    "execution_date": "2026-07-15T20:51:16.186477Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
@@ -7547,6 +7547,1032 @@
     },
     {
       "error": null,
+      "id": "context_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "context_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "2018"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2018"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_002",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "12"
+      },
+      "expected": {
+        "type": "number",
+        "value": "12"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_003",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_004",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_005",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_005_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_005_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_006",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "30"
+      },
+      "expected": {
+        "type": "number",
+        "value": "30"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_006_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_006_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_007",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_007_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_007_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_008",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "kind": "day_time",
+        "months": 0,
+        "seconds": 18000,
+        "type": "duration"
+      },
+      "expected": {
+        "kind": "day_time",
+        "months": 0,
+        "seconds": 18000,
+        "type": "duration"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_008_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_008_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_009",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": "Etc/UTC",
+      "expected": "Etc/UTC",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_009_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dateTime_009_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "2018"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2018"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "date_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_002",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "12"
+      },
+      "expected": {
+        "type": "number",
+        "value": "12"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "date_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_003",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "date_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_004",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "date_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_001",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "dt_duration_002",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "dt_duration_003",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_003_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_003_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_004",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_004_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_004_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_005",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_005_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_005_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_006",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_006_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "dt_duration_006_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": true
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": true
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_002",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": false
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": false
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_003",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": false
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": false
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_004",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": true
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": true
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_005",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": true
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "1"
+        },
+        "start included": true
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_006",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": false,
+        "start": null,
+        "start included": false
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": false,
+        "start": null,
+        "start included": false
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_007",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": null,
+        "start included": false
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": null,
+        "start included": false
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_009",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": null,
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "10"
+        },
+        "start included": false
+      },
+      "expected": {
+        "end": null,
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "10"
+        },
+        "start included": false
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_010",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": null,
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "10"
+        },
+        "start included": true
+      },
+      "expected": {
+        "end": null,
+        "end included": false,
+        "start": {
+          "type": "number",
+          "value": "10"
+        },
+        "start included": true
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "range_011",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "10"
+        },
+        "start included": true
+      },
+      "expected": {
+        "end": {
+          "type": "number",
+          "value": "10"
+        },
+        "end included": true,
+        "start": {
+          "type": "number",
+          "value": "10"
+        },
+        "start included": true
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "range_011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "time_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_002",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "30"
+      },
+      "expected": {
+        "type": "number",
+        "value": "30"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "time_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_003",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "time_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_004",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "kind": "day_time",
+        "months": 0,
+        "seconds": 18000,
+        "type": "duration"
+      },
+      "expected": {
+        "kind": "day_time",
+        "months": 0,
+        "seconds": 18000,
+        "type": "duration"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "time_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_004_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "time_004_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_005_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "time_005_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_001",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_001_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_002",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_002_a",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_002_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_003",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "ym_duration_004",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_004",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "ym_duration_005",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "ym_duration_006",
+      "status": "passed",
+      "group": "0074-feel-properties",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0074-feel-properties/0074-feel-properties-test-01.xml",
+      "decision": "ym_duration_006",
+      "expected_error": true
+    },
+    {
+      "error": null,
       "id": "decision_001",
       "status": "passed",
       "group": "0084-feel-for-loops",
@@ -8307,6 +9333,336 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0090-feel-paths/0090-feel-paths-test-01.xml",
       "decision": "nested_list_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "3"
+      },
+      "expected": {
+        "type": "number",
+        "value": "3"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_001_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "4"
+      },
+      "expected": {
+        "type": "number",
+        "value": "4"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_002_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_003_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_004_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "20"
+      },
+      "expected": {
+        "type": "number",
+        "value": "20"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_005_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "30"
+      },
+      "expected": {
+        "type": "number",
+        "value": "30"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_006_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "100"
+      },
+      "expected": {
+        "type": "number",
+        "value": "100"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_007_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_008_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "009",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "200"
+      },
+      "expected": {
+        "type": "number",
+        "value": "200"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_009_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "120"
+      },
+      "expected": {
+        "type": "number",
+        "value": "120"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_010_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010_a",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "120"
+      },
+      "expected": {
+        "type": "number",
+        "value": "120"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_010_1_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "011",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "5000"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5000"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_011_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "012",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "5000"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5000"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_012_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "013",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "5000"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5000"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_013_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "014",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": {
+        "type": "number",
+        "value": "25.0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "25"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_014_1",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "%Arbiter.FEEL.Error{code: :arity_error, message: \"invalid built-in invocation: sqrt/2\"}",
+        "type": "feel_error"
+      },
+      "id": "016",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_016_1",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "017",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": [
+        "a",
+        "a",
+        "z",
+        "z"
+      ],
+      "expected": [
+        "a",
+        "a",
+        "z",
+        "z"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_017_1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "018",
+      "status": "passed",
+      "group": "0092-feel-lambda",
+      "actual": [
+        "a",
+        "a",
+        "z",
+        "z"
+      ],
+      "expected": [
+        "a",
+        "a",
+        "z",
+        "z"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0092-feel-lambda/0092-feel-lambda-test-01.xml",
+      "decision": "decision_018",
       "expected_error": false
     },
     {
@@ -15242,18 +16598,18 @@
   ],
   "summary": {
     "error": 0,
-    "disabled": 1031,
-    "total": 1029,
+    "disabled": 960,
+    "total": 1100,
     "unsupported": 0,
-    "supported": 1029,
+    "supported": 1100,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 2060,
     "excluded_by_suite": 1485,
-    "passed": 1029,
+    "passed": 1100,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 49.95,
-    "coverage_percent": 29.03
+    "suite_coverage_percent": 53.4,
+    "coverage_percent": 31.03
   }
 }

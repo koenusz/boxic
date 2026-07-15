@@ -10,13 +10,24 @@ defmodule Arbiter.DMN.Model do
 
   alias Arbiter.DMN.Model.Definitions
 
-  defstruct [:definitions, decisions: %{}, input_data: %{}, issues: []]
+  defstruct [
+    :definitions,
+    decisions: %{},
+    input_data: %{},
+    bkms: %{},
+    item_definitions: %{},
+    decision_services: %{},
+    issues: []
+  ]
 
   @type issue :: term()
   @type t :: %__MODULE__{
           definitions: Definitions.t(),
           decisions: %{optional(String.t()) => Arbiter.DMN.Model.Decision.t()},
           input_data: %{optional(String.t()) => Arbiter.DMN.Model.InputData.t()},
+          bkms: map(),
+          item_definitions: map(),
+          decision_services: map(),
           issues: [issue()]
         }
 end
@@ -54,7 +65,7 @@ end
 defmodule Arbiter.DMN.Model.InformationRequirement do
   @moduledoc "Normalized decision or input dependency reference."
   defstruct [:kind, :href]
-  @type kind :: :input_data | :decision
+  @type kind :: :input_data | :decision | :knowledge
   @type t :: %__MODULE__{kind: kind() | nil, href: String.t() | nil}
 end
 
@@ -77,6 +88,10 @@ defmodule Arbiter.DMN.Model.Decision do
   @type expression ::
           Arbiter.DMN.Model.LiteralExpression.t()
           | Arbiter.DMN.Model.DecisionTable.t()
+          | Arbiter.DMN.Model.ContextExpression.t()
+          | Arbiter.DMN.Model.Invocation.t()
+          | Arbiter.DMN.Model.FunctionDefinition.t()
+          | Arbiter.DMN.Model.Relation.t()
           | {:unsupported, String.t()}
           | nil
   @type t :: %__MODULE__{
@@ -86,6 +101,72 @@ defmodule Arbiter.DMN.Model.Decision do
           expression: expression(),
           requirements: [Arbiter.DMN.Model.InformationRequirement.t()]
         }
+end
+
+defmodule Arbiter.DMN.Model.Relation do
+  @moduledoc "Normalized boxed relation: named columns and ordered expression rows."
+  defstruct [:id, columns: [], rows: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.RelationColumn do
+  @moduledoc "One named column in a boxed relation."
+  defstruct [:id, :name, :type_ref]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.FunctionDefinition do
+  @moduledoc "Normalized boxed function definition."
+  defstruct [:id, :body, parameters: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.BusinessKnowledgeModel do
+  @moduledoc "Normalized callable business knowledge model."
+  defstruct [:id, :name, :variable, :expression, parameters: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.Invocation do
+  @moduledoc "Normalized DMN invocation and named parameter bindings."
+  defstruct [:id, :function, bindings: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.Binding do
+  @moduledoc "Named invocation argument expression."
+  defstruct [:parameter, :expression]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.DecisionService do
+  @moduledoc "Normalized callable decision service."
+  defstruct [:id, :name, :variable, output_decisions: [], input_decisions: [], input_data: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.ItemDefinition do
+  @moduledoc "Normalized DMN item definition with recursive components."
+  defstruct [:id, :name, :type_ref, :allowed_values, :is_collection, components: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.ItemComponent do
+  @moduledoc "Normalized component of a DMN item definition."
+  defstruct [:id, :name, :type_ref, :allowed_values, :is_collection, components: []]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.ContextExpression do
+  @moduledoc "Normalized boxed DMN context expression."
+  defstruct [:id, entries: []]
+  @type t :: %__MODULE__{id: String.t() | nil, entries: [Arbiter.DMN.Model.ContextEntry.t()]}
+end
+
+defmodule Arbiter.DMN.Model.ContextEntry do
+  @moduledoc "One ordered entry in a boxed DMN context; the final entry may be unnamed."
+  defstruct [:id, :variable, :expression]
+  @type t :: %__MODULE__{}
 end
 
 defmodule Arbiter.DMN.Model.DecisionTable do

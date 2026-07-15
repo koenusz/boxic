@@ -407,13 +407,19 @@ defmodule Arbiter.FEEL do
     do: {:error, error(:invalid_syntax, "invalid function expression")}
 
   defp parse_param_list([:rparen | _] = rest), do: {:ok, [], rest}
-  defp parse_param_list([{:identifier, param} | rest]), do: parse_param_list_tail([param], rest)
+
+  defp parse_param_list([{:identifier, param} | rest]),
+    do: parse_param_list_tail([param], discard_parameter_type(rest))
+
   defp parse_param_list(_tokens), do: {:error, error(:invalid_syntax, "invalid parameter list")}
 
   defp parse_param_list_tail(params, [:comma, {:identifier, param} | rest]),
-    do: parse_param_list_tail(params ++ [param], rest)
+    do: parse_param_list_tail(params ++ [param], discard_parameter_type(rest))
 
   defp parse_param_list_tail(params, rest), do: {:ok, params, rest}
+
+  defp discard_parameter_type([:colon, {:identifier, _type} | rest]), do: rest
+  defp discard_parameter_type(rest), do: rest
 
   defp parse_or(tokens) do
     with {:ok, left, rest} <- parse_and(tokens) do
@@ -768,8 +774,24 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp parse_range_rest(start_inclusive, start_ast, [token, :lbracket | rest]) do
+    case token do
+      {:number, value} ->
+        {:ok, {:range, start_inclusive, false, start_ast, {:literal, value}}, rest}
+
+      {:string, value} ->
+        {:ok, {:range, start_inclusive, false, start_ast, {:literal, value}}, rest}
+
+      {:identifier, value} ->
+        {:ok, {:range, start_inclusive, false, start_ast, {:identifier, value}}, rest}
+
+      _ ->
+        {:error, error(:invalid_syntax, "invalid range end delimiter")}
+    end
+  end
+
   defp parse_range_rest(start_inclusive, start_ast, tokens) do
-    with {:ok, finish_ast, rest} <- parse_expression(tokens) do
+    with {:ok, finish_ast, rest} <- parse_addition(tokens) do
       case rest do
         [:rbracket | rest2] ->
           {:ok, {:range, start_inclusive, true, start_ast, finish_ast}, rest2}
@@ -827,6 +849,10 @@ defmodule Arbiter.FEEL do
 
         map when is_map(map) ->
           {:ok, property_value(map, key)}
+
+        {:unary_test_value, operator, _operand} = unary_test
+        when operator in [:lt, :lte, :gt, :gte, :eq] ->
+          {:ok, property_value(unary_test, key)}
 
         _ ->
           {:ok, nil}
@@ -1015,6 +1041,21 @@ defmodule Arbiter.FEEL do
   defp property_value(%Range{} = value, "end"), do: value.end
   defp property_value(%Range{} = value, "start included"), do: value.start_inclusive
   defp property_value(%Range{} = value, "end included"), do: value.end_inclusive
+
+  defp property_value({:unary_test_value, operator, operand}, property)
+       when operator in [:lt, :lte, :gt, :gte, :eq] do
+    range =
+      case operator do
+        :lt -> %Range{start: nil, end: operand, start_inclusive: false, end_inclusive: false}
+        :lte -> %Range{start: nil, end: operand, start_inclusive: false, end_inclusive: true}
+        :gt -> %Range{start: operand, end: nil, start_inclusive: false, end_inclusive: false}
+        :gte -> %Range{start: operand, end: nil, start_inclusive: true, end_inclusive: false}
+        :eq -> %Range{start: operand, end: operand, start_inclusive: true, end_inclusive: true}
+      end
+
+    property_value(range, property)
+  end
+
   defp property_value(map, key), do: Map.get(map, key)
 
   defp seconds_component(seconds, divisor, :quotient) do
@@ -1203,8 +1244,19 @@ defmodule Arbiter.FEEL do
     eval(body, call_context)
   end
 
+  defp apply_function({:builtin, "sort"}, [values, comparator]) when is_list(values) do
+    sort_with_comparator(values, comparator)
+  end
+
   defp apply_function({:builtin, name}, args) do
     Builtins.invoke(name, args)
+  end
+
+  defp apply_function({:external_function, function}, args) when is_function(function, 1) do
+    case function.(args) do
+      {:ok, value} -> {:ok, value}
+      {:error, reason} -> {:error, error(:evaluation_error, inspect(reason))}
+    end
   end
 
   defp apply_function(%Function{}, _args),
@@ -1216,6 +1268,28 @@ defmodule Arbiter.FEEL do
 
   defp apply_function(_callee, _args),
     do: {:error, error(:type_error, "attempted to call a non-function value")}
+
+  defp sort_with_comparator(values, comparator) do
+    values
+    |> Enum.reduce_while({:ok, []}, fn value, {:ok, sorted} ->
+      case insert_with_comparator(value, sorted, comparator, []) do
+        {:ok, next} -> {:cont, {:ok, next}}
+        {:error, %Error{} = error} -> {:halt, {:error, error}}
+      end
+    end)
+  end
+
+  defp insert_with_comparator(value, [], _comparator, prefix),
+    do: {:ok, Enum.reverse(prefix, [value])}
+
+  defp insert_with_comparator(value, [head | tail] = remaining, comparator, prefix) do
+    case apply_function(comparator, [value, head]) do
+      {:ok, true} -> {:ok, Enum.reverse(prefix, [value | remaining])}
+      {:ok, false} -> insert_with_comparator(value, tail, comparator, [head | prefix])
+      {:ok, _} -> {:error, error(:type_error, "sort comparator must return a boolean")}
+      {:error, %Error{} = error} -> {:error, error}
+    end
+  end
 
   defp eval_binary(:plus, left, right), do: plus(left, right)
   defp eval_binary(:minus, left, right), do: minus(left, right)
@@ -1301,6 +1375,9 @@ defmodule Arbiter.FEEL do
 
       {%Decimal{} = l, %Decimal{} = r} ->
         {:ok, decimal_add(l, r)}
+
+      {left, right} when is_binary(left) and is_binary(right) ->
+        {:ok, left <> right}
 
       {%Date{} = date, %Duration{} = duration} ->
         {:ok, Duration.add_to_date(date, duration)}

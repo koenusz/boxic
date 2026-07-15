@@ -19,8 +19,10 @@ defmodule Arbiter.DMN.TCK do
     0068-feel-equality
     0069-feel-list
     0072-feel-in
+    0074-feel-properties
     0084-feel-for-loops
     0090-feel-paths
+    0092-feel-lambda
     0100-feel-constants
     0101-feel-constants
     0102-feel-constants
@@ -45,6 +47,11 @@ defmodule Arbiter.DMN.TCK do
   @dmn_implemented_groups ~w(
     0004-simpletable-U
     0010-multi-output-U
+    0016-some-every
+    0033-for-loops
+    0037-dt-on-bkm-implicit-params
+    0038-dt-on-bkm-explicit-params
+    0085-decision-services
     0108-first-hitpolicy
     0109-ruleOrder-hitpolicy
     0110-outputOrder-hitpolicy
