@@ -58,16 +58,18 @@ defmodule Arbiter.DMNTest do
     assert {:unresolved_reference, "decision_1", :decision, "absent"} in errors
   end
 
-  test "validator rejects unsupported and empty expressions" do
-    unsupported = """
+  test "validator rejects malformed decision tables and empty expressions" do
+    malformed_table = """
     <definitions id="defs" name="demo" namespace="urn:demo">
       <decision id="table" name="Table"><decisionTable/></decision>
     </definitions>
     """
 
-    assert {:ok, model} = Arbiter.DMN.load(unsupported)
+    assert {:ok, model} = Arbiter.DMN.load(malformed_table)
     assert {:error, errors} = Arbiter.DMN.validate(model)
-    assert {:unsupported_expression, "table", "decisionTable"} in errors
+    assert {:missing_table_component, {:decision_table, "table", :inputs}} in errors
+    assert {:missing_table_component, {:decision_table, "table", :outputs}} in errors
+    assert {:missing_table_component, {:decision_table, "table", :rules}} in errors
 
     empty = """
     <definitions id="defs" name="demo" namespace="urn:demo">
@@ -140,5 +142,59 @@ defmodule Arbiter.DMNTest do
     assert {:ok, model} = Arbiter.DMN.load(xml)
     assert :ok = Arbiter.DMN.validate(model)
     assert {:error, {:cyclic_decision_dependency, "a"}} = Arbiter.DMN.evaluate(model, "A")
+  end
+
+  test "parses and evaluates a unique decision table with multiple outputs and defaults" do
+    xml = """
+    <definitions id="defs" name="table" namespace="urn:table">
+      <inputData id="age" name="Age"><variable name="Age" typeRef="number"/></inputData>
+      <decision id="category" name="Category">
+        <informationRequirement><requiredInput href="#age"/></informationRequirement>
+        <decisionTable hitPolicy="UNIQUE">
+          <input><inputExpression typeRef="number"><text>Age</text></inputExpression></input>
+          <output name="label" typeRef="string"><defaultOutputEntry><text>"unknown"</text></defaultOutputEntry></output>
+          <output name="adult" typeRef="boolean"><defaultOutputEntry><text>false</text></defaultOutputEntry></output>
+          <rule id="adult_rule">
+            <inputEntry><text>&gt;= 18</text></inputEntry>
+            <outputEntry><text>"adult"</text></outputEntry>
+            <outputEntry><text>true</text></outputEntry>
+          </rule>
+          <rule id="child_rule">
+            <inputEntry><text>&lt; 18</text></inputEntry>
+            <outputEntry><text>"child"</text></outputEntry>
+            <outputEntry><text>false</text></outputEntry>
+          </rule>
+        </decisionTable>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert :ok = Arbiter.DMN.validate(model)
+
+    assert {:ok, %{"label" => "adult", "adult" => true}} =
+             Arbiter.DMN.evaluate(model, "Category", %{"Age" => Decimal.new(20)})
+
+    assert {:ok, %{"label" => "child", "adult" => false}} =
+             Arbiter.DMN.evaluate(model, "Category", %{"Age" => Decimal.new(10)})
+  end
+
+  test "decision-table validation catches malformed rules and unsupported policies" do
+    xml = """
+    <definitions id="defs" name="invalid table" namespace="urn:table">
+      <decision id="invalid" name="Invalid">
+        <decisionTable hitPolicy="FIRST">
+          <input><inputExpression><text>value</text></inputExpression></input>
+          <output name="result"/>
+          <rule id="bad"><outputEntry><text>1</text></outputEntry></rule>
+        </decisionTable>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert {:error, errors} = Arbiter.DMN.validate(model)
+    assert {:unsupported_hit_policy, "invalid", "FIRST"} in errors
+    assert {:entry_count_mismatch, "bad", :input_entries, 1, 0} in errors
   end
 end

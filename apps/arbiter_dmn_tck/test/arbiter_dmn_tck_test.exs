@@ -188,15 +188,19 @@ defmodule Arbiter.DMN.TCKTest do
              Enum.sort(TCK.profile_groups("feel", "implemented"))
   end
 
-  test "DMN implemented profile is explicitly empty until an official group passes" do
+  test "DMN implemented profile is an explicit passing decision-table baseline" do
     result = TCK.run(suite: "dmn", profile: "implemented")
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > 0
-    assert result.summary.total == 0
-    assert result.summary.disabled == result.summary.suite_total
-    assert result.results == []
-    assert TCK.profile_groups("dmn", "implemented") == []
+    assert result.summary.total == 6
+    assert result.summary.passed == 6
+    assert result.summary.failed == 0
+    assert result.summary.error == 0
+    assert result.summary.disabled == result.summary.suite_total - 6
+
+    assert TCK.profile_groups("dmn", "implemented") ==
+             ["0004-simpletable-U", "0010-multi-output-U"]
   end
 
   defp temporary_corpus_root do

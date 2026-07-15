@@ -42,6 +42,7 @@ defmodule Arbiter.DMN.TCK do
   )
 
   @feel_additional_groups ~w(0001-filter 0032-conditionals)
+  @dmn_implemented_groups ~w(0004-simpletable-U 0010-multi-output-U)
 
   @spec run(keyword()) :: %{cases: list(), results: list(), summary: map()}
   def run(opts \\ []) do
@@ -72,7 +73,7 @@ defmodule Arbiter.DMN.TCK do
 
   @spec profile_groups(String.t(), String.t()) :: [String.t()]
   def profile_groups("feel", "implemented"), do: @feel_implemented_groups
-  def profile_groups("dmn", "implemented"), do: []
+  def profile_groups("dmn", "implemented"), do: @dmn_implemented_groups
   def profile_groups(_suite, _profile), do: []
 
   defp maybe_filter_suite(cases, opts) do

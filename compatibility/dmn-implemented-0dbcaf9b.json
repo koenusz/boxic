@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "profile": "implemented",
+    "elixir_version": "1.19.1",
+    "otp_version": "28",
+    "suite": "dmn",
+    "dmn_package_version": "0.1.0",
+    "dmn_specification_version": "1.4",
+    "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
+    "engine_version": "0.1.0",
+    "execution_date": "2026-07-15T20:13:51.269374Z",
+    "feel_package_version": "0.1.0",
+    "report_schema_version": "1.0"
+  },
+  "results": [
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0004-simpletable-U",
+      "actual": "Approved",
+      "expected": "Approved",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0004-simpletable-U/0004-simpletable-U-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0004-simpletable-U",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0004-simpletable-U/0004-simpletable-U-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0004-simpletable-U",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0004-simpletable-U/0004-simpletable-U-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0010-multi-output-U",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Approved"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Approved"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0010-multi-output-U/0010-multi-output-U-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0010-multi-output-U",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0010-multi-output-U/0010-multi-output-U-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0010-multi-output-U",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0010-multi-output-U/0010-multi-output-U-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    }
+  ],
+  "summary": {
+    "error": 0,
+    "disabled": 1479,
+    "total": 6,
+    "unsupported": 0,
+    "supported": 6,
+    "missing": 0,
+    "failed": 0,
+    "corpus_total": 3545,
+    "suite_total": 1485,
+    "excluded_by_suite": 2060,
+    "passed": 6,
+    "compatibility_percent": 100.0,
+    "suite_coverage_percent": 0.4,
+    "coverage_percent": 0.17
+  }
+}

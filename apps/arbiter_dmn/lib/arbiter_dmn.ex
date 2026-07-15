@@ -9,10 +9,14 @@ defmodule Arbiter.DMN do
 
   alias Arbiter.DMN.Model
   alias Arbiter.DMN.Model.Decision
+  alias Arbiter.DMN.Model.DecisionRule
+  alias Arbiter.DMN.Model.DecisionTable
   alias Arbiter.DMN.Model.Definitions
   alias Arbiter.DMN.Model.InformationRequirement
   alias Arbiter.DMN.Model.InputData
+  alias Arbiter.DMN.Model.InputClause
   alias Arbiter.DMN.Model.LiteralExpression
+  alias Arbiter.DMN.Model.OutputClause
   alias Arbiter.DMN.Model.Variable
 
   @spec load(String.t()) :: {:ok, Model.t()} | {:error, term()}
@@ -165,6 +169,9 @@ defmodule Arbiter.DMN do
               expression_language: attr(expression, "expressionLanguage") || "feel"
             }
 
+          "decisionTable" ->
+            parse_decision_table(expression)
+
           kind ->
             {:unsupported, kind}
         end
@@ -172,6 +179,48 @@ defmodule Arbiter.DMN do
       [] ->
         nil
     end
+  end
+
+  defp parse_decision_table(node) do
+    %DecisionTable{
+      id: attr(node, "id"),
+      hit_policy: attr(node, "hitPolicy") || "UNIQUE",
+      output_label: attr(node, "outputLabel"),
+      inputs: Enum.map(nodes(node, "./*[local-name()='input']"), &parse_input_clause/1),
+      outputs: Enum.map(nodes(node, "./*[local-name()='output']"), &parse_output_clause/1),
+      rules: Enum.map(nodes(node, "./*[local-name()='rule']"), &parse_decision_rule/1)
+    }
+  end
+
+  defp parse_input_clause(node) do
+    expression = node |> nodes("./*[local-name()='inputExpression']") |> List.first()
+
+    %InputClause{
+      id: attr(node, "id"),
+      label: attr(node, "label"),
+      expression: expression && text_child(expression),
+      type_ref: expression && attr(expression, "typeRef"),
+      allowed_values: child_text(node, "inputValues")
+    }
+  end
+
+  defp parse_output_clause(node) do
+    %OutputClause{
+      id: attr(node, "id"),
+      name: attr(node, "name"),
+      label: attr(node, "label"),
+      type_ref: attr(node, "typeRef"),
+      allowed_values: child_text(node, "outputValues"),
+      default_output: child_text(node, "defaultOutputEntry")
+    }
+  end
+
+  defp parse_decision_rule(node) do
+    %DecisionRule{
+      id: attr(node, "id"),
+      input_entries: Enum.map(nodes(node, "./*[local-name()='inputEntry']"), &text_child/1),
+      output_entries: Enum.map(nodes(node, "./*[local-name()='outputEntry']"), &text_child/1)
+    }
   end
 
   defp index_nodes(nodes, parser) do
@@ -224,7 +273,54 @@ defmodule Arbiter.DMN do
   end
 
   defp validate_expression(%LiteralExpression{}, _id), do: []
+  defp validate_expression(%DecisionTable{} = table, id), do: validate_decision_table(table, id)
   defp validate_expression({:unsupported, kind}, id), do: [{:unsupported_expression, id, kind}]
+
+  defp validate_decision_table(table, decision_id) do
+    errors =
+      []
+      |> require_nonempty(table.inputs, {:decision_table, decision_id, :inputs})
+      |> require_nonempty(table.outputs, {:decision_table, decision_id, :outputs})
+      |> require_nonempty(table.rules, {:decision_table, decision_id, :rules})
+
+    rule_errors =
+      Enum.flat_map(table.rules, fn rule ->
+        []
+        |> maybe_count_error(
+          length(rule.input_entries),
+          length(table.inputs),
+          rule.id,
+          :input_entries
+        )
+        |> maybe_count_error(
+          length(rule.output_entries),
+          length(table.outputs),
+          rule.id,
+          :output_entries
+        )
+      end)
+
+    clause_errors =
+      Enum.flat_map(table.inputs, fn input ->
+        if is_binary(input.expression),
+          do: [],
+          else: [{:missing_input_expression, decision_id, input.id}]
+      end)
+
+    policy_errors =
+      if table.hit_policy == "UNIQUE",
+        do: [],
+        else: [{:unsupported_hit_policy, decision_id, table.hit_policy}]
+
+    errors ++ rule_errors ++ clause_errors ++ policy_errors
+  end
+
+  defp require_nonempty(errors, [], owner), do: [{:missing_table_component, owner} | errors]
+  defp require_nonempty(errors, _values, _owner), do: errors
+  defp maybe_count_error(errors, count, count, _rule_id, _kind), do: errors
+
+  defp maybe_count_error(errors, actual, expected, rule_id, kind),
+    do: [{:entry_count_mismatch, rule_id, kind, expected, actual} | errors]
 
   defp validate_for_evaluation(model, decision) do
     errors =
@@ -253,9 +349,7 @@ defmodule Arbiter.DMN do
         with :ok <- validate_for_evaluation(model, decision),
              {:ok, dependency_context, memo} <-
                resolve_requirements(model, decision, context, memo, visiting),
-             %LiteralExpression{text: text} when is_binary(text) <- decision.expression,
-             {text, dependency_context} <- normalize_feel_names(text, dependency_context),
-             {:ok, value} <- Arbiter.FEEL.evaluate(text, dependency_context) do
+             {:ok, value} <- evaluate_expression(decision.expression, dependency_context) do
           {:ok, value, Map.put(memo, decision.id, value)}
         else
           nil -> {:error, {:missing_expression, decision.id}}
@@ -264,6 +358,17 @@ defmodule Arbiter.DMN do
         end
     end
   end
+
+  defp evaluate_expression(%LiteralExpression{text: text}, context) when is_binary(text) do
+    {text, context} = normalize_feel_names(text, context)
+    Arbiter.FEEL.evaluate(text, context)
+  end
+
+  defp evaluate_expression(%DecisionTable{} = table, context), do: evaluate_table(table, context)
+  defp evaluate_expression(nil, _context), do: {:error, :missing_expression}
+
+  defp evaluate_expression({:unsupported, kind}, _context),
+    do: {:error, {:unsupported_expression, kind}}
 
   defp resolve_requirements(model, decision, context, memo, visiting) do
     Enum.reduce_while(decision.requirements, {:ok, context, memo}, fn requirement,
@@ -330,6 +435,107 @@ defmodule Arbiter.DMN do
     [node.name, node.variable && node.variable.name, node.id]
     |> Enum.reject(&is_nil/1)
     |> Enum.reduce(context, &Map.put(&2, &1, value))
+  end
+
+  defp evaluate_table(%DecisionTable{hit_policy: "UNIQUE"} = table, context) do
+    with {:ok, input_values} <- evaluate_table_inputs(table.inputs, context),
+         {:ok, matches} <- matching_rules(table.rules, input_values, context) do
+      case matches do
+        [] -> evaluate_default_outputs(table.outputs, context)
+        [rule] -> evaluate_rule_outputs(rule, table.outputs, context)
+        rules -> {:error, {:unique_hit_policy_violation, Enum.map(rules, & &1.id)}}
+      end
+    end
+  end
+
+  defp evaluate_table(%DecisionTable{hit_policy: policy}, _context),
+    do: {:error, {:unsupported_hit_policy, policy}}
+
+  defp evaluate_table_inputs(inputs, context) do
+    Enum.reduce_while(inputs, {:ok, []}, fn input, {:ok, values} ->
+      {expression, bindings} = normalize_feel_names(input.expression, context)
+
+      case Arbiter.FEEL.evaluate(expression, bindings) do
+        {:ok, value} -> {:cont, {:ok, values ++ [value]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp matching_rules(rules, input_values, context) do
+    Enum.reduce_while(rules, {:ok, []}, fn rule, {:ok, matches} ->
+      case rule_matches?(rule, input_values, context) do
+        {:ok, true} -> {:cont, {:ok, matches ++ [rule]}}
+        {:ok, false} -> {:cont, {:ok, matches}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp rule_matches?(rule, input_values, context) do
+    Enum.zip(rule.input_entries, input_values)
+    |> Enum.reduce_while({:ok, true}, fn {test, value}, {:ok, true} ->
+      case evaluate_unary_tests(test, value, context) do
+        {:ok, true} -> {:cont, {:ok, true}}
+        {:ok, false} -> {:halt, {:ok, false}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp evaluate_unary_tests(text, value, context) do
+    text
+    |> split_unary_tests()
+    |> Enum.reduce_while({:ok, false}, fn test, {:ok, false} ->
+      case Arbiter.FEEL.evaluate_unary_test(test, value, context) do
+        {:ok, true} -> {:halt, {:ok, true}}
+        {:ok, false} -> {:cont, {:ok, false}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp split_unary_tests(text) do
+    Regex.split(~r/,(?=(?:[^"]*"[^"]*")*[^"]*$)/, text, trim: true)
+    |> Enum.map(&String.trim/1)
+  end
+
+  defp evaluate_rule_outputs(rule, outputs, context) do
+    with {:ok, values} <- evaluate_output_entries(rule.output_entries, context) do
+      shape_output(outputs, values)
+    end
+  end
+
+  defp evaluate_default_outputs(outputs, context) do
+    defaults = Enum.map(outputs, & &1.default_output)
+
+    if Enum.all?(defaults, &is_binary/1) do
+      with {:ok, values} <- evaluate_output_entries(defaults, context),
+           do: shape_output(outputs, values)
+    else
+      {:ok, nil}
+    end
+  end
+
+  defp evaluate_output_entries(entries, context) do
+    Enum.reduce_while(entries, {:ok, []}, fn expression, {:ok, values} ->
+      {expression, bindings} = normalize_feel_names(expression, context)
+
+      case Arbiter.FEEL.evaluate(expression, bindings) do
+        {:ok, value} -> {:cont, {:ok, values ++ [value]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp shape_output([_output], [value]), do: {:ok, value}
+
+  defp shape_output(outputs, values) do
+    names = Enum.map(outputs, &(&1.name || &1.label))
+
+    if Enum.all?(names, &is_binary/1),
+      do: {:ok, names |> Enum.zip(values) |> Map.new()},
+      else: {:error, :unnamed_multiple_outputs}
   end
 
   # FEEL names may contain spaces and reserved words. The dependency graph gives
@@ -412,6 +618,10 @@ defmodule Arbiter.DMN do
   end
 
   defp text_child(node), do: xpath_string(node, "./*[local-name()='text']")
+
+  defp child_text(node, child),
+    do: xpath_string(node, "./*[local-name()='#{child}']/*[local-name()='text']")
+
   defp attr(node, name), do: xpath_string(node, "./@*[local-name()='#{name}']")
   defp nodes(node, path), do: :xmerl_xpath.string(String.to_charlist(path), node)
 
