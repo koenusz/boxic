@@ -1140,7 +1140,7 @@ Status values:
 | Phase 0 — Repository and Fork Setup                 | done        | Umbrella created; applications scaffolded; baseline CI and vendored TCK path in place.                                                              |
 | Phase 1 — TCK Harness Foundation                    | done        | Loader, runner, comparator, reporter, and `mix tck` task implemented with explicit statuses.                                                        |
 | Phase 2 — FEEL Core Compliance                      | done        | Core parser/evaluator semantics validated with passing tests and core profile reporting.                                                           |
-| Phase 3 — FEEL Structural Features                  | in_progress | Initial structural support implemented: ranges, unary tests, path/filter, quantifiers, for, and closures.                                         |
+| Phase 3 — FEEL Structural Features                  | done        | Structural feature set implemented and verified: ranges, unary tests, path/filter, for, some/every, closures, and scoping/shadowing behavior.     |
 | Phase 4 — Built-in Functions and Temporal Semantics | not_started | Planned after structural FEEL features.                                                                                                             |
 | Phase 5 — Minimal DMN Execution                     | in_progress | Literal-expression DMN execution path works; continue broadening model coverage.                                                                    |
 | Phase 6 — Decision Tables                           | not_started | Awaiting post-core FEEL stabilization.                                                                                                              |
@@ -1157,7 +1157,7 @@ Status values:
 | WP-03        | done        | Status model and CSV/JSON reporting implemented with metadata.                                       |
 | WP-04        | done        | FEEL parser contract tests added and passing.                                                        |
 | WP-05        | done        | Core FEEL evaluator semantics and validation baseline are complete and passing.                      |
-| WP-06        | in_progress | Implemented ranges, unary tests, path/filter, for, some/every, and function closure execution.      |
+| WP-06        | done        | Structural FEEL features implemented and validated by unit tests plus structural TCK profile execution. |
 | WP-07        | not_started | No temporal/built-in breadth yet.                                                                    |
 | WP-08        | in_progress | Normalized model skeleton and parser exist; validation depth still minimal.                          |
 | WP-09        | done        | End-to-end DMN literal-expression flow exercised by tests and TCK run.                               |

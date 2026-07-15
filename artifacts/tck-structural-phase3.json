@@ -6,8 +6,16 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T15:17:44.173451Z",
+    "execution_date": "2026-07-15T15:32:05.200895Z",
     "feel_package_version": "0.1.0"
+  },
+  "summary": {
+    "error": 0,
+    "total": 4,
+    "unsupported": 0,
+    "missing": 0,
+    "failed": 0,
+    "passed": 4
   },
   "results": [
     {
@@ -46,13 +54,5 @@
       "expected": "Decimal.new(\"7\")",
       "decision": "Result"
     }
-  ],
-  "summary": {
-    "error": 0,
-    "total": 4,
-    "unsupported": 0,
-    "missing": 0,
-    "failed": 0,
-    "passed": 4
-  }
+  ]
 }

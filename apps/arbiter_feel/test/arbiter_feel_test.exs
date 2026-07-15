@@ -80,5 +80,20 @@ defmodule Arbiter.FEELTest do
     assert {:ok, true} == Arbiter.FEEL.evaluate_unary_test("> 5", Decimal.new("7"), %{})
     assert {:ok, false} == Arbiter.FEEL.evaluate_unary_test("<= 5", Decimal.new("7"), %{})
     assert {:ok, true} == Arbiter.FEEL.evaluate_unary_test("[1..10]", Decimal.new("7"), %{})
+    assert {:ok, false} == Arbiter.FEEL.evaluate_unary_test("[1..10)", Decimal.new("10"), %{})
+  end
+
+  test "context entries scope and shadow outer context" do
+    assert {:ok, %Decimal{} = value} =
+             Arbiter.FEEL.evaluate("{x: 2, y: x + 1}.y", %{"x" => Decimal.new("99")})
+
+    assert Decimal.equal?(value, Decimal.new("3"))
+  end
+
+  test "function parameter shadows captured name" do
+    assert {:ok, %Decimal{} = value} =
+             Arbiter.FEEL.evaluate("(function(x) x + 1)(2)", %{"x" => Decimal.new("100")})
+
+    assert Decimal.equal?(value, Decimal.new("3"))
   end
 end
