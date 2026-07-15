@@ -1,0 +1,7 @@
+<definitions id="defs-struct-fn" name="Structural Function" namespace="https://arbiter.example/dmn">
+  <decision id="d-fn" name="Result">
+    <literalExpression>
+      <text>(function(x) x + inc)(2)</text>
+    </literalExpression>
+  </decision>
+</definitions>

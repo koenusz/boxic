@@ -1,0 +1,7 @@
+<definitions id="defs-struct-for" name="Structural For" namespace="https://arbiter.example/dmn">
+  <decision id="d-for" name="Result">
+    <literalExpression>
+      <text>every x in for y in [1,2,3] return y + 1 satisfies x &gt; 1</text>
+    </literalExpression>
+  </decision>
+</definitions>

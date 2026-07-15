@@ -22,6 +22,15 @@ defmodule Arbiter.DMN.TCKTest do
     assert result.summary.passed == result.summary.total
   end
 
+  test "structural profile baseline passes" do
+    result = TCK.run(label: "structural")
+
+    assert result.summary.total >= 4
+    assert result.summary.failed == 0
+    assert result.summary.error == 0
+    assert result.summary.passed == result.summary.total
+  end
+
   test "single known case passes through runner" do
     case_entry =
       Loader.load_all()
