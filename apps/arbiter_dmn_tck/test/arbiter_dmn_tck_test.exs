@@ -173,7 +173,7 @@ defmodule Arbiter.DMN.TCKTest do
 
   test "implemented profile is an explicit passing baseline" do
     result = TCK.run(suite: "feel", profile: "implemented")
-    expected_passes = 1_005
+    expected_passes = 1_029
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > expected_passes

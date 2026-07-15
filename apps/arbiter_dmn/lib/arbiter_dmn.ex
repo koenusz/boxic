@@ -44,13 +44,8 @@ defmodule Arbiter.DMN do
   def evaluate(%Model{} = model, decision_name, context \\ %{})
       when is_binary(decision_name) and is_map(context) do
     with {:ok, decision} <- find_decision(model, decision_name),
-         :ok <- validate_for_evaluation(model, decision),
-         %LiteralExpression{text: text} when is_binary(text) <- decision.expression do
-      Arbiter.FEEL.evaluate(text, context)
-    else
-      nil -> {:error, {:missing_expression, decision_name}}
-      {:unsupported, kind} -> {:error, {:unsupported_expression, kind}}
-      error -> error
+         {:ok, value, _memo} <- evaluate_decision(model, decision, context, %{}, MapSet.new()) do
+      {:ok, value}
     end
   end
 
@@ -242,6 +237,123 @@ defmodule Arbiter.DMN do
       [] -> :ok
       errors -> {:error, errors}
     end
+  end
+
+  defp evaluate_decision(model, decision, context, memo, visiting) do
+    cond do
+      Map.has_key?(memo, decision.id) ->
+        {:ok, Map.fetch!(memo, decision.id), memo}
+
+      MapSet.member?(visiting, decision.id) ->
+        {:error, {:cyclic_decision_dependency, decision.id}}
+
+      true ->
+        visiting = MapSet.put(visiting, decision.id)
+
+        with :ok <- validate_for_evaluation(model, decision),
+             {:ok, dependency_context, memo} <-
+               resolve_requirements(model, decision, context, memo, visiting),
+             %LiteralExpression{text: text} when is_binary(text) <- decision.expression,
+             {text, dependency_context} <- normalize_feel_names(text, dependency_context),
+             {:ok, value} <- Arbiter.FEEL.evaluate(text, dependency_context) do
+          {:ok, value, Map.put(memo, decision.id, value)}
+        else
+          nil -> {:error, {:missing_expression, decision.id}}
+          {:unsupported, kind} -> {:error, {:unsupported_expression, kind}}
+          error -> error
+        end
+    end
+  end
+
+  defp resolve_requirements(model, decision, context, memo, visiting) do
+    Enum.reduce_while(decision.requirements, {:ok, context, memo}, fn requirement,
+                                                                      {:ok, acc, memo} ->
+      case resolve_requirement(model, requirement, acc, memo, visiting) do
+        {:ok, next_context, next_memo} -> {:cont, {:ok, next_context, next_memo}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp resolve_requirement(
+         model,
+         %InformationRequirement{kind: :decision, href: id},
+         context,
+         memo,
+         visiting
+       ) do
+    with {:ok, dependency} <- fetch_reference(model.decisions, :decision, id),
+         {:ok, value, memo} <- evaluate_decision(model, dependency, context, memo, visiting) do
+      {:ok, bind_value(context, dependency, value), memo}
+    end
+  end
+
+  defp resolve_requirement(
+         model,
+         %InformationRequirement{kind: :input_data, href: id},
+         context,
+         memo,
+         _visiting
+       ) do
+    with {:ok, input} <- fetch_reference(model.input_data, :input_data, id),
+         {:ok, value} <- input_value(context, input) do
+      {:ok, bind_value(context, input, value), memo}
+    end
+  end
+
+  defp resolve_requirement(_model, requirement, _context, _memo, _visiting),
+    do: {:error, {:invalid_information_requirement, requirement}}
+
+  defp fetch_reference(index, kind, id) do
+    case Map.fetch(index, id) do
+      {:ok, value} -> {:ok, value}
+      :error -> {:error, {:unresolved_reference, kind, id}}
+    end
+  end
+
+  defp input_value(context, input) do
+    [input.name, input.variable && input.variable.name, input.id]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.find_value(fn name ->
+      case Map.fetch(context, name) do
+        {:ok, value} -> {:found, value}
+        :error -> nil
+      end
+    end)
+    |> case do
+      {:found, value} -> {:ok, value}
+      nil -> {:error, {:missing_input, input.name || input.id}}
+    end
+  end
+
+  defp bind_value(context, node, value) do
+    [node.name, node.variable && node.variable.name, node.id]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.reduce(context, &Map.put(&2, &1, value))
+  end
+
+  # FEEL names may contain spaces and reserved words. The dependency graph gives
+  # us the exact declared names, so compile those names to unambiguous evaluator
+  # bindings before parsing the literal expression.
+  defp normalize_feel_names(expression, context) do
+    context
+    |> Map.keys()
+    |> Enum.filter(&(is_binary(&1) and String.contains?(&1, " ")))
+    |> Enum.sort_by(&String.length/1, :desc)
+    |> Enum.with_index()
+    |> Enum.reduce({expression, context}, fn {name, index}, {source, bindings} ->
+      alias_name = "__dmn_name_#{index}"
+
+      pattern =
+        Regex.compile!("(?<![\\p{L}\\p{N}_])#{Regex.escape(name)}(?![\\p{L}\\p{N}_])", "u")
+
+      if Regex.match?(pattern, source) do
+        {Regex.replace(pattern, source, alias_name),
+         Map.put(bindings, alias_name, Map.fetch!(bindings, name))}
+      else
+        {source, bindings}
+      end
+    end)
   end
 
   defp validate_unique_names(model) do

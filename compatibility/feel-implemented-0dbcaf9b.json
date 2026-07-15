@@ -8,7 +8,7 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T19:47:34.668630Z",
+    "execution_date": "2026-07-15T20:04:22.771994Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
@@ -7547,6 +7547,722 @@
     },
     {
       "error": null,
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "7"
+        },
+        {
+          "type": "number",
+          "value": "7"
+        },
+        {
+          "type": "number",
+          "value": "8"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "7"
+        },
+        {
+          "type": "number",
+          "value": "7"
+        },
+        {
+          "type": "number",
+          "value": "8"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [],
+      "expected": [],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_007",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_008",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_009",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "-1"
+        },
+        {
+          "type": "number",
+          "value": "0"
+        },
+        {
+          "type": "number",
+          "value": "1"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "-1"
+        },
+        {
+          "type": "number",
+          "value": "0"
+        },
+        {
+          "type": "number",
+          "value": "1"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_010",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "0"
+        },
+        {
+          "type": "number",
+          "value": "-1"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "0"
+        },
+        {
+          "type": "number",
+          "value": "-1"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_011",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_012",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_013",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "24"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "24"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_014",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        false,
+        true
+      ],
+      "expected": [
+        false,
+        true
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_014",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_015",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_015",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_016",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        [
+          {
+            "type": "number",
+            "value": "1"
+          },
+          {
+            "type": "number",
+            "value": "2"
+          }
+        ],
+        [
+          {
+            "type": "number",
+            "value": "3"
+          },
+          {
+            "type": "number",
+            "value": "4"
+          }
+        ]
+      ],
+      "expected": [
+        [
+          {
+            "type": "number",
+            "value": "1"
+          },
+          {
+            "type": "number",
+            "value": "2"
+          }
+        ],
+        [
+          {
+            "type": "number",
+            "value": "3"
+          },
+          {
+            "type": "number",
+            "value": "4"
+          }
+        ]
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_016",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_017",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "date",
+          "value": "1980-01-01"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-02"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-03"
+        }
+      ],
+      "expected": [
+        {
+          "type": "date",
+          "value": "1980-01-01"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-02"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-03"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_017",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_018",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": [
+        {
+          "type": "date",
+          "value": "1980-01-03"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-02"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-01"
+        }
+      ],
+      "expected": [
+        {
+          "type": "date",
+          "value": "1980-01-03"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-02"
+        },
+        {
+          "type": "date",
+          "value": "1980-01-01"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_018",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_019",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_019",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_019_a",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_019_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_020",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_020",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_020_a",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_020_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_021",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_021",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_021_a",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_021_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_022",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_022",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "for-expression source must be a list or numeric range",
+        "type": "feel_error"
+      },
+      "id": "decision_022_a",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_022_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "range start must not exceed its end",
+        "type": "feel_error"
+      },
+      "id": "decision_025",
+      "status": "passed",
+      "group": "0084-feel-for-loops",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0084-feel-for-loops/0084-feel-for-loops-test-01.xml",
+      "decision": "decision_025",
+      "expected_error": true
+    },
+    {
+      "error": null,
       "id": "nested_list_001",
       "status": "passed",
       "group": "0090-feel-paths",
@@ -14526,18 +15242,18 @@
   ],
   "summary": {
     "error": 0,
-    "disabled": 1055,
-    "total": 1005,
+    "disabled": 1031,
+    "total": 1029,
     "unsupported": 0,
-    "supported": 1005,
+    "supported": 1029,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 2060,
     "excluded_by_suite": 1485,
-    "passed": 1005,
+    "passed": 1029,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 48.79,
-    "coverage_percent": 28.35
+    "suite_coverage_percent": 49.95,
+    "coverage_percent": 29.03
   }
 }

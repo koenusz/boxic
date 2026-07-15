@@ -36,8 +36,9 @@ defmodule Arbiter.DMNTest do
            } = model.decisions["greeting"]
 
     assert :ok = Arbiter.DMN.validate(model)
-    assert {:ok, "hello from dmn"} = Arbiter.DMN.evaluate(model, "Greeting", %{})
-    assert {:ok, "hello from dmn"} = Arbiter.DMN.evaluate(model, "greeting", %{})
+    context = %{"Customer" => "Ada"}
+    assert {:ok, "hello from dmn"} = Arbiter.DMN.evaluate(model, "Greeting", context)
+    assert {:ok, "hello from dmn"} = Arbiter.DMN.evaluate(model, "greeting", context)
   end
 
   test "validator reports missing metadata and unresolved references" do
@@ -93,5 +94,51 @@ defmodule Arbiter.DMNTest do
     assert {:ok, model} = Arbiter.DMN.load(duplicates)
     assert {:error, errors} = Arbiter.DMN.validate(model)
     assert {:duplicate_id, "same"} in errors
+  end
+
+  test "evaluates literal decision dependencies and injects input data by DMN name" do
+    xml = """
+    <definitions id="defs" name="dependency model" namespace="urn:dependencies">
+      <inputData id="input_amount" name="Amount">
+        <variable name="Amount" typeRef="number"/>
+      </inputData>
+      <decision id="base" name="Base">
+        <informationRequirement><requiredInput href="#input_amount"/></informationRequirement>
+        <literalExpression><text>Amount * 2</text></literalExpression>
+      </decision>
+      <decision id="total" name="Total">
+        <informationRequirement><requiredDecision href="#base"/></informationRequirement>
+        <literalExpression><text>Base + 1</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert :ok = Arbiter.DMN.validate(model)
+
+    assert {:ok, %Decimal{} = result} =
+             Arbiter.DMN.evaluate(model, "Total", %{"Amount" => Decimal.new("20")})
+
+    assert Decimal.equal?(result, Decimal.new("41"))
+    assert {:error, {:missing_input, "Amount"}} = Arbiter.DMN.evaluate(model, "Total")
+  end
+
+  test "detects cyclic decision dependencies during execution" do
+    xml = """
+    <definitions id="defs" name="cycle" namespace="urn:cycle">
+      <decision id="a" name="A">
+        <informationRequirement><requiredDecision href="#b"/></informationRequirement>
+        <literalExpression><text>B</text></literalExpression>
+      </decision>
+      <decision id="b" name="B">
+        <informationRequirement><requiredDecision href="#a"/></informationRequirement>
+        <literalExpression><text>A</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert :ok = Arbiter.DMN.validate(model)
+    assert {:error, {:cyclic_decision_dependency, "a"}} = Arbiter.DMN.evaluate(model, "A")
   end
 end
