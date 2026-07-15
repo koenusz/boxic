@@ -1152,7 +1152,7 @@ Status values:
 | Work Package | Status | Evidence |
 |---|---|---|
 | WP-00 | done | Umbrella compiles/tests; CI workflow exists. |
-| WP-01 | in_progress | Vendored fixtures and pin file exist; full vendored pin integrity automation enforced in CI next. |
+| WP-01 | done | Vendored snapshot workflow, pin file, update script, and CI pin integrity verification are in place. |
 | WP-02 | done | TCK discovery and case normalization implemented. |
 | WP-03 | done | Status model and CSV/JSON reporting implemented with metadata. |
 | WP-04 | done | FEEL parser contract tests added and passing. |
