@@ -8,7 +8,7 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T20:51:16.186477Z",
+    "execution_date": "2026-07-15T21:14:00.431723Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
@@ -424,6 +424,1666 @@
       "case_file": "TestCases/compliance-level-3/0050-feel-abs-function/0050-feel-abs-function-test-01.xml",
       "decision": "decision015",
       "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": {
+        "type": "number",
+        "value": "2.0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": {
+        "type": "number",
+        "value": "0.0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/2",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": {
+        "type": "number",
+        "value": "2.0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for sqrt",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: sqrt/1",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "0051-feel-sqrt-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0051-feel-sqrt-function/0051-feel-sqrt-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": {
+        "type": "number",
+        "value": "54.59815003"
+      },
+      "expected": {
+        "type": "number",
+        "value": "54.59815003"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": {
+        "type": "number",
+        "value": "0.36787944"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0.36787944"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": {
+        "type": "number",
+        "value": "1.00000000"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/2",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": {
+        "type": "number",
+        "value": "54.59815003"
+      },
+      "expected": {
+        "type": "number",
+        "value": "54.59815003"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for exp",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: exp/1",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "0052-feel-exp-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0052-feel-exp-function/0052-feel-exp-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": {
+        "type": "number",
+        "value": "1.38629436"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.38629436"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/2",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": {
+        "type": "number",
+        "value": "1.38629436"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.38629436"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for log",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: log/1",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "0053-feel-log-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0053-feel-log-function/0053-feel-log-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_a",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002_a",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision002_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/2",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for even",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: even/1",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "0054-feel-even-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0054-feel-even-function/0054-feel-even-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_a",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002_a",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision002_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/2",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for odd",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: odd/1",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "0055-feel-odd-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0055-feel-odd-function/0055-feel-odd-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_a",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "-2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_a",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision003_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/1",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/3",
+        "type": "feel_error"
+      },
+      "id": "005_a",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision005_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for modulo",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008_a",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision008_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008_b",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision008_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: modulo/2",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "016a",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision016a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "016b",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "3"
+      },
+      "expected": {
+        "type": "number",
+        "value": "3"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision016b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "016c",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "-3"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-3"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision016c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "016d",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "-2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision016d",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017a",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "1.1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision017a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017b",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "3.4"
+      },
+      "expected": {
+        "type": "number",
+        "value": "3.4"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision017b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017c",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "-3.4"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-3.4"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision017c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017d",
+      "status": "passed",
+      "group": "0056-feel-modulo-function",
+      "actual": {
+        "type": "number",
+        "value": "-1.1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-1.1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0056-feel-modulo-function/0056-feel-modulo-function-test-01.xml",
+      "decision": "decision017d",
+      "expected_error": false
     },
     {
       "error": null,
@@ -8575,6 +10235,238 @@
       "error": null,
       "id": "decision_001",
       "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": {
+        "type": "number",
+        "value": "3486784401"
+      },
+      "expected": {
+        "type": "number",
+        "value": "3486784401"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_001_a",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": {
+        "type": "number",
+        "value": "9"
+      },
+      "expected": {
+        "type": "number",
+        "value": "9"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_001_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_004",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_005",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_006",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_007",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_008",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_009",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_010",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "exponentiation requires numbers",
+        "type": "feel_error"
+      },
+      "id": "decision_011",
+      "status": "passed",
+      "group": "0075-feel-exponent",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0075-feel-exponent/0075-feel-exponent-test-01.xml",
+      "decision": "decision_011",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0077-feel-nan",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0077-feel-nan/0077-feel-nan-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0078-feel-infinity",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0078-feel-infinity/0078-feel-infinity-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0078-feel-infinity",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0078-feel-infinity/0078-feel-infinity-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_001",
+      "status": "passed",
       "group": "0084-feel-for-loops",
       "actual": [
         {
@@ -9667,6 +11559,206 @@
     },
     {
       "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": {
+        "type": "number",
+        "value": "5832"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5832"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: product/0",
+        "type": "feel_error"
+      },
+      "id": "003",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "003_a",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision003_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "005",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": {
+        "type": "number",
+        "value": "18.75"
+      },
+      "expected": {
+        "type": "number",
+        "value": "18.75"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": {
+        "type": "number",
+        "value": "24"
+      },
+      "expected": {
+        "type": "number",
+        "value": "24"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008_a",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision008_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "011",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": {
+        "type": "number",
+        "value": "5832"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5832"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "012",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for product",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "0094-feel-product-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0094-feel-product-function/0094-feel-product-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": null,
       "id": "001/Decision1",
       "status": "passed",
       "group": "0100-feel-constants",
@@ -10635,6 +12727,186 @@
       "compliance_level": "compliance-level-2",
       "case_file": "TestCases/compliance-level-2/0107-feel-ternary-logic-not/0107-feel-ternary-logic-not-test-01.xml",
       "decision": "DecisionNot",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_af177e63fc",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "0.33"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0.33"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_001_af177e63fc",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002_f4ed9cd487",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "0.33"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0.33"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_002_f4ed9cd487",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_2d50ec7ffc",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_003_2d50ec7ffc",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004_bb6f445d2c",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_004_bb6f445d2c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_55d33eadf6",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_005_55d33eadf6",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006_d9661e1d45",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "0.0"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0.0"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_006_d9661e1d45",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_49f7a22058",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "0.52"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0.52"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_007_49f7a22058",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008_73e4f1c8b9",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "65.123456"
+      },
+      "expected": {
+        "type": "number",
+        "value": "65.123456"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_008_73e4f1c8b9",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "009_398b94286e",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "2.143"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2.143"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_009_398b94286e",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010_4b46e59c8b",
+      "status": "passed",
+      "group": "1100-feel-decimal-function",
+      "actual": {
+        "type": "number",
+        "value": "0.385"
+      },
+      "expected": {
+        "type": "number",
+        "value": "0.385"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1100-feel-decimal-function/1100-feel-decimal-function-test-01.xml",
+      "decision": "feel-decimal-function_010_4b46e59c8b",
       "expected_error": false
     },
     {
@@ -16594,22 +18866,1062 @@
       "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
       "decision": "decision008",
       "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": {
+        "type": "number",
+        "value": "-6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": {
+        "type": "number",
+        "value": "1.13"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.13"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": {
+        "type": "number",
+        "value": "-1.13"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-1.13"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/0",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/2",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/2",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/3",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/0",
+        "type": "feel_error"
+      },
+      "id": "011_a",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision011_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for round_up",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/2",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_up/2",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "016_b",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision016_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "017_a",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision017_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017_b",
+      "status": "passed",
+      "group": "1141-feel-round-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1141-feel-round-up-function/1141-feel-round-up-function-test-01.xml",
+      "decision": "decision017_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": {
+        "type": "number",
+        "value": "5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": {
+        "type": "number",
+        "value": "-5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": {
+        "type": "number",
+        "value": "1.12"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.12"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": {
+        "type": "number",
+        "value": "-1.12"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-1.12"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/0",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/2",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/2",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/3",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": {
+        "type": "number",
+        "value": "5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/0",
+        "type": "feel_error"
+      },
+      "id": "011_a",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision011_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for round_down",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/2",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_down/2",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "016_b",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision016_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "017_a",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision017_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017_b",
+      "status": "passed",
+      "group": "1142-feel-round-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1142-feel-round-down-function/1142-feel-round-down-function-test-01.xml",
+      "decision": "decision017_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": {
+        "type": "number",
+        "value": "-6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": {
+        "type": "number",
+        "value": "1.12"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.12"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": {
+        "type": "number",
+        "value": "-1.13"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-1.13"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/0",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/2",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/2",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/3",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/0",
+        "type": "feel_error"
+      },
+      "id": "011_a",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision011_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for round_half_up",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/2",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_up/2",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "016_b",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision016_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "017_a",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision017_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017_b",
+      "status": "passed",
+      "group": "1143-feel-round-half-up-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1143-feel-round-half-up-function/1143-feel-round-half-up-function-test-01.xml",
+      "decision": "decision017_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": {
+        "type": "number",
+        "value": "5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": {
+        "type": "number",
+        "value": "-5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": {
+        "type": "number",
+        "value": "1.12"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1.12"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": {
+        "type": "number",
+        "value": "-1.13"
+      },
+      "expected": {
+        "type": "number",
+        "value": "-1.13"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/0",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/2",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/2",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/3",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": {
+        "type": "number",
+        "value": "5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/0",
+        "type": "feel_error"
+      },
+      "id": "011_a",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision011_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for round_half_down",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/2",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: round_half_down/2",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "016_b",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision016_b",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "017_a",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "expected": {
+        "type": "number",
+        "value": "5.5"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision017_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017_b",
+      "status": "passed",
+      "group": "1144-feel-round-half-down-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
+      "decision": "decision017_b",
+      "expected_error": true
     }
   ],
   "summary": {
     "error": 0,
-    "disabled": 960,
-    "total": 1100,
+    "disabled": 751,
+    "total": 1309,
     "unsupported": 0,
-    "supported": 1100,
+    "supported": 1309,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 2060,
     "excluded_by_suite": 1485,
-    "passed": 1100,
+    "passed": 1309,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 53.4,
-    "coverage_percent": 31.03
+    "suite_coverage_percent": 63.54,
+    "coverage_percent": 36.93
   }
 }

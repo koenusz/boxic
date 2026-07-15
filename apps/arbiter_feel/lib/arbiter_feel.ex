@@ -147,6 +147,18 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<"lower case", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "lower_case"} | acc])
 
+  defp tokenize(<<"round half up", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "round_half_up"} | acc])
+
+  defp tokenize(<<"round half down", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "round_half_down"} | acc])
+
+  defp tokenize(<<"round up", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "round_up"} | acc])
+
+  defp tokenize(<<"round down", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "round_down"} | acc])
+
   defp tokenize(<<"list contains", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "list_contains"} | acc])
 
@@ -548,19 +560,19 @@ defmodule Arbiter.FEEL do
   defp parse_addition_tail(left, rest), do: {:ok, left, rest}
 
   defp parse_multiplication(tokens) do
-    with {:ok, left, rest} <- parse_unary(tokens) do
+    with {:ok, left, rest} <- parse_power(tokens) do
       parse_multiplication_tail(left, rest)
     end
   end
 
   defp parse_multiplication_tail(left, [:mul | rest]) do
-    with {:ok, right, rest2} <- parse_unary(rest) do
+    with {:ok, right, rest2} <- parse_power(rest) do
       parse_multiplication_tail({:binary, :mul, left, right}, rest2)
     end
   end
 
   defp parse_multiplication_tail(left, [:div | rest]) do
-    with {:ok, right, rest2} <- parse_unary(rest) do
+    with {:ok, right, rest2} <- parse_power(rest) do
       parse_multiplication_tail({:binary, :div, left, right}, rest2)
     end
   end
@@ -579,21 +591,21 @@ defmodule Arbiter.FEEL do
     end
   end
 
-  defp parse_unary(tokens), do: parse_power(tokens)
+  defp parse_unary(tokens), do: parse_postfix(tokens)
 
   defp parse_power(tokens) do
-    with {:ok, base, rest} <- parse_postfix(tokens) do
-      case rest do
-        [:pow | rest2] ->
-          with {:ok, exponent, rest3} <- parse_unary(rest2) do
-            {:ok, {:binary, :pow, base, exponent}, rest3}
-          end
-
-        _ ->
-          {:ok, base, rest}
-      end
+    with {:ok, base, rest} <- parse_unary(tokens) do
+      parse_power_tail(base, rest)
     end
   end
+
+  defp parse_power_tail(base, [:pow | rest]) do
+    with {:ok, exponent, rest2} <- parse_unary(rest) do
+      parse_power_tail({:binary, :pow, base, exponent}, rest2)
+    end
+  end
+
+  defp parse_power_tail(base, rest), do: {:ok, base, rest}
 
   defp parse_postfix(tokens) do
     with {:ok, base, rest} <- parse_primary(tokens) do

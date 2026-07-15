@@ -33,11 +33,20 @@ defmodule Arbiter.FEEL.Builtins do
     sublist
     abs
     sqrt
+    exp
+    log
     even
+    odd
+    modulo
+    product
     round
     floor
     ceiling
     decimal
+    round_up
+    round_down
+    round_half_up
+    round_half_down
     string
     number
     date
@@ -154,8 +163,37 @@ defmodule Arbiter.FEEL.Builtins do
       {"sqrt", [%Decimal{} = value]} ->
         decimal_sqrt(value)
 
+      {"exp", [%Decimal{} = value]} ->
+        decimal_float_function(value, &:math.exp/1, 8)
+
+      {"log", [%Decimal{} = value]} ->
+        if Decimal.compare(value, Decimal.new(0)) == :gt,
+          do: decimal_float_function(value, &:math.log/1, 8),
+          else: {:ok, nil}
+
       {"even", [%Decimal{} = value]} ->
         {:ok, Decimal.equal?(Decimal.rem(value, Decimal.new(2)), Decimal.new(0))}
+
+      {"odd", [%Decimal{} = value]} ->
+        {:ok, not Decimal.equal?(Decimal.rem(value, Decimal.new(2)), Decimal.new(0))}
+
+      {name, [nil]} when name in ["sqrt", "exp", "log", "even", "odd", "product"] ->
+        {:ok, nil}
+
+      {"modulo", [nil, _]} ->
+        {:ok, nil}
+
+      {"modulo", [_, nil]} ->
+        {:ok, nil}
+
+      {"modulo", [%Decimal{} = dividend, %Decimal{} = divisor]} ->
+        decimal_modulo(dividend, divisor)
+
+      {"product", [list]} when is_list(list) ->
+        product_list(list)
+
+      {"product", values} when values != [] ->
+        product_list(values)
 
       {"abs", [%Duration{} = value]} ->
         {:ok, Duration.abs(value)}
@@ -176,7 +214,19 @@ defmodule Arbiter.FEEL.Builtins do
         round_at_scale(value, scale, :ceiling)
 
       {"decimal", [%Decimal{} = value, %Decimal{} = scale]} ->
-        round_at_scale(value, scale, :half_even)
+        round_at_scale(value, scale, :half_even, truncate_scale: true)
+
+      {"round_up", [%Decimal{} = value, %Decimal{} = scale]} ->
+        round_at_scale(value, scale, :up)
+
+      {"round_down", [%Decimal{} = value, %Decimal{} = scale]} ->
+        round_at_scale(value, scale, :down)
+
+      {"round_half_up", [%Decimal{} = value, %Decimal{} = scale]} ->
+        round_at_scale(value, scale, :half_up)
+
+      {"round_half_down", [%Decimal{} = value, %Decimal{} = scale]} ->
+        round_at_scale(value, scale, :half_down)
 
       {"string", [value]} when is_binary(value) ->
         {:ok, value}
@@ -286,6 +336,25 @@ defmodule Arbiter.FEEL.Builtins do
     end
   end
 
+  defp decimal_float_function(value, function) do
+    {:ok, value |> Decimal.to_float() |> function.() |> Decimal.from_float()}
+  end
+
+  defp decimal_float_function(value, function, scale) do
+    with {:ok, result} <- decimal_float_function(value, function) do
+      {:ok, Decimal.round(result, scale, :half_even)}
+    end
+  end
+
+  defp decimal_modulo(dividend, divisor) do
+    if Decimal.equal?(divisor, Decimal.new(0)) do
+      {:ok, nil}
+    else
+      quotient = dividend |> Decimal.div(divisor) |> Decimal.round(0, :floor)
+      {:ok, Decimal.sub(dividend, Decimal.mult(divisor, quotient))}
+    end
+  end
+
   @parameters %{
     "string_length" => ["string"],
     "upper_case" => ["string"],
@@ -304,6 +373,17 @@ defmodule Arbiter.FEEL.Builtins do
     "floor" => ["n", "scale"],
     "ceiling" => ["n", "scale"],
     "decimal" => ["n", "scale"],
+    "sqrt" => ["number"],
+    "exp" => ["number"],
+    "log" => ["number"],
+    "even" => ["number"],
+    "odd" => ["number"],
+    "modulo" => ["dividend", "divisor"],
+    "product" => ["list"],
+    "round_up" => ["n", "scale"],
+    "round_down" => ["n", "scale"],
+    "round_half_up" => ["n", "scale"],
+    "round_half_down" => ["n", "scale"],
     "abs" => ["n"],
     "number" => ["from", "grouping_separator", "decimal_separator"],
     "duration" => ["from"],
@@ -467,11 +547,29 @@ defmodule Arbiter.FEEL.Builtins do
     String.slice(value, max(index, 0), count) || ""
   end
 
-  defp round_at_scale(value, scale, mode) do
-    case Decimal.integer?(scale) do
-      true -> {:ok, Decimal.round(value, Decimal.to_integer(scale), mode)}
-      false -> {:error, err(:type_error, "rounding scale must be an integer")}
+  defp round_at_scale(value, scale, mode, opts \\ []) do
+    scale = if opts[:truncate_scale], do: Decimal.round(scale, 0, :down), else: scale
+
+    case decimal_integer(scale) do
+      {:ok, integer} when integer in -6111..6176 ->
+        if integer >= max(value.exp * -1, 0),
+          do: {:ok, value},
+          else: {:ok, Decimal.round(value, integer, mode)}
+
+      {:ok, _integer} ->
+        {:ok, nil}
+
+      :error ->
+        {:error, err(:type_error, "rounding scale must be an integer")}
     end
+  end
+
+  defp product_list([]), do: {:ok, nil}
+
+  defp product_list(values) do
+    if Enum.all?(values, &match?(%Decimal{}, &1)),
+      do: {:ok, Enum.reduce(values, Decimal.new(1), &Decimal.mult/2)},
+      else: {:ok, nil}
   end
 
   defp parse_number(value, grouping_separator, decimal_separator) do
