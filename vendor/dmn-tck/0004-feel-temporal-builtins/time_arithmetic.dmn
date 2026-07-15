@@ -1,0 +1,7 @@
+<definitions id="defs-phase4-3" name="Phase4 Time Arithmetic" namespace="https://arbiter.example/dmn">
+  <decision id="d-phase4-3" name="Result">
+    <literalExpression>
+      <text>time("10:00:00") + duration("PT90M")</text>
+    </literalExpression>
+  </decision>
+</definitions>

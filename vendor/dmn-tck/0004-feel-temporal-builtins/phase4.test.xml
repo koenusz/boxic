@@ -1,0 +1,45 @@
+<testCases>
+  <testCase id="001" group="0004-feel-temporal-builtins">
+    <labels>
+      <label>phase4</label>
+      <label>feel</label>
+    </labels>
+    <model>string_numeric.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="number">6</expected>
+  </testCase>
+
+  <testCase id="002" group="0004-feel-temporal-builtins">
+    <labels>
+      <label>phase4</label>
+      <label>feel</label>
+    </labels>
+    <model>date_arithmetic.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="date">2026-07-16</expected>
+  </testCase>
+
+  <testCase id="003" group="0004-feel-temporal-builtins">
+    <labels>
+      <label>phase4</label>
+      <label>feel</label>
+    </labels>
+    <model>time_arithmetic.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="time">11:30:00</expected>
+  </testCase>
+
+  <testCase id="004" group="0004-feel-temporal-builtins">
+    <labels>
+      <label>phase4</label>
+      <label>feel</label>
+    </labels>
+    <model>datetime_timezone_compare.dmn</model>
+    <decision>Result</decision>
+    <inputs></inputs>
+    <expected type="boolean">true</expected>
+  </testCase>
+</testCases>

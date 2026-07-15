@@ -96,4 +96,44 @@ defmodule Arbiter.FEELTest do
 
     assert Decimal.equal?(value, Decimal.new("3"))
   end
+
+  test "string and numeric built-ins" do
+    assert {:ok, %Decimal{} = len} = Arbiter.FEEL.evaluate("string_length(\"hello\")", %{})
+    assert Decimal.equal?(len, Decimal.new("5"))
+
+    assert {:ok, "HE"} == Arbiter.FEEL.evaluate("substring(upper_case(\"hello\"), 1, 2)", %{})
+    assert {:ok, %Decimal{} = sum} = Arbiter.FEEL.evaluate("sum([1,2,3])", %{})
+    assert Decimal.equal?(sum, Decimal.new("6"))
+  end
+
+  test "list built-ins" do
+    assert {:ok, %Decimal{} = count} = Arbiter.FEEL.evaluate("count([1,2,3])", %{})
+    assert Decimal.equal?(count, Decimal.new("3"))
+
+    assert {:ok, [%Decimal{} = one, %Decimal{} = two, %Decimal{} = three]} =
+             Arbiter.FEEL.evaluate("append([1,2], 3)", %{})
+
+    assert Decimal.equal?(one, Decimal.new("1"))
+    assert Decimal.equal?(two, Decimal.new("2"))
+    assert Decimal.equal?(three, Decimal.new("3"))
+  end
+
+  test "temporal constructors and arithmetic" do
+    assert {:ok, %Date{year: 2026, month: 7, day: 16}} =
+             Arbiter.FEEL.evaluate("date(\"2026-07-15\") + duration(\"P1D\")", %{})
+
+    assert {:ok, %Time{} = time} =
+             Arbiter.FEEL.evaluate("time(\"10:00:00\") + duration(\"PT90M\")", %{})
+
+    assert time.hour == 11
+    assert time.minute == 30
+  end
+
+  test "timezone-aware datetime comparison" do
+    assert {:ok, true} =
+             Arbiter.FEEL.evaluate(
+               "date_time(\"2026-07-15T10:00:00+00:00\") = date_time(\"2026-07-15T12:00:00+02:00\")",
+               %{}
+             )
+  end
 end

@@ -1,0 +1,7 @@
+<definitions id="defs-phase4-4" name="Phase4 DateTime TZ" namespace="https://arbiter.example/dmn">
+  <decision id="d-phase4-4" name="Result">
+    <literalExpression>
+      <text>date_time("2026-07-15T10:00:00+00:00") = date_time("2026-07-15T12:00:00+02:00")</text>
+    </literalExpression>
+  </decision>
+</definitions>

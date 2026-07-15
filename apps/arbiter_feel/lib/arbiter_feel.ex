@@ -8,8 +8,10 @@ defmodule Arbiter.FEEL do
   """
 
   alias Arbiter.FEEL.Error
+  alias Arbiter.FEEL.Builtins
   alias Arbiter.FEEL.Function
   alias Arbiter.FEEL.Range
+  alias Arbiter.FEEL.Duration
 
   @type ast ::
           {:literal, term()}
@@ -498,7 +500,15 @@ defmodule Arbiter.FEEL do
 
   defp eval({:literal, value}, _context), do: {:ok, value}
 
-  defp eval({:identifier, name}, context), do: {:ok, Map.get(context, name)}
+  defp eval({:identifier, name}, context) do
+    case Map.fetch(context, name) do
+      {:ok, value} ->
+        {:ok, value}
+
+      :error ->
+        Builtins.resolve(name)
+    end
+  end
 
   defp eval({:list, items}, context) do
     eval_list(items, context, [])
@@ -676,6 +686,10 @@ defmodule Arbiter.FEEL do
     eval(body, call_context)
   end
 
+  defp apply_function({:builtin, name}, args) do
+    Builtins.invoke(name, args)
+  end
+
   defp apply_function(%Function{}, _args),
     do: {:error, error(:arity_error, "function called with invalid arity")}
 
@@ -686,8 +700,8 @@ defmodule Arbiter.FEEL do
   defp apply_function(_callee, _args),
     do: {:error, error(:type_error, "attempted to call a non-function value")}
 
-  defp eval_binary(:plus, left, right), do: decimal_binary(left, right, &decimal_add/2)
-  defp eval_binary(:minus, left, right), do: decimal_binary(left, right, &decimal_sub/2)
+  defp eval_binary(:plus, left, right), do: plus(left, right)
+  defp eval_binary(:minus, left, right), do: minus(left, right)
   defp eval_binary(:mul, left, right), do: decimal_binary(left, right, &decimal_mult/2)
 
   defp eval_binary(:div, left, right) do
@@ -716,17 +730,22 @@ defmodule Arbiter.FEEL do
         {:ok, nil}
 
       match?(%Decimal{}, left) and match?(%Decimal{}, right) ->
-        cmp = decimal_compare(left, right)
+        {:ok, compare_from_op(op, decimal_compare(left, right))}
 
-        value =
-          case op do
-            :gt -> cmp == :gt
-            :gte -> cmp in [:gt, :eq]
-            :lt -> cmp == :lt
-            :lte -> cmp in [:lt, :eq]
-          end
+      is_struct(left, Date) and is_struct(right, Date) ->
+        {:ok, compare_from_op(op, Date.compare(left, right))}
 
-        {:ok, value}
+      is_struct(left, Time) and is_struct(right, Time) ->
+        {:ok, compare_from_op(op, Time.compare(left, right))}
+
+      is_struct(left, DateTime) and is_struct(right, DateTime) ->
+        {:ok, compare_from_op(op, DateTime.compare(left, right))}
+
+      is_binary(left) and is_binary(right) ->
+        {:ok, compare_from_op(op, compare_strings(left, right))}
+
+      is_boolean(left) and is_boolean(right) ->
+        {:ok, compare_from_op(op, compare_booleans(left, right))}
 
       true ->
         {:error, error(:type_error, "comparison requires compatible values")}
@@ -738,6 +757,94 @@ defmodule Arbiter.FEEL do
 
   defp eval_binary(:and, left, right), do: {:ok, feel_and(left, right)}
   defp eval_binary(:or, left, right), do: {:ok, feel_or(left, right)}
+
+  defp plus(left, right) do
+    case {left, right} do
+      {nil, _} ->
+        {:ok, nil}
+
+      {_, nil} ->
+        {:ok, nil}
+
+      {%Decimal{} = l, %Decimal{} = r} ->
+        {:ok, decimal_add(l, r)}
+
+      {%Date{} = date, %Duration{} = duration} ->
+        {:ok, Duration.add_to_date(date, duration)}
+
+      {%Duration{} = duration, %Date{} = date} ->
+        {:ok, Duration.add_to_date(date, duration)}
+
+      {%DateTime{} = datetime, %Duration{} = duration} ->
+        {:ok, Duration.add_to_datetime(datetime, duration)}
+
+      {%Duration{} = duration, %DateTime{} = datetime} ->
+        {:ok, Duration.add_to_datetime(datetime, duration)}
+
+      {%Time{} = time, %Duration{} = duration} ->
+        {:ok, Duration.add_to_time(time, duration)}
+
+      {%Duration{} = duration, %Time{} = time} ->
+        {:ok, Duration.add_to_time(time, duration)}
+
+      {%Duration{} = l, %Duration{} = r} ->
+        {:ok, Duration.add(l, r)}
+
+      _ ->
+        {:error, error(:type_error, "addition requires compatible values")}
+    end
+  end
+
+  defp minus(left, right) do
+    case {left, right} do
+      {nil, _} ->
+        {:ok, nil}
+
+      {_, nil} ->
+        {:ok, nil}
+
+      {%Decimal{} = l, %Decimal{} = r} ->
+        {:ok, decimal_sub(l, r)}
+
+      {%Date{} = left_date, %Date{} = right_date} ->
+        {:ok, Duration.from_days(Date.diff(left_date, right_date))}
+
+      {%DateTime{} = left_datetime, %DateTime{} = right_datetime} ->
+        {:ok, Duration.from_seconds(DateTime.diff(left_datetime, right_datetime, :second))}
+
+      {%Date{} = date, %Duration{} = duration} ->
+        {:ok, Duration.add_to_date(date, Duration.negate(duration))}
+
+      {%DateTime{} = datetime, %Duration{} = duration} ->
+        {:ok, Duration.add_to_datetime(datetime, Duration.negate(duration))}
+
+      {%Time{} = time, %Duration{} = duration} ->
+        {:ok, Duration.add_to_time(time, Duration.negate(duration))}
+
+      {%Duration{} = l, %Duration{} = r} ->
+        {:ok, Duration.subtract(l, r)}
+
+      _ ->
+        {:error, error(:type_error, "subtraction requires compatible values")}
+    end
+  end
+
+  defp compare_from_op(op, cmp) do
+    case op do
+      :gt -> cmp == :gt
+      :gte -> cmp in [:gt, :eq]
+      :lt -> cmp == :lt
+      :lte -> cmp in [:lt, :eq]
+    end
+  end
+
+  defp compare_strings(left, right) when left == right, do: :eq
+  defp compare_strings(left, right) when left < right, do: :lt
+  defp compare_strings(_left, _right), do: :gt
+
+  defp compare_booleans(left, right) when left == right, do: :eq
+  defp compare_booleans(false, true), do: :lt
+  defp compare_booleans(true, false), do: :gt
 
   defp decimal_binary(left, right, operation) do
     case {left, right} do
@@ -790,6 +897,21 @@ defmodule Arbiter.FEEL do
     {:ok, result}
   end
 
+  defp compare_for_unary_test(op, %Date{} = lhs, %Date{} = rhs)
+       when op in [">", ">=", "<", "<=", "=", "!="] do
+    unary_compare_result(op, Date.compare(lhs, rhs))
+  end
+
+  defp compare_for_unary_test(op, %Time{} = lhs, %Time{} = rhs)
+       when op in [">", ">=", "<", "<=", "=", "!="] do
+    unary_compare_result(op, Time.compare(lhs, rhs))
+  end
+
+  defp compare_for_unary_test(op, %DateTime{} = lhs, %DateTime{} = rhs)
+       when op in [">", ">=", "<", "<=", "=", "!="] do
+    unary_compare_result(op, DateTime.compare(lhs, rhs))
+  end
+
   defp compare_for_unary_test(op, lhs, rhs) when op in ["=", "!="] do
     eq = equal_semantic?(lhs, rhs)
     {:ok, if(op == "=", do: eq, else: not eq)}
@@ -797,6 +919,20 @@ defmodule Arbiter.FEEL do
 
   defp compare_for_unary_test(_op, _lhs, _rhs),
     do: {:error, error(:type_error, "unary test comparison requires compatible values")}
+
+  defp unary_compare_result(op, cmp) do
+    result =
+      case op do
+        ">" -> cmp == :gt
+        ">=" -> cmp in [:gt, :eq]
+        "<" -> cmp == :lt
+        "<=" -> cmp in [:lt, :eq]
+        "=" -> cmp == :eq
+        "!=" -> cmp != :eq
+      end
+
+    {:ok, result}
+  end
 
   defp range_contains?(%Range{} = range, value) do
     lower_ok = range_lower_ok?(range, value)
@@ -825,6 +961,11 @@ defmodule Arbiter.FEEL do
   end
 
   defp compare_for_bounds(%Decimal{} = left, %Decimal{} = right), do: decimal_compare(left, right)
+  defp compare_for_bounds(%Date{} = left, %Date{} = right), do: Date.compare(left, right)
+  defp compare_for_bounds(%Time{} = left, %Time{} = right), do: Time.compare(left, right)
+
+  defp compare_for_bounds(%DateTime{} = left, %DateTime{} = right),
+    do: DateTime.compare(left, right)
 
   defp compare_for_bounds(left, right) do
     cond do

@@ -4,6 +4,7 @@ defmodule Arbiter.DMN.TCK.Loader do
   """
 
   alias Arbiter.DMN.TCK.Case
+  alias Arbiter.FEEL.Duration
 
   @default_root Path.expand("../../../../../../vendor/dmn-tck", __DIR__)
 
@@ -87,7 +88,39 @@ defmodule Arbiter.DMN.TCK.Loader do
   defp parse_typed_value("null", _type), do: nil
   defp parse_typed_value(value, "boolean"), do: value == "true"
   defp parse_typed_value(value, "number"), do: Decimal.new(value)
+  defp parse_typed_value(value, "date"), do: parse_date(value)
+  defp parse_typed_value(value, "time"), do: parse_time(value)
+  defp parse_typed_value(value, "date_time"), do: parse_date_time(value)
+  defp parse_typed_value(value, "duration"), do: parse_duration(value)
   defp parse_typed_value(value, _type), do: value
+
+  defp parse_date(value) do
+    case Date.from_iso8601(value) do
+      {:ok, date} -> date
+      _ -> value
+    end
+  end
+
+  defp parse_time(value) do
+    case Time.from_iso8601(value) do
+      {:ok, time} -> time
+      _ -> value
+    end
+  end
+
+  defp parse_date_time(value) do
+    case DateTime.from_iso8601(value) do
+      {:ok, datetime, _offset} -> datetime
+      _ -> value
+    end
+  end
+
+  defp parse_duration(value) do
+    case Duration.parse_iso8601(value) do
+      {:ok, duration} -> duration
+      _ -> value
+    end
+  end
 
   defp xpath_string(node, path) do
     query = ~c"string(" ++ String.to_charlist(path) ++ ~c")"
