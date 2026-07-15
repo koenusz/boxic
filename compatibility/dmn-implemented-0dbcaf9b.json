@@ -8,7 +8,7 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-15T20:13:51.269374Z",
+    "execution_date": "2026-07-15T20:25:38.737313Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
@@ -102,22 +102,708 @@
       "case_file": "TestCases/compliance-level-2/0010-multi-output-U/0010-multi-output-U-test-01.xml",
       "decision": "Approval",
       "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0108-first-hitpolicy",
+      "actual": {
+        "Rate": "Best",
+        "Status": "Approved"
+      },
+      "expected": {
+        "Rate": "Best",
+        "Status": "Approved"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0108-first-hitpolicy/0108-first-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0108-first-hitpolicy",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Approved"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Approved"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0108-first-hitpolicy/0108-first-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0108-first-hitpolicy",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0108-first-hitpolicy/0108-first-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0109-ruleOrder-hitpolicy",
+      "actual": [
+        {
+          "Rate": "Best",
+          "Status": "Approved"
+        },
+        {
+          "Rate": "Standard",
+          "Status": "Approved"
+        }
+      ],
+      "expected": [
+        {
+          "Rate": "Best",
+          "Status": "Approved"
+        },
+        {
+          "Rate": "Standard",
+          "Status": "Approved"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0109-ruleOrder-hitpolicy/0109-ruleOrder-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0109-ruleOrder-hitpolicy",
+      "actual": [
+        {
+          "Rate": "Standard",
+          "Status": "Approved"
+        }
+      ],
+      "expected": [
+        {
+          "Rate": "Standard",
+          "Status": "Approved"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0109-ruleOrder-hitpolicy/0109-ruleOrder-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0109-ruleOrder-hitpolicy",
+      "actual": [
+        {
+          "Rate": "Standard",
+          "Status": "Declined"
+        }
+      ],
+      "expected": [
+        {
+          "Rate": "Standard",
+          "Status": "Declined"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0109-ruleOrder-hitpolicy/0109-ruleOrder-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0110-outputOrder-hitpolicy",
+      "actual": [
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Standard"
+        },
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        }
+      ],
+      "expected": [
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Standard"
+        },
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0110-outputOrder-hitpolicy/0110-outputOrder-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0110-outputOrder-hitpolicy",
+      "actual": [
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Basic"
+        }
+      ],
+      "expected": [
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Basic"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0110-outputOrder-hitpolicy/0110-outputOrder-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0110-outputOrder-hitpolicy",
+      "actual": [
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        }
+      ],
+      "expected": [
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0110-outputOrder-hitpolicy/0110-outputOrder-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0111-first-hitpolicy-singleoutputcol",
+      "actual": "Cars",
+      "expected": "Cars",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0111-first-hitpolicy-singleoutputcol/0111-first-hitpolicy-singleoutputcol-test-01.xml",
+      "decision": "Advertisement",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0111-first-hitpolicy-singleoutputcol",
+      "actual": "Videogames",
+      "expected": "Videogames",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0111-first-hitpolicy-singleoutputcol/0111-first-hitpolicy-singleoutputcol-test-01.xml",
+      "decision": "Advertisement",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0111-first-hitpolicy-singleoutputcol",
+      "actual": "Toys",
+      "expected": "Toys",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0111-first-hitpolicy-singleoutputcol/0111-first-hitpolicy-singleoutputcol-test-01.xml",
+      "decision": "Advertisement",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0112-ruleOrder-hitpolicy-singleinoutcol",
+      "actual": [
+        "Best",
+        "Standard"
+      ],
+      "expected": [
+        "Best",
+        "Standard"
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0112-ruleOrder-hitpolicy-singleinoutcol/0112-ruleOrder-hitpolicy-singleinoutcol-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0112-ruleOrder-hitpolicy-singleinoutcol",
+      "actual": [
+        "Standard"
+      ],
+      "expected": [
+        "Standard"
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0112-ruleOrder-hitpolicy-singleinoutcol/0112-ruleOrder-hitpolicy-singleinoutcol-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0112-ruleOrder-hitpolicy-singleinoutcol",
+      "actual": [
+        "Standard"
+      ],
+      "expected": [
+        "Standard"
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0112-ruleOrder-hitpolicy-singleinoutcol/0112-ruleOrder-hitpolicy-singleinoutcol-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0113-outputOrder-hitpolicy-singleinoutcol",
+      "actual": [
+        "Approved",
+        "Declined"
+      ],
+      "expected": [
+        "Approved",
+        "Declined"
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0113-outputOrder-hitpolicy-singleinoutcol/0113-outputOrder-hitpolicy-singleinoutcol-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0113-outputOrder-hitpolicy-singleinoutcol",
+      "actual": [
+        "Approved",
+        "Approved"
+      ],
+      "expected": [
+        "Approved",
+        "Approved"
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0113-outputOrder-hitpolicy-singleinoutcol/0113-outputOrder-hitpolicy-singleinoutcol-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0113-outputOrder-hitpolicy-singleinoutcol",
+      "actual": [
+        "Approved",
+        "Declined"
+      ],
+      "expected": [
+        "Approved",
+        "Declined"
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0113-outputOrder-hitpolicy-singleinoutcol/0113-outputOrder-hitpolicy-singleinoutcol-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0114-min-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "64.32"
+      },
+      "expected": {
+        "type": "number",
+        "value": "64.32"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0114-min-collect-hitpolicy/0114-min-collect-hitpolicy-test-01.xml",
+      "decision": "CarInsurance",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0114-min-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "98.83"
+      },
+      "expected": {
+        "type": "number",
+        "value": "98.83"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0114-min-collect-hitpolicy/0114-min-collect-hitpolicy-test-01.xml",
+      "decision": "CarInsurance",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0114-min-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "98.83"
+      },
+      "expected": {
+        "type": "number",
+        "value": "98.83"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0114-min-collect-hitpolicy/0114-min-collect-hitpolicy-test-01.xml",
+      "decision": "CarInsurance",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0115-sum-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "1100"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1100"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0115-sum-collect-hitpolicy/0115-sum-collect-hitpolicy-test-01.xml",
+      "decision": "Salary",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0115-sum-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "300"
+      },
+      "expected": {
+        "type": "number",
+        "value": "300"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0115-sum-collect-hitpolicy/0115-sum-collect-hitpolicy-test-01.xml",
+      "decision": "Salary",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0115-sum-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "100"
+      },
+      "expected": {
+        "type": "number",
+        "value": "100"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0115-sum-collect-hitpolicy/0115-sum-collect-hitpolicy-test-01.xml",
+      "decision": "Salary",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0116-count-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "4"
+      },
+      "expected": {
+        "type": "number",
+        "value": "4"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0116-count-collect-hitpolicy/0116-count-collect-hitpolicy-test-01.xml",
+      "decision": "Salary",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0116-count-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0116-count-collect-hitpolicy/0116-count-collect-hitpolicy-test-01.xml",
+      "decision": "Salary",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0116-count-collect-hitpolicy",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0116-count-collect-hitpolicy/0116-count-collect-hitpolicy-test-01.xml",
+      "decision": "Salary",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0117-multi-any-hitpolicy",
+      "actual": {
+        "Rate": "Best",
+        "Status": "Approved"
+      },
+      "expected": {
+        "Rate": "Best",
+        "Status": "Approved"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0117-multi-any-hitpolicy/0117-multi-any-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0117-multi-any-hitpolicy",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Declined"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0117-multi-any-hitpolicy/0117-multi-any-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0117-multi-any-hitpolicy",
+      "actual": {
+        "Rate": "Standard",
+        "Status": "Approved"
+      },
+      "expected": {
+        "Rate": "Standard",
+        "Status": "Approved"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0117-multi-any-hitpolicy/0117-multi-any-hitpolicy-test-01.xml",
+      "decision": "Approval",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0118-multi-priority-hitpolicy",
+      "actual": {
+        "Approved/Declined": "Approved",
+        "Rate": "Standard"
+      },
+      "expected": {
+        "Approved/Declined": "Approved",
+        "Rate": "Standard"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0118-multi-priority-hitpolicy/0118-multi-priority-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0118-multi-priority-hitpolicy",
+      "actual": {
+        "Approved/Declined": "Approved",
+        "Rate": "Basic"
+      },
+      "expected": {
+        "Approved/Declined": "Approved",
+        "Rate": "Basic"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0118-multi-priority-hitpolicy/0118-multi-priority-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0118-multi-priority-hitpolicy",
+      "actual": {
+        "Approved/Declined": "Declined",
+        "Rate": "Standard"
+      },
+      "expected": {
+        "Approved/Declined": "Declined",
+        "Rate": "Standard"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0118-multi-priority-hitpolicy/0118-multi-priority-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0119-multi-collect-hitpolicy",
+      "actual": [
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        },
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Standard"
+        }
+      ],
+      "expected": [
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        },
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Standard"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0119-multi-collect-hitpolicy/0119-multi-collect-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0119-multi-collect-hitpolicy",
+      "actual": [
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Basic"
+        }
+      ],
+      "expected": [
+        {
+          "Approved/Declined": "Approved",
+          "Rate": "Basic"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0119-multi-collect-hitpolicy/0119-multi-collect-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0119-multi-collect-hitpolicy",
+      "actual": [
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        }
+      ],
+      "expected": [
+        {
+          "Approved/Declined": "Declined",
+          "Rate": "Standard"
+        }
+      ],
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0119-multi-collect-hitpolicy/0119-multi-collect-hitpolicy-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
     }
   ],
   "summary": {
     "error": 0,
-    "disabled": 1479,
-    "total": 6,
+    "disabled": 1443,
+    "total": 42,
     "unsupported": 0,
-    "supported": 6,
+    "supported": 42,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 1485,
     "excluded_by_suite": 2060,
-    "passed": 6,
+    "passed": 42,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 0.4,
-    "coverage_percent": 0.17
+    "suite_coverage_percent": 2.83,
+    "coverage_percent": 1.18
   }
 }

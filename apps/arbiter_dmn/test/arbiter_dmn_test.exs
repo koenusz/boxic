@@ -183,7 +183,7 @@ defmodule Arbiter.DMNTest do
     xml = """
     <definitions id="defs" name="invalid table" namespace="urn:table">
       <decision id="invalid" name="Invalid">
-        <decisionTable hitPolicy="FIRST">
+        <decisionTable hitPolicy="CUSTOM">
           <input><inputExpression><text>value</text></inputExpression></input>
           <output name="result"/>
           <rule id="bad"><outputEntry><text>1</text></outputEntry></rule>
@@ -194,7 +194,32 @@ defmodule Arbiter.DMNTest do
 
     assert {:ok, model} = Arbiter.DMN.load(xml)
     assert {:error, errors} = Arbiter.DMN.validate(model)
-    assert {:unsupported_hit_policy, "invalid", "FIRST"} in errors
+    assert {:unsupported_hit_policy, "invalid", "CUSTOM"} in errors
     assert {:entry_count_mismatch, "bad", :input_entries, 1, 0} in errors
+  end
+
+  test "collect max aggregates all matching numeric outputs" do
+    xml = """
+    <definitions id="defs" name="collect max" namespace="urn:table">
+      <inputData id="score" name="Score"><variable name="Score" typeRef="number"/></inputData>
+      <decision id="maximum" name="Maximum">
+        <informationRequirement><requiredInput href="#score"/></informationRequirement>
+        <decisionTable hitPolicy="COLLECT" aggregation="MAX">
+          <input><inputExpression><text>Score</text></inputExpression></input>
+          <output name="result" typeRef="number"/>
+          <rule id="one"><inputEntry><text>&gt; 0</text></inputEntry><outputEntry><text>10</text></outputEntry></rule>
+          <rule id="two"><inputEntry><text>&gt; 5</text></inputEntry><outputEntry><text>20</text></outputEntry></rule>
+        </decisionTable>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert :ok = Arbiter.DMN.validate(model)
+
+    assert {:ok, %Decimal{} = result} =
+             Arbiter.DMN.evaluate(model, "Maximum", %{"Score" => Decimal.new(8)})
+
+    assert Decimal.equal?(result, Decimal.new(20))
   end
 end

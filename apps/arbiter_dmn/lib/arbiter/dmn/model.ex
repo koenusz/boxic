@@ -90,11 +90,12 @@ end
 
 defmodule Arbiter.DMN.Model.DecisionTable do
   @moduledoc "Normalized decision table independent of XML layout."
-  defstruct [:id, :hit_policy, :output_label, inputs: [], outputs: [], rules: []]
+  defstruct [:id, :hit_policy, :aggregation, :output_label, inputs: [], outputs: [], rules: []]
 
   @type t :: %__MODULE__{
           id: String.t() | nil,
           hit_policy: String.t() | nil,
+          aggregation: String.t() | nil,
           output_label: String.t() | nil,
           inputs: [Arbiter.DMN.Model.InputClause.t()],
           outputs: [Arbiter.DMN.Model.OutputClause.t()],

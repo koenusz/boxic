@@ -184,13 +184,17 @@ defmodule Arbiter.DMN do
   defp parse_decision_table(node) do
     %DecisionTable{
       id: attr(node, "id"),
-      hit_policy: attr(node, "hitPolicy") || "UNIQUE",
+      hit_policy: node |> attr("hitPolicy") |> normalize_hit_policy(),
+      aggregation: attr(node, "aggregation"),
       output_label: attr(node, "outputLabel"),
       inputs: Enum.map(nodes(node, "./*[local-name()='input']"), &parse_input_clause/1),
       outputs: Enum.map(nodes(node, "./*[local-name()='output']"), &parse_output_clause/1),
       rules: Enum.map(nodes(node, "./*[local-name()='rule']"), &parse_decision_rule/1)
     }
   end
+
+  defp normalize_hit_policy(nil), do: "UNIQUE"
+  defp normalize_hit_policy(value), do: String.replace(value, " ", "_")
 
   defp parse_input_clause(node) do
     expression = node |> nodes("./*[local-name()='inputExpression']") |> List.first()
@@ -307,10 +311,7 @@ defmodule Arbiter.DMN do
           else: [{:missing_input_expression, decision_id, input.id}]
       end)
 
-    policy_errors =
-      if table.hit_policy == "UNIQUE",
-        do: [],
-        else: [{:unsupported_hit_policy, decision_id, table.hit_policy}]
+    policy_errors = validate_hit_policy(table, decision_id)
 
     errors ++ rule_errors ++ clause_errors ++ policy_errors
   end
@@ -321,6 +322,31 @@ defmodule Arbiter.DMN do
 
   defp maybe_count_error(errors, actual, expected, rule_id, kind),
     do: [{:entry_count_mismatch, rule_id, kind, expected, actual} | errors]
+
+  defp validate_hit_policy(
+         %DecisionTable{hit_policy: policy, aggregation: aggregation} = table,
+         id
+       ) do
+    policies = ~w(UNIQUE FIRST ANY PRIORITY RULE_ORDER OUTPUT_ORDER COLLECT)
+    aggregations = ~w(SUM MIN MAX COUNT)
+
+    cond do
+      policy not in policies ->
+        [{:unsupported_hit_policy, id, policy}]
+
+      policy == "COLLECT" and aggregation not in [nil | aggregations] ->
+        [{:unsupported_collect_aggregation, id, aggregation}]
+
+      policy == "COLLECT" and aggregation != nil and length(table.outputs) != 1 ->
+        [{:collect_aggregation_requires_single_output, id, aggregation}]
+
+      policy != "COLLECT" and aggregation != nil ->
+        [{:aggregation_requires_collect, id, policy, aggregation}]
+
+      true ->
+        []
+    end
+  end
 
   defp validate_for_evaluation(model, decision) do
     errors =
@@ -437,19 +463,130 @@ defmodule Arbiter.DMN do
     |> Enum.reduce(context, &Map.put(&2, &1, value))
   end
 
-  defp evaluate_table(%DecisionTable{hit_policy: "UNIQUE"} = table, context) do
+  defp evaluate_table(%DecisionTable{} = table, context) do
     with {:ok, input_values} <- evaluate_table_inputs(table.inputs, context),
-         {:ok, matches} <- matching_rules(table.rules, input_values, context) do
-      case matches do
-        [] -> evaluate_default_outputs(table.outputs, context)
-        [rule] -> evaluate_rule_outputs(rule, table.outputs, context)
-        rules -> {:error, {:unique_hit_policy_violation, Enum.map(rules, & &1.id)}}
-      end
+         {:ok, matches} <- matching_rules(table.rules, input_values, context),
+         {:ok, results} <- evaluate_matched_outputs(matches, table.outputs, context) do
+      reduce_hit_policy(table, matches, results, context)
     end
   end
 
-  defp evaluate_table(%DecisionTable{hit_policy: policy}, _context),
-    do: {:error, {:unsupported_hit_policy, policy}}
+  defp evaluate_matched_outputs(rules, outputs, context) do
+    Enum.reduce_while(rules, {:ok, []}, fn rule, {:ok, values} ->
+      case evaluate_rule_outputs(rule, outputs, context) do
+        {:ok, value} -> {:cont, {:ok, values ++ [value]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp reduce_hit_policy(table, _rules, [], context)
+       when table.hit_policy in ~w(UNIQUE FIRST ANY PRIORITY),
+       do: evaluate_default_outputs(table.outputs, context)
+
+  defp reduce_hit_policy(%DecisionTable{hit_policy: "UNIQUE"}, rules, results, _context) do
+    case results do
+      [result] -> {:ok, result}
+      _ -> {:error, {:unique_hit_policy_violation, Enum.map(rules, & &1.id)}}
+    end
+  end
+
+  defp reduce_hit_policy(%DecisionTable{hit_policy: "FIRST"}, _rules, [result | _], _context),
+    do: {:ok, result}
+
+  defp reduce_hit_policy(%DecisionTable{hit_policy: "ANY"}, rules, [result | rest], _context) do
+    if Enum.all?(rest, &(&1 == result)),
+      do: {:ok, result},
+      else: {:error, {:any_hit_policy_violation, Enum.map(rules, & &1.id)}}
+  end
+
+  defp reduce_hit_policy(%DecisionTable{hit_policy: "RULE_ORDER"}, _rules, results, _context),
+    do: {:ok, results}
+
+  defp reduce_hit_policy(
+         %DecisionTable{hit_policy: "COLLECT", aggregation: nil},
+         _rules,
+         results,
+         _context
+       ),
+       do: {:ok, results}
+
+  defp reduce_hit_policy(
+         %DecisionTable{hit_policy: "COLLECT", aggregation: aggregation},
+         _rules,
+         results,
+         _context
+       ),
+       do: aggregate_collect(aggregation, results)
+
+  defp reduce_hit_policy(%DecisionTable{hit_policy: policy} = table, _rules, results, context)
+       when policy in ~w(PRIORITY OUTPUT_ORDER) do
+    with {:ok, ordered} <- order_by_priority(table, results, context) do
+      if policy == "PRIORITY", do: {:ok, List.first(ordered)}, else: {:ok, ordered}
+    end
+  end
+
+  defp aggregate_collect("COUNT", results), do: {:ok, Decimal.new(length(results))}
+  defp aggregate_collect(_aggregation, []), do: {:ok, nil}
+
+  defp aggregate_collect("SUM", results) do
+    if Enum.all?(results, &match?(%Decimal{}, &1)),
+      do: {:ok, Enum.reduce(results, Decimal.new(0), &Decimal.add/2)},
+      else: {:error, :collect_aggregation_requires_numbers}
+  end
+
+  defp aggregate_collect(aggregation, results) when aggregation in ~w(MIN MAX) do
+    if Enum.all?(results, &match?(%Decimal{}, &1)) do
+      chooser =
+        case aggregation do
+          "MIN" ->
+            fn value, current ->
+              if Decimal.compare(value, current) == :lt, do: value, else: current
+            end
+
+          "MAX" ->
+            fn value, current ->
+              if Decimal.compare(value, current) == :gt, do: value, else: current
+            end
+        end
+
+      {:ok, Enum.reduce(results, chooser)}
+    else
+      {:error, :collect_aggregation_requires_numbers}
+    end
+  end
+
+  defp order_by_priority(%DecisionTable{outputs: [priority_output | _]}, results, context) do
+    with values when is_binary(values) <- priority_output.allowed_values,
+         {:ok, priorities} <- evaluate_priority_values(values, context),
+         ranked <- Enum.map(results, &rank_result(&1, priority_output, priorities)),
+         true <- Enum.all?(ranked, &match?({rank, _} when is_integer(rank), &1)) do
+      {:ok, ranked |> Enum.sort_by(&elem(&1, 0)) |> Enum.map(&elem(&1, 1))}
+    else
+      nil -> {:error, :missing_output_priorities}
+      false -> {:error, :output_not_in_priority_values}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp evaluate_priority_values(values, context) do
+    {expression, bindings} = normalize_feel_names("[#{values}]", context)
+
+    case Arbiter.FEEL.evaluate(expression, bindings) do
+      {:ok, priorities} when is_list(priorities) -> {:ok, priorities}
+      {:ok, _value} -> {:error, :invalid_output_priorities}
+      error -> error
+    end
+  end
+
+  defp rank_result(result, output, priorities) do
+    value =
+      if is_map(result),
+        do: Map.get(result, output.name || output.label),
+        else: result
+
+    {Enum.find_index(priorities, &(&1 == value)), result}
+  end
 
   defp evaluate_table_inputs(inputs, context) do
     Enum.reduce_while(inputs, {:ok, []}, fn input, {:ok, values} ->

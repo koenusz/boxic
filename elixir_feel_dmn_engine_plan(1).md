@@ -1124,7 +1124,7 @@ Status date: **2026-07-15**
 | Phase 4 — Built-in Functions and Temporal Semantics | `done` | Lossless FEEL temporal and duration-kind types preserve precision and identity; `tzdata` supplies complete IANA-zone resolution and DST-aware date-time arithmetic. Numeric, string, conversion, aggregation, and core list built-ins are implemented. Every wholly WP-07-owned mapped group passes, and the strict profile passes 1,029/1,029 including the completed cross-feature iteration group. | None for the current Phase 4 scope; boxed property contexts remain assigned to WP-12. |
 | Phase 5 — Minimal DMN Execution                     | `done` | Namespace-qualified DMN models normalize and validate through WP-08. WP-09 recursively resolves required input data and literal decisions, injects their declared FEEL names, detects cycles, and executes by decision ID or name. Official `0084-feel-for-loops` passes 24/24 through the formal path. | None for the current minimal literal-expression scope. |
 | Phase 6 — Decision Tables                           | `done` | Normalized input/output clauses and rules, table validation, multi-column unary-test conjunction, UNIQUE matching, single/multiple outputs, and defaults are implemented. Official `0004-simpletable-U` and `0010-multi-output-U` pass 6/6 in the first strict DMN profile. | None for the WP-10 table-engine scope; additional hit policies belong to WP-11. |
-| Phase 7 — Hit Policies                              | `not_started` | No hit-policy reducers exist.                                                                                                                                                                                                                      | Complete WP-11 with per-policy compatibility reports.                                                                |
+| Phase 7 — Hit Policies                              | `done` | FIRST, ANY, PRIORITY, RULE ORDER, OUTPUT ORDER, and COLLECT reducers are implemented, including unaggregated collection and COUNT/SUM/MIN/MAX aggregation. Twelve official policy groups pass 36/36; together with WP-10 the strict DMN profile passes 42/42. | None for the targeted hit-policy scope. |
 | Phase 8 — Full DMN Graph Features                   | `not_started` | DRG, BKM, invocation, item-definition, and decision-service execution are not implemented.                                                                                                                                                         | Complete WP-12 and report advanced DMN coverage.                                                                     |
 
 ### 23.3 Work-package roll-up
@@ -1142,7 +1142,7 @@ Status date: **2026-07-15**
 | WP-08        | `done`        | Namespace-independent parsing produces explicit definitions, input-data, variable, decision, information-requirement, and literal-expression structs. Validation reports missing/duplicate identifiers and names, unresolved references, missing variables/text, unsupported expression kinds/languages, and malformed documents. A pinned official literal model loads and validates. | None for WP-08; dependency execution belongs to WP-09. |
 | WP-09        | `done`        | Recursive input/decision requirement resolution, declared-name context injection, dependency memoization, cycle detection, and execution by ID/name are implemented. Official `0084-feel-for-loops` passes 24/24 and is enabled in the pinned strict profile. | None for the minimal literal-expression execution scope. |
 | WP-10        | `done`        | Decision tables normalize into explicit clauses/rules; validation covers missing components, entry cardinality, expressions, and unsupported policies. UNIQUE tables evaluate inputs once, conjunctively match unary tests, reject multiple hits, and return scalar, context, default, or null outputs. Official single/multi-output groups pass 6/6. | None for WP-10; non-UNIQUE reducers remain WP-11 work. |
-| WP-11        | `not_started` | No implementation yet.                                                                                                    | Implement separate hit-policy reducers and per-policy tests/reports.                                                                                                   |
+| WP-11        | `done`        | Hit policies are normalized and validated independently. Deterministic reducers cover FIRST, ANY consistency, priority ordering, rule/output ordering, collection, and numeric/count aggregations. All twelve mapped official groups pass 3/3 and are enabled. | None for WP-11. |
 | WP-12        | `not_started` | No implementation yet.                                                                                                    | Implement DRG dependencies, BKMs, invocations, item definitions, and decision services.                                                                                |
 | WP-13        | `in_progress` | PR/push CI runs format, compile, tests, pin verification, and official-corpus loader regression tests.                    | Add nightly/full-corpus jobs, artifact retention, compatibility regression gates, and release checklist/reporting.                                                     |
 
@@ -1176,6 +1176,7 @@ Task IDs are stable references for commits, reports, and weekly updates. A task 
 | DMN-04  | WP-09        | `done`        | Required input and decision references resolve recursively by ID, bind declared DMN/FEEL names into immutable contexts, memoize results, report missing inputs/references, and reject cycles. |
 | DMN-05  | WP-09        | `done`        | Official `0084-feel-for-loops` passes 24/24 end to end, including `decision_014` consuming the `days in weekend` decision; the group is enabled in the 1,029-case pinned profile. |
 | DMN-06  | WP-10        | `done`        | `0004-simpletable-U` and `0010-multi-output-U` pass 3/3 each through normalized tables, multi-column unary tests, scalar/multiple outputs, and the UNIQUE reducer; the 6/6 DMN profile is published. |
+| DMN-07  | WP-11        | `done`        | Twelve official groups covering FIRST, RULE ORDER, OUTPUT ORDER, MIN/SUM/COUNT COLLECT, ANY, PRIORITY, and multi-output COLLECT pass 36/36. MAX is covered by a focused contract test because the pinned corpus has no MAX counterpart. |
 | CI-01   | WP-13        | `done`        | Fabricated fixture profiles and reports were removed; CI verifies the official pinned corpus, and the root test alias runs only the targeted official FEEL implemented profile. |
 | CI-02   | WP-13        | `not_started` | Add scheduled full-corpus execution with retained CSV/JSON artifacts.                                                                      |
 | CI-03   | WP-13        | `not_started` | Add supported-scope compatibility and total-coverage regression thresholds.                                                                |
@@ -1202,6 +1203,11 @@ An applicable feature is complete only when every group assigned to it passes in
 | WP-07 | String built-ins | `1103-feel-substring-function`, `1104-feel-string-length-function`, `1105-feel-upper-case-function`, `1106-feel-lower-case-function`, `1110-feel-contains-function` | `11/11`, `6/6`, `8/8`, `9/9`, `10/10`; all enabled | All five groups remain fully passing. |
 | WP-07 | Temporal constructors | `1115-feel-date-function`, `1116-feel-time-function`, `1117-feel-date-and-time-function`, `1120-feel-duration-function` | `52/52`, `83/83`, `88/88`, `50/50`; all enabled | All four groups remain fully passing. |
 | WP-10 | UNIQUE decision tables | `0004-simpletable-U`, `0010-multi-output-U` | `3/3`, `3/3`; both enabled in the DMN implemented profile | Both groups remain fully passing; other hit policies are mapped to WP-11. |
+| WP-11 | FIRST | `0108-first-hitpolicy`, `0111-first-hitpolicy-singleoutputcol` | `3/3`, `3/3`; enabled | Both groups remain fully passing. |
+| WP-11 | RULE ORDER | `0109-ruleOrder-hitpolicy`, `0112-ruleOrder-hitpolicy-singleinoutcol` | `3/3`, `3/3`; enabled | Both groups remain fully passing. |
+| WP-11 | OUTPUT ORDER | `0110-outputOrder-hitpolicy`, `0113-outputOrder-hitpolicy-singleinoutcol` | `3/3`, `3/3`; enabled | Both groups remain fully passing. |
+| WP-11 | COLLECT aggregations | `0114-min-collect-hitpolicy`, `0115-sum-collect-hitpolicy`, `0116-count-collect-hitpolicy`, `0119-multi-collect-hitpolicy` | `3/3` each; enabled. MAX has focused local coverage. | All four groups remain fully passing and MAX contract coverage remains green. |
+| WP-11 | ANY and PRIORITY | `0117-multi-any-hitpolicy`, `0118-multi-priority-hitpolicy` | `3/3`, `3/3`; enabled | Both groups remain fully passing. |
 
 Counts above are result-entry counts from the vendored TestCases corpus at `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13`, measured on 2026-07-15. Failed and errored entries remain visible in diagnostic runs; only wholly passing groups enter the strict implemented profile.
 
@@ -1209,9 +1215,8 @@ Counts above are result-entry counts from the vendored TestCases corpus at `0dbc
 
 Work should proceed in this order because the upstream corpus is the evidence base for all FEEL and DMN completion claims:
 
-1. implement WP-11 hit-policy reducers and publish per-policy compatibility;
-2. complete boxed contexts and advanced dependency forms through WP-12;
-3. mature CI through CI-02 to CI-04 as upstream profiles become reliable.
+1. complete boxed contexts and advanced dependency forms through WP-12;
+2. mature CI through CI-02 to CI-04 as upstream profiles become reliable.
 
 ### 23.7 Progress update record
 

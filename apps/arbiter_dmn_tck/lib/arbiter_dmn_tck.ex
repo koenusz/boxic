@@ -42,7 +42,22 @@ defmodule Arbiter.DMN.TCK do
   )
 
   @feel_additional_groups ~w(0001-filter 0032-conditionals)
-  @dmn_implemented_groups ~w(0004-simpletable-U 0010-multi-output-U)
+  @dmn_implemented_groups ~w(
+    0004-simpletable-U
+    0010-multi-output-U
+    0108-first-hitpolicy
+    0109-ruleOrder-hitpolicy
+    0110-outputOrder-hitpolicy
+    0111-first-hitpolicy-singleoutputcol
+    0112-ruleOrder-hitpolicy-singleinoutcol
+    0113-outputOrder-hitpolicy-singleinoutcol
+    0114-min-collect-hitpolicy
+    0115-sum-collect-hitpolicy
+    0116-count-collect-hitpolicy
+    0117-multi-any-hitpolicy
+    0118-multi-priority-hitpolicy
+    0119-multi-collect-hitpolicy
+  )
 
   @spec run(keyword()) :: %{cases: list(), results: list(), summary: map()}
   def run(opts \\ []) do

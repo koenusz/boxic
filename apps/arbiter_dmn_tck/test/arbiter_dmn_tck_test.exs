@@ -193,14 +193,13 @@ defmodule Arbiter.DMN.TCKTest do
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > 0
-    assert result.summary.total == 6
-    assert result.summary.passed == 6
+    assert result.summary.total == 42
+    assert result.summary.passed == 42
     assert result.summary.failed == 0
     assert result.summary.error == 0
-    assert result.summary.disabled == result.summary.suite_total - 6
+    assert result.summary.disabled == result.summary.suite_total - 42
 
-    assert TCK.profile_groups("dmn", "implemented") ==
-             ["0004-simpletable-U", "0010-multi-output-U"]
+    assert length(TCK.profile_groups("dmn", "implemented")) == 14
   end
 
   defp temporary_corpus_root do
