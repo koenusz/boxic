@@ -1071,97 +1071,125 @@ Each milestone is complete only when all included requirements are verified.
 
 ---
 
-## 23. Execution Cadence and Reporting
+## 23. Progress Tracking
 
-Track status per work package using this state model:
+This is the single authoritative progress section for the project. Phase descriptions, work-package definitions, requirement mappings, and milestone gates above define scope and acceptance criteria; they do not independently record completion. Update progress only in this section.
 
-- `not_started`
-- `in_progress`
-- `blocked`
-- `in_review`
-- `done`
+### 23.1 Status model
 
-Required weekly report fields:
+Use these states for phases, work packages, and tasks:
 
-- reporting date;
-- current TCK pinned commit;
-- work package status table;
-- newly passed tests (count);
-- newly failed tests (count);
-- unsupported count delta;
-- top blockers with owner and next action;
-- risk changes;
-- planned work for next period.
+- `not_started`: no implementation work has begun;
+- `in_progress`: implementation exists or active work remains, but the exit criteria are not satisfied;
+- `blocked`: progress cannot continue until an identified dependency or decision is resolved;
+- `in_review`: implementation and verification are complete and awaiting acceptance;
+- `done`: all exit criteria are verified with current evidence.
 
-Minimum quality bar before setting any work package to `done`:
+Roll-up rules:
 
-- implementation merged;
-- unit/integration tests merged;
-- TCK impact measured and recorded;
-- no unresolved blocker tied to that package;
-- requirement mappings updated.
+- a work package is `done` only when every required task is `done` and its exit criteria are verified;
+- a phase is `done` only when every work package and deliverable associated with that phase is `done`;
+- local regression fixtures demonstrate implementation behavior but do not count as upstream TCK compatibility evidence;
+- a passing test count must identify the corpus, profile, pinned commit, and report artifact;
+- missing or silently skipped upstream cases prevent the TCK loader and harness work packages from being marked `done`.
 
----
+Minimum evidence required for `done`:
 
-## 24. Immediate Next Actions (First Two Iterations)
+- implementation and relevant tests are present;
+- umbrella format, compile, and test gates pass;
+- applicable upstream TCK impact is measured and recorded;
+- no unresolved acceptance-criteria gap remains;
+- requirement, work-package, and milestone mappings remain accurate.
 
-Iteration A:
+### 23.2 Current phase roll-up
 
-1. complete WP-00 and WP-01;
-2. scaffold WP-02 case loader with strict error surfacing;
-3. implement WP-03 result classification and CSV/JSON report skeleton;
-4. demonstrate one end-to-end literal-expression case run and report output.
+Status date: **2026-07-15**
 
-Iteration B:
+| Phase                                               | Status        | Current assessment                                                                                                                                                                                                                                 | Completion condition                                                                                                 |
+| --------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Phase 0 — Repository and Fork Setup                 | `in_progress` | Umbrella, namespaces, baseline CI, pin file, and update scripts exist. The current vendored directory is a small local fixture corpus rather than the verified unmodified upstream snapshot, and RodarFeel baseline/fork evidence is not recorded. | Verify the upstream snapshot and provenance, record the FEEL baseline, and satisfy the complete Phase 0 deliverable. |
+| Phase 1 — TCK Harness Foundation                    | `in_progress` | A loader, runner, comparator, reporter, and Mix task work for local fixtures. The loader does not yet demonstrate official upstream XML compatibility, full-corpus enumeration, or strict malformed-case classification.                           | Enumerate and explicitly classify the pinned upstream corpus and publish complete compatibility/coverage reports.    |
+| Phase 2 — FEEL Core Compliance                      | `in_progress` | Decimal arithmetic, comparisons, boolean/null behavior, names, contexts, and lists have a working baseline. `if then else` is not implemented, and results are measured only against local fixtures.                                               | Implement the remaining core syntax and publish a pinned upstream core profile.                                      |
+| Phase 3 — FEEL Structural Features                  | `in_progress` | Ranges, unary tests, paths, filters, projections, quantifiers, closures, and scoping have local tests. Upstream structural compatibility has not been established.                                                                                 | Execute the relevant pinned upstream groups and document remaining semantic gaps.                                    |
+| Phase 4 — Built-in Functions and Temporal Semantics | `in_progress` | Initial string/list/numeric built-ins and date/time/duration operations exist. The current `4/4` result is a local regression profile, not broad upstream TCK coverage; built-in and temporal semantics remain incomplete.                         | Complete the scoped built-ins and temporal semantics and publish feature-level upstream results and known gaps.      |
+| Phase 5 — Minimal DMN Execution                     | `in_progress` | Simple literal-expression models load and evaluate by decision name through FEEL. Input-data modeling, dependencies, normalized definitions, and meaningful validation remain incomplete.                                                          | Pass relevant pinned upstream literal-expression cases through the formal DMN execution path.                        |
+| Phase 6 — Decision Tables                           | `not_started` | No decision-table parser or executor exists.                                                                                                                                                                                                       | Complete WP-10 and execute decision-table groups.                                                                    |
+| Phase 7 — Hit Policies                              | `not_started` | No hit-policy reducers exist.                                                                                                                                                                                                                      | Complete WP-11 with per-policy compatibility reports.                                                                |
+| Phase 8 — Full DMN Graph Features                   | `not_started` | DRG, BKM, invocation, item-definition, and decision-service execution are not implemented.                                                                                                                                                         | Complete WP-12 and report advanced DMN coverage.                                                                     |
 
-1. complete WP-04 parser contract tests;
-2. implement WP-05 decimal arithmetic, comparisons, and null/boolean semantics;
-3. publish first FEEL core profile report;
-4. baseline regression suite for all passing core cases.
+### 23.3 Work-package roll-up
 
-This sequence establishes traceability and measurable compatibility early, before broad feature expansion.
+| Work package | Status        | Completed foundation                                                                                                      | Remaining exit work                                                                                                                                                    |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WP-00        | `done`        | Umbrella structure, application boundaries, dependency direction, baseline CI, and passing local gates.                   | None for the current WP-00 scope.                                                                                                                                      |
+| WP-01        | `in_progress` | Pin file, update script, nested-git check, and CI verification script exist.                                              | Replace/verify the local fixture subset with an unmodified pinned upstream snapshot and verify its contents and provenance.                                            |
+| WP-02        | `in_progress` | Local fixture discovery and normalized case struct exist.                                                                 | Support official upstream XML/schema/layout, preserve identifiers and labels, enumerate the full corpus, and surface malformed/missing artifacts without silent drops. |
+| WP-03        | `in_progress` | Five result statuses and CSV/JSON output with JSON metadata exist.                                                        | Complete normalization, expected-error and collection comparison, compatibility/coverage metrics, report schema tests, and functional CLI format options.              |
+| WP-04        | `done`        | Public parse/evaluate APIs, AST parsing, structured syntax errors, and parser tests exist.                                | None for the current WP-04 scope.                                                                                                                                      |
+| WP-05        | `in_progress` | Decimal literals/arithmetic, comparisons, three-valued boolean baseline, null behavior, names, contexts, and lists exist. | Add `if then else`, close core semantic gaps, and validate the pinned upstream core profile.                                                                           |
+| WP-06        | `in_progress` | Structural expressions and focused unit/regression tests exist.                                                           | Validate official upstream structural groups and correct any discovered semantics or scoping gaps.                                                                     |
+| WP-07        | `in_progress` | Initial built-ins, temporal value construction, duration representation, and temporal arithmetic exist.                   | Expand FEEL built-ins, remove float-based Decimal ordering, complete duration/timezone semantics, and validate upstream temporal groups.                               |
+| WP-08        | `in_progress` | A normalized model skeleton and literal-expression XML extraction exist.                                                  | Add namespace-aware DMN parsing, structured definitions/input data/decisions, and substantive validation.                                                              |
+| WP-09        | `in_progress` | A local literal-expression case executes through DMN and FEEL.                                                            | Add dependency resolution and prove the path against pinned upstream cases.                                                                                            |
+| WP-10        | `not_started` | No implementation yet.                                                                                                    | Implement decision-table parsing, validation, matching, outputs, and tests.                                                                                            |
+| WP-11        | `not_started` | No implementation yet.                                                                                                    | Implement separate hit-policy reducers and per-policy tests/reports.                                                                                                   |
+| WP-12        | `not_started` | No implementation yet.                                                                                                    | Implement DRG dependencies, BKMs, invocations, item definitions, and decision services.                                                                                |
+| WP-13        | `in_progress` | PR/push CI runs format, compile, tests, pin verification, and a local core profile.                                       | Add nightly/full-corpus jobs, artifact retention, compatibility regression gates, and release checklist/reporting.                                                     |
 
----
+### 23.4 Detailed active task register
 
-## 25. Current Progression Status
+Task IDs are stable references for commits, reports, and weekly updates. A task remains `in_progress` until its stated acceptance evidence exists.
 
-Status values:
+| Task    | Work package | Status        | Task and acceptance evidence                                                                                                               |
+| ------- | ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| TCK-01  | WP-01        | `in_progress` | Vendor the complete upstream repository at `PINNED_COMMIT`; record upstream URL and verify there is no local fixture substitution.         |
+| TCK-02  | WP-01        | `in_progress` | Harden pin verification so CI checks the requested commit and vendored snapshot provenance/content, not only the presence of a pin string. |
+| TCK-03  | WP-02        | `in_progress` | Implement namespace-aware parsing of official upstream test-case XML and model layout.                                                     |
+| TCK-04  | WP-02        | `in_progress` | Represent malformed test XML, missing models, and incomplete metadata explicitly; remove silent `[]` fallback behavior.                    |
+| TCK-05  | WP-02        | `not_started` | Add a full-corpus enumeration test with a recorded expected group/case baseline for the pinned commit.                                     |
+| TCK-06  | WP-03        | `in_progress` | Extend semantic comparison for durations, expected errors, nested values, and ordered/unordered collections where required.                |
+| TCK-07  | WP-03        | `in_progress` | Report supported compatibility and total-corpus coverage separately.                                                                       |
+| TCK-08  | WP-03        | `in_progress` | Make `--all`, `--profile`, and `--format` behavior explicit and tested; reject unsupported CLI combinations.                               |
+| TCK-09  | WP-03        | `not_started` | Add report schema tests covering mandatory metadata and machine-readable values without relying on `inspect/1` serialization.              |
+| FEEL-01 | WP-05        | `in_progress` | Implement parser/evaluator support for `if then else` with null and type-error tests.                                                      |
+| FEEL-02 | WP-05        | `in_progress` | Run and publish the pinned upstream FEEL core profile; classify every selected case.                                                       |
+| FEEL-03 | WP-06        | `in_progress` | Map structural features to official upstream groups and publish pass/fail/unsupported counts.                                              |
+| FEEL-04 | WP-06        | `in_progress` | Resolve structural semantic gaps discovered by upstream range, unary-test, path/filter, quantifier, and function cases.                    |
+| FEEL-05 | WP-07        | `in_progress` | Expand the built-in registry and implement missing/advertised functions, including the currently registered `string` conversion.           |
+| FEEL-06 | WP-07        | `in_progress` | Preserve Decimal semantics in aggregation and ordering without float conversion.                                                           |
+| FEEL-07 | WP-07        | `in_progress` | Complete signed/fractional duration parsing and required year-month/day-time distinctions.                                                 |
+| FEEL-08 | WP-07        | `in_progress` | Complete FEEL timezone-aware time/date-time construction, comparison, and arithmetic semantics.                                            |
+| FEEL-09 | WP-07        | `in_progress` | Publish upstream built-in and temporal profiles with feature-level known gaps.                                                             |
+| DMN-01  | WP-08        | `in_progress` | Implement namespace-aware DMN definitions parsing into normalized structs independent of raw XML.                                          |
+| DMN-02  | WP-08        | `in_progress` | Model input data, decisions, information requirements, and literal expressions explicitly.                                                 |
+| DMN-03  | WP-08        | `in_progress` | Add validation for identifiers, references, unsupported expression kinds, and malformed definitions.                                       |
+| DMN-04  | WP-09        | `in_progress` | Implement dependency resolution and inject required input/decision results into FEEL contexts.                                             |
+| DMN-05  | WP-09        | `in_progress` | Pass and report pinned upstream minimal-DMN/literal-expression cases end to end.                                                           |
+| CI-01   | WP-13        | `in_progress` | Keep local fixture regressions separate from official compatibility reports and name artifacts accordingly.                                |
+| CI-02   | WP-13        | `not_started` | Add scheduled full-corpus execution with retained CSV/JSON artifacts.                                                                      |
+| CI-03   | WP-13        | `not_started` | Add supported-scope compatibility and total-coverage regression thresholds.                                                                |
+| CI-04   | WP-13        | `not_started` | Add release checklist and compatibility-delta report requirements.                                                                         |
 
-- `done`
-- `in_progress`
-- `in_review`
-- `blocked`
-- `not_started`
+### 23.5 Next execution sequence
 
-### 25.1 Phase Status (as of 2026-07-15)
+Work should proceed in this order because the upstream corpus is the evidence base for all FEEL and DMN completion claims:
 
-| Phase                                               | Status      | Notes                                                                                                                                               |
-| --------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Phase 0 — Repository and Fork Setup                 | done        | Umbrella created; applications scaffolded; baseline CI and vendored TCK path in place.                                                              |
-| Phase 1 — TCK Harness Foundation                    | done        | Loader, runner, comparator, reporter, and `mix tck` task implemented with explicit statuses.                                                        |
-| Phase 2 — FEEL Core Compliance                      | done        | Core parser/evaluator semantics validated with passing tests and core profile reporting.                                                           |
-| Phase 3 — FEEL Structural Features                  | done        | Structural feature set implemented and verified: ranges, unary tests, path/filter, for, some/every, closures, and scoping/shadowing behavior.     |
-| Phase 4 — Built-in Functions and Temporal Semantics | done        | Built-ins and temporal semantics implemented and validated with unit tests plus passing `phase4` TCK profile (`4/4` passed, `0` errors).          |
-| Phase 5 — Minimal DMN Execution                     | in_progress | Literal-expression DMN execution path works; continue broadening model coverage.                                                                    |
-| Phase 6 — Decision Tables                           | not_started | Awaiting post-core FEEL stabilization.                                                                                                              |
-| Phase 7 — Hit Policies                              | not_started | Depends on decision-table engine.                                                                                                                   |
-| Phase 8 — Full DMN Graph Features                   | not_started | Depends on earlier DMN phases.                                                                                                                      |
+1. complete TCK-01 through TCK-05 so the pinned upstream corpus can be enumerated without silent skips;
+2. complete TCK-06 through TCK-09 so failures and unsupported behavior are measured accurately;
+3. complete FEEL-01 and publish the real core baseline in FEEL-02;
+4. use that baseline to drive FEEL-03 through FEEL-09 rather than expanding local fixtures as compatibility evidence;
+5. complete DMN-01 through DMN-05 and verify literal-expression execution against upstream cases;
+6. begin WP-10 only after the minimal DMN model and upstream execution path are stable;
+7. mature CI through CI-01 to CI-04 as upstream profiles become reliable.
 
-### 25.2 Work Package Status (as of 2026-07-15)
+### 23.6 Progress update record
 
-| Work Package | Status      | Evidence                                                                                             |
-| ------------ | ----------- | ---------------------------------------------------------------------------------------------------- |
-| WP-00        | done        | Umbrella compiles/tests; CI workflow exists.                                                         |
-| WP-01        | done        | Vendored snapshot workflow, pin file, update script, and CI pin integrity verification are in place. |
-| WP-02        | done        | TCK discovery and case normalization implemented.                                                    |
-| WP-03        | done        | Status model and CSV/JSON reporting implemented with metadata.                                       |
-| WP-04        | done        | FEEL parser contract tests added and passing.                                                        |
-| WP-05        | done        | Core FEEL evaluator semantics and validation baseline are complete and passing.                      |
-| WP-06        | done        | Structural FEEL features implemented and validated by unit tests plus structural TCK profile execution. |
-| WP-07        | done        | Temporal/built-in breadth implemented and validated by FEEL tests and `mix tck --label phase4` passing (`4/4`).                                     |
-| WP-08        | in_progress | Normalized model skeleton and parser exist; validation depth still minimal.                          |
-| WP-09        | done        | End-to-end DMN literal-expression flow exercised by tests and TCK run.                               |
-| WP-10        | not_started | Decision-table execution not implemented yet.                                                        |
-| WP-11        | not_started | Hit-policy reducers not implemented yet.                                                             |
-| WP-12        | not_started | DRG/BKM/decision-service execution not implemented yet.                                              |
-| WP-13        | in_progress | CI and quality gates exist; release-grade regression and pin-integrity gates being hardened.         |
+Each progress update should change this section in one commit and include:
+
+- reporting date and pinned TCK commit;
+- task status changes with evidence links or artifact paths;
+- newly passed, failed, unsupported, missing, and error counts by profile;
+- supported compatibility and total-corpus coverage;
+- blockers, risks, and the next task IDs to execute.
+
+Do not add separate current-status tables elsewhere in the plan. Historical results belong in dated report artifacts or release notes rather than accumulating in this document.

@@ -6,7 +6,8 @@ defmodule Arbiter.MixProject do
       apps_path: "apps",
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -17,5 +18,14 @@ defmodule Arbiter.MixProject do
   # Run "mix help deps" for examples and options.
   defp deps do
     []
+  end
+
+  defp aliases do
+    [
+      test: [
+        "test",
+        "tck --label phase4 --report artifacts/tck-phase4.csv"
+      ]
+    ]
   end
 end
