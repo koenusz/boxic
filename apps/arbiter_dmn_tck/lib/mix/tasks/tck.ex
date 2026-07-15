@@ -9,7 +9,8 @@ defmodule Mix.Tasks.Tck do
     label: :string,
     report: :string,
     format: :string,
-    profile: :string
+    profile: :string,
+    soft_fail: :boolean
   ]
 
   @impl Mix.Task
@@ -33,8 +34,17 @@ defmodule Mix.Tasks.Tck do
     Mix.shell().info("  unsupported: #{result.summary.unsupported}")
     Mix.shell().info("  missing: #{result.summary.missing}")
     Mix.shell().info("  error: #{result.summary.error}")
+    Mix.shell().info("  supported: #{result.summary.supported}")
 
-    if result.summary.failed > 0 or result.summary.error > 0 do
+    Mix.shell().info(
+      "  compatibility on supported scope: #{format_percent(result.summary.compatibility_percent)}"
+    )
+
+    Mix.shell().info(
+      "  coverage of total corpus: #{format_percent(result.summary.coverage_percent)}"
+    )
+
+    if not opts[:soft_fail] and (result.summary.failed > 0 or result.summary.error > 0) do
       Mix.raise("TCK run includes failed/error cases")
     end
   end
@@ -44,4 +54,6 @@ defmodule Mix.Tasks.Tck do
 
   defp put_opt(opts, _key, nil), do: opts
   defp put_opt(opts, key, value), do: Keyword.put(opts, key, value)
+
+  defp format_percent(value), do: :erlang.float_to_binary(value, decimals: 2) <> "%"
 end

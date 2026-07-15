@@ -19,3 +19,18 @@ erl_crash.dump
 # Also ignore archive artifacts (built via "mix archive.build").
 *.ez
 
+# Generated DMN TCK compatibility reports. Published baselines should live in
+# a separate, explicitly tracked directory.
+/artifacts/*.csv
+/artifacts/*.json
+
+# Arbiter vendors the official TCK input corpus, not the upstream website,
+# historical vendor results, Java runners, examples, or repository tooling.
+# Keep vendor/dmn-tck/TestCases, its schemas, license, README, PINNED_COMMIT,
+# and UPSTREAM_REPO trackable.
+/vendor/dmn-tck/.github/
+/vendor/dmn-tck/TestExamples/
+/vendor/dmn-tck/TestResults/
+/vendor/dmn-tck/docs/
+/vendor/dmn-tck/runners/
+/vendor/dmn-tck/utils/

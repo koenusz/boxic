@@ -1,7 +1,0 @@
-<definitions id="defs-phase4-1" name="Phase4 String Numeric" namespace="https://arbiter.example/dmn">
-  <decision id="d-phase4-1" name="Result">
-    <literalExpression>
-      <text>sum([1,2,3])</text>
-    </literalExpression>
-  </decision>
-</definitions>

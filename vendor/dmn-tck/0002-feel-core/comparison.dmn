@@ -1,7 +1,0 @@
-<definitions id="defs-comparison" name="Comparison Core" namespace="https://arbiter.example/dmn">
-  <decision id="d-comparison" name="Result">
-    <literalExpression>
-      <text>7 &gt; 2</text>
-    </literalExpression>
-  </decision>
-</definitions>

@@ -1,7 +1,0 @@
-<definitions id="defs-1" name="Literal Demo" namespace="https://arbiter.example/dmn">
-  <decision id="decision-1" name="Greeting">
-    <literalExpression>
-      <text>"hello from arbiter"</text>
-    </literalExpression>
-  </decision>
-</definitions>

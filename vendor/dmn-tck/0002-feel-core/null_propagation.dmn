@@ -1,7 +1,0 @@
-<definitions id="defs-null" name="Null Core" namespace="https://arbiter.example/dmn">
-  <decision id="d-null" name="Result">
-    <literalExpression>
-      <text>null + 1</text>
-    </literalExpression>
-  </decision>
-</definitions>

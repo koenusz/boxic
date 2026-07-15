@@ -1,7 +1,0 @@
-<definitions id="defs-phase4-2" name="Phase4 Date Arithmetic" namespace="https://arbiter.example/dmn">
-  <decision id="d-phase4-2" name="Result">
-    <literalExpression>
-      <text>date("2026-07-15") + duration("P1D")</text>
-    </literalExpression>
-  </decision>
-</definitions>

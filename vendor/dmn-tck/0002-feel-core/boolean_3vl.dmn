@@ -1,7 +1,0 @@
-<definitions id="defs-boolean" name="Boolean Core" namespace="https://arbiter.example/dmn">
-  <decision id="d-boolean" name="Result">
-    <literalExpression>
-      <text>false and null</text>
-    </literalExpression>
-  </decision>
-</definitions>

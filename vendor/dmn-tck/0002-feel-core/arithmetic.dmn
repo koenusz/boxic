@@ -1,7 +1,0 @@
-<definitions id="defs-arithmetic" name="Arithmetic Core" namespace="https://arbiter.example/dmn">
-  <decision id="d-arithmetic" name="Result">
-    <literalExpression>
-      <text>1 + 2 * 3</text>
-    </literalExpression>
-  </decision>
-</definitions>

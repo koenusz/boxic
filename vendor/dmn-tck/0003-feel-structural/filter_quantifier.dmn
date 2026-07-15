@@ -1,7 +1,0 @@
-<definitions id="defs-struct-filter" name="Structural Filter" namespace="https://arbiter.example/dmn">
-  <decision id="d-filter" name="Result">
-    <literalExpression>
-      <text>some x in [1,2,3][item &gt; 2] satisfies x = 3</text>
-    </literalExpression>
-  </decision>
-</definitions>

@@ -1,6 +1,10 @@
 defmodule Arbiter.DMN.TCK.Loader do
   @moduledoc """
-  Discovers and loads vendored TCK test cases.
+  Discovers and normalizes the official vendored DMN TCK test corpus.
+
+  The upstream XML uses a default namespace, so all XPath expressions match
+  elements by local name. Invalid test documents fail loudly instead of being
+  silently omitted from corpus totals.
   """
 
   alias Arbiter.DMN.TCK.Case
@@ -13,86 +17,164 @@ defmodule Arbiter.DMN.TCK.Loader do
     root = Keyword.get(opts, :root, @default_root)
 
     root
-    |> Path.join("**/*.test.xml")
+    |> Path.join("TestCases/**/*-test-01.xml")
     |> Path.wildcard()
-    |> Enum.flat_map(&parse_case_file(&1, root))
-    |> Enum.sort_by(&{&1.group, &1.id})
+    |> Enum.flat_map(&parse_case_file!(&1, root))
+    |> Enum.sort_by(&{&1.group, &1.id, &1.decision_name})
   end
 
-  defp parse_case_file(path, root) do
-    with {:ok, xml} <- File.read(path),
-         {:ok, document} <- parse_xml(xml),
-         case_nodes when is_list(case_nodes) <-
-           :xmerl_xpath.string(~c"/testCases/testCase", document) do
-      Enum.map(case_nodes, fn case_node -> build_case(case_node, path, root) end)
-    else
-      _ -> []
+  defp parse_case_file!(path, root) do
+    xml = File.read!(path)
+    document = parse_xml!(xml, path)
+
+    model_name =
+      xpath_string(document, "/*[local-name()='testCases']/*[local-name()='modelName']/text()")
+
+    if is_nil(model_name) do
+      raise "TCK test document has no modelName: #{path}"
     end
-  end
-
-  defp parse_xml(xml) do
-    try do
-      {doc, _rest} = :xmerl_scan.string(String.to_charlist(xml))
-      {:ok, doc}
-    rescue
-      _ -> {:error, :invalid_xml}
-    end
-  end
-
-  defp build_case(case_node, case_file, root) do
-    group = xpath_string(case_node, "./@group") || Path.basename(Path.dirname(case_file))
-    id = xpath_string(case_node, "./@id") || "unknown"
 
     labels =
-      :xmerl_xpath.string(~c"./labels/label", case_node)
-      |> Enum.map(fn label_node -> xpath_string(label_node, "./text()") end)
+      xpath(
+        document,
+        "/*[local-name()='testCases']/*[local-name()='labels']/*[local-name()='label']"
+      )
+      |> Enum.map(&xpath_string(&1, "./text()"))
       |> Enum.reject(&is_nil/1)
 
-    model_relative = xpath_string(case_node, "./model/text()")
-    decision_name = xpath_string(case_node, "./decision/text()")
+    case_nodes =
+      xpath(document, "/*[local-name()='testCases']/*[local-name()='testCase']")
 
-    expected =
-      parse_typed_value(
-        xpath_string(case_node, "./expected/text()"),
-        xpath_string(case_node, "./expected/@type")
-      )
+    Enum.flat_map(case_nodes, fn case_node ->
+      build_cases(case_node, path, root, model_name, labels)
+    end)
+  end
+
+  defp parse_xml!(xml, path) do
+    try do
+      # xmerl expects the byte sequence declared by the XML prolog. Converting
+      # UTF-8 to Unicode codepoints first makes non-ASCII TCK cases invalid.
+      {document, _rest} = :xmerl_scan.string(:binary.bin_to_list(xml))
+      document
+    rescue
+      exception ->
+        raise "invalid TCK XML #{path}: #{Exception.message(exception)}"
+    end
+  end
+
+  defp build_cases(case_node, case_file, root, model_name, labels) do
+    group = Path.basename(Path.dirname(case_file))
+    upstream_id = xpath_string(case_node, "./@id") || raise("TCK case has no id: #{case_file}")
+    result_nodes = xpath(case_node, "./*[local-name()='resultNode']")
+
+    if result_nodes == [] do
+      raise "TCK case #{group}/#{upstream_id} has no resultNode"
+    end
 
     inputs =
-      :xmerl_xpath.string(~c"./inputs/input", case_node)
+      xpath(case_node, "./*[local-name()='inputNode']")
       |> Enum.reduce(%{}, fn input_node, acc ->
-        name = xpath_string(input_node, "./@name")
-        value_type = xpath_string(input_node, "./@type") || "string"
-        value = parse_typed_value(xpath_string(input_node, "./text()"), value_type)
-
-        if name, do: Map.put(acc, name, value), else: acc
+        name = xpath_string(input_node, "./@name") || raise("TCK inputNode has no name")
+        Map.put(acc, name, parse_container(input_node))
       end)
 
-    %Case{
-      group: group,
-      id: id,
-      labels: labels,
-      model_path: Path.expand(model_relative || "", Path.dirname(case_file)),
-      decision_name: decision_name || "",
-      inputs: inputs,
-      expected: expected,
-      metadata: %{
-        case_file: Path.relative_to(case_file, root),
-        model_relative_path: model_relative,
-        root: root
+    Enum.map(result_nodes, fn result_node ->
+      decision_name =
+        xpath_string(result_node, "./@name") || raise("TCK resultNode has no name")
+
+      expected_node =
+        case xpath(result_node, "./*[local-name()='expected']") do
+          [node] -> node
+          [] -> raise "TCK resultNode has no expected value: #{group}/#{upstream_id}"
+          _ -> raise "TCK resultNode has multiple expected values: #{group}/#{upstream_id}"
+        end
+
+      %Case{
+        group: group,
+        id: case_id(upstream_id, decision_name, length(result_nodes)),
+        labels: labels,
+        model_path: Path.expand(model_name, Path.dirname(case_file)),
+        decision_name: decision_name,
+        inputs: inputs,
+        expected: parse_container(expected_node),
+        metadata: %{
+          case_file: Path.relative_to(case_file, root),
+          compliance_level: compliance_level(case_file, root),
+          description: xpath_string(case_node, "./*[local-name()='description']/text()"),
+          model_relative_path: model_name,
+          result_type: xpath_string(result_node, "./@type"),
+          root: root,
+          upstream_id: upstream_id
+        }
       }
-    }
+    end)
+  end
+
+  defp parse_container(node) do
+    values = xpath(node, "./*[local-name()='value']")
+    lists = xpath(node, "./*[local-name()='list']")
+    components = xpath(node, "./*[local-name()='component']")
+
+    case {values, lists, components} do
+      {[value], [], []} ->
+        parse_value(value)
+
+      {[], [list], []} ->
+        parse_list(list)
+
+      {[], [], []} ->
+        nil
+
+      {[], [], components} ->
+        Map.new(components, &parse_component/1)
+
+      _ ->
+        raise "ambiguous TCK value container"
+    end
+  end
+
+  defp parse_list(node) do
+    xpath(node, "./*")
+    |> Enum.map(fn child ->
+      case local_name(child) do
+        "item" -> parse_container(child)
+        "value" -> parse_value(child)
+        "component" -> child |> parse_component() |> elem(1)
+        "list" -> parse_list(child)
+        name -> raise "unsupported TCK list element: #{name}"
+      end
+    end)
+  end
+
+  defp parse_component(node) do
+    # Empty-string context keys are legal FEEL names and occur in the corpus.
+    name = xpath_string_preserve_empty(node, "./@name")
+    {name, parse_container(node)}
+  end
+
+  defp parse_value(node) do
+    value = xpath_string(node, "./text()")
+    type = xpath_string(node, "./@*[local-name()='type']")
+    parse_typed_value(value, type)
   end
 
   defp parse_typed_value(nil, _type), do: nil
-  defp parse_typed_value(value, "string"), do: value
-  defp parse_typed_value("null", _type), do: nil
-  defp parse_typed_value(value, "boolean"), do: value == "true"
-  defp parse_typed_value(value, "number"), do: Decimal.new(value)
-  defp parse_typed_value(value, "date"), do: parse_date(value)
-  defp parse_typed_value(value, "time"), do: parse_time(value)
-  defp parse_typed_value(value, "date_time"), do: parse_date_time(value)
-  defp parse_typed_value(value, "duration"), do: parse_duration(value)
-  defp parse_typed_value(value, _type), do: value
+  defp parse_typed_value(value, nil), do: value
+  defp parse_typed_value(value, "xsd:string"), do: value
+  defp parse_typed_value(value, "xsd:boolean"), do: value == "true"
+  defp parse_typed_value(value, "xsd:decimal"), do: Decimal.new(value)
+  defp parse_typed_value("INF", "xsd:double"), do: :positive_infinity
+  defp parse_typed_value("-INF", "xsd:double"), do: :negative_infinity
+  defp parse_typed_value("NaN", "xsd:double"), do: :nan
+  defp parse_typed_value(value, "xsd:double"), do: Decimal.new(value)
+  defp parse_typed_value(value, "xsd:date"), do: parse_date(value)
+  defp parse_typed_value(value, "xsd:time"), do: parse_time(value)
+  defp parse_typed_value(value, "xsd:dateTime"), do: parse_date_time(value)
+  defp parse_typed_value(value, "xsd:duration"), do: parse_duration(value)
+
+  defp parse_typed_value(value, type) do
+    raise "unsupported TCK value type #{inspect(type)} for #{inspect(value)}"
+  end
 
   defp parse_date(value) do
     case Date.from_iso8601(value) do
@@ -122,12 +204,42 @@ defmodule Arbiter.DMN.TCK.Loader do
     end
   end
 
+  defp case_id(upstream_id, _decision_name, 1), do: upstream_id
+  defp case_id(upstream_id, decision_name, _count), do: "#{upstream_id}/#{decision_name}"
+
+  defp compliance_level(case_file, root) do
+    case_file
+    |> Path.relative_to(Path.join(root, "TestCases"))
+    |> Path.split()
+    |> List.first()
+  end
+
+  defp local_name({:xmlElement, name, _, _, _, _, _, _, _, _, _, _}) do
+    name
+    |> to_string()
+    |> String.split(":")
+    |> List.last()
+  end
+
+  defp xpath(node, path) do
+    :xmerl_xpath.string(String.to_charlist(path), node)
+  end
+
   defp xpath_string(node, path) do
     query = ~c"string(" ++ String.to_charlist(path) ++ ~c")"
 
     query
     |> :xmerl_xpath.string(node)
     |> normalize_xpath_string()
+  end
+
+  defp xpath_string_preserve_empty(node, path) do
+    query = ~c"string(" ++ String.to_charlist(path) ++ ~c")"
+
+    case :xmerl_xpath.string(query, node) do
+      {:xmlObj, :string, value} -> value |> to_string() |> String.trim()
+      value -> value |> to_string() |> String.trim()
+    end
   end
 
   defp normalize_xpath_string({:xmlObj, :string, value}) do

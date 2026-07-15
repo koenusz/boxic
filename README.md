@@ -9,19 +9,28 @@ DMN TCK harness.
 - `arbiter_dmn`: DMN model loading and decision evaluation using FEEL.
 - `arbiter_dmn_tck`: Internal TCK discovery, execution, and reporting.
 
-## Iteration A status
+## Current status
 
 - umbrella scaffolding complete;
-- local vendored TCK fixture corpus under `vendor/dmn-tck`;
+- complete official DMN TCK snapshot vendored under `vendor/dmn-tck` at the
+  revision in `PINNED_COMMIT`;
+- official namespaced test documents are discovered and normalized by the
+  native Elixir loader;
 - native Elixir TCK runner with explicit statuses;
-- machine-readable CSV and JSON report generation;
-- one end-to-end literal-expression case passing.
+- machine-readable CSV and JSON report generation.
+
+Engine compatibility with the official corpus is still in progress. A loaded
+test is not treated as passing unless it executes through Arbiter and its
+result matches the upstream expected value.
 
 ## Commands
 
 ```bash
 mix deps.get
 mix test
-mix tck --profile core --report artifacts/tck-results.csv
+mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 ```
 
+`mix test` runs the ExUnit suite and then prints a non-blocking compatibility
+summary for the complete pinned TCK corpus. Use `mix tck` directly when TCK
+failures should make the command exit non-zero.

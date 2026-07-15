@@ -38,10 +38,12 @@ defmodule Arbiter.DMN do
 
   defp parse_xml(xml) when is_binary(xml) do
     try do
-      {doc, _rest} = :xmerl_scan.string(String.to_charlist(xml))
+      {doc, _rest} = :xmerl_scan.string(:binary.bin_to_list(xml))
       {:ok, doc}
     rescue
       _ -> {:error, :invalid_xml}
+    catch
+      :exit, _reason -> {:error, :invalid_xml}
     end
   end
 

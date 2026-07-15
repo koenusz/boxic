@@ -1,7 +1,0 @@
-<definitions id="defs-struct-path" name="Structural Path" namespace="https://arbiter.example/dmn">
-  <decision id="d-path" name="Result">
-    <literalExpression>
-      <text>{a: 4}.a</text>
-    </literalExpression>
-  </decision>
-</definitions>

@@ -45,9 +45,29 @@ defmodule Arbiter.DMN.TCK do
       failed: Map.get(counts, :failed, 0),
       unsupported: Map.get(counts, :unsupported, 0),
       missing: Map.get(counts, :missing, 0),
-      error: Map.get(counts, :error, 0)
+      error: Map.get(counts, :error, 0),
+      supported: supported_count(counts),
+      compatibility_percent: compatibility_percent(counts),
+      coverage_percent: coverage_percent(counts, length(results))
     }
   end
+
+  defp supported_count(counts) do
+    Map.get(counts, :passed, 0) + Map.get(counts, :failed, 0)
+  end
+
+  defp compatibility_percent(counts) do
+    supported = supported_count(counts)
+
+    percentage(Map.get(counts, :passed, 0), supported)
+  end
+
+  defp coverage_percent(counts, total) do
+    percentage(supported_count(counts), total)
+  end
+
+  defp percentage(_part, 0), do: 0.0
+  defp percentage(part, whole), do: Float.round(part / whole * 100, 2)
 end
 
 defmodule ArbiterDmnTck do
