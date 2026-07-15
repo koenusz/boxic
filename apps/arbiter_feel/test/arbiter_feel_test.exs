@@ -19,6 +19,15 @@ defmodule Arbiter.FEELTest do
              Arbiter.FEEL.evaluate_ast({:call, :not_an_ast, []}, %{})
   end
 
+  test "if expression evaluates only the selected branch" do
+    assert {:ok, Decimal.new("2")} == Arbiter.FEEL.evaluate("if true then 1 + 1 else missing + 1")
+    assert {:ok, Decimal.new("3")} == Arbiter.FEEL.evaluate("if false then missing + 1 else 3")
+    assert {:ok, "else"} == Arbiter.FEEL.evaluate("if null then \"then\" else \"else\"")
+
+    assert {:error, %Arbiter.FEEL.Error{code: :type_error}} =
+             Arbiter.FEEL.evaluate("if 1 then true else false")
+  end
+
   test "arithmetic uses decimal semantics" do
     assert {:ok, %Decimal{} = result} = Arbiter.FEEL.evaluate("1 + 2 * 3", %{})
     assert Decimal.equal?(result, Decimal.new("7"))

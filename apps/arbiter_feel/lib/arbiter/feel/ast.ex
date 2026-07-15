@@ -9,7 +9,7 @@ defmodule Arbiter.FEEL.AST do
   alias Arbiter.FEEL.Error
 
   @unary_operators [:negate, :not]
-  @binary_operators [:plus, :minus, :mul, :div, :eq, :neq, :lt, :lte, :gt, :gte, :and, :or]
+  @binary_operators [:plus, :minus, :mul, :div, :pow, :eq, :neq, :lt, :lte, :gt, :gte, :and, :or]
 
   @spec validate(term()) :: :ok | {:error, Error.t()}
   def validate(ast) do
@@ -31,10 +31,16 @@ defmodule Arbiter.FEEL.AST do
   defp validate_node({:list, items}) when is_list(items), do: validate_children(items)
 
   defp validate_node({:context, entries}) when is_list(entries) do
-    Enum.reduce_while(entries, :ok, fn
-      {name, value}, :ok when is_binary(name) -> continue_or_halt(validate_node(value))
-      entry, :ok -> {:halt, {:error, "invalid context entry: #{inspect(entry)}"}}
-    end)
+    names = Enum.map(entries, fn {name, _value} -> name end)
+
+    if length(names) == length(Enum.uniq(names)) do
+      Enum.reduce_while(entries, :ok, fn
+        {name, value}, :ok when is_binary(name) -> continue_or_halt(validate_node(value))
+        entry, :ok -> {:halt, {:error, "invalid context entry: #{inspect(entry)}"}}
+      end)
+    else
+      {:error, "context keys must be unique"}
+    end
   end
 
   defp validate_node({:path, source, name}) when is_binary(name) and name != "",
@@ -46,6 +52,9 @@ defmodule Arbiter.FEEL.AST do
   defp validate_node({:range, start_inclusive, end_inclusive, first, last})
        when is_boolean(start_inclusive) and is_boolean(end_inclusive),
        do: validate_children([first, last])
+
+  defp validate_node({:if, condition, then_branch, else_branch}),
+    do: validate_children([condition, then_branch, else_branch])
 
   defp validate_node({:for, variable, source, body}) when is_binary(variable) and variable != "",
     do: validate_children([source, body])

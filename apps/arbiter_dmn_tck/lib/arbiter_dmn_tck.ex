@@ -8,14 +8,21 @@ defmodule Arbiter.DMN.TCK do
   alias Arbiter.DMN.TCK.Runner
 
   @feel_implemented_groups ~w(
+    0032-conditionals
+    0057-feel-context
     0064-feel-conjunction
     0065-feel-disjunction
     0066-feel-negation
+    0069-feel-list
     0100-feel-constants
+    0101-feel-constants
     0102-feel-constants
+    0105-feel-math
     0106-feel-ternary-logic
     0107-feel-ternary-logic-not
   )
+
+  @feel_additional_groups ~w(0032-conditionals)
 
   @spec run(keyword()) :: %{cases: list(), results: list(), summary: map()}
   def run(opts \\ []) do
@@ -59,9 +66,10 @@ defmodule Arbiter.DMN.TCK do
   end
 
   defp feel_case?(test_case) do
-    test_case.group
-    |> String.downcase()
-    |> String.contains?("feel")
+    test_case.group in @feel_additional_groups or
+      test_case.group
+      |> String.downcase()
+      |> String.contains?("feel")
   end
 
   defp maybe_filter_profile(cases, opts) do

@@ -24,6 +24,7 @@ defmodule Arbiter.FEEL do
           | {:path, ast(), String.t()}
           | {:filter, ast(), ast()}
           | {:range, boolean(), boolean(), ast(), ast()}
+          | {:if, ast(), ast(), ast()}
           | {:for, String.t(), ast(), ast()}
           | {:quantifier, :some | :every, String.t(), ast(), ast()}
           | {:function, [String.t()], ast()}
@@ -111,7 +112,23 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp tokenize(<<"substring before", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "substring_before"} | acc])
+
+  defp tokenize(<<"substring after", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "substring_after"} | acc])
+
+  defp tokenize(<<"date and time", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "date_time"} | acc])
+
   defp tokenize(<<"..", rest::binary>>, acc), do: tokenize(rest, [:range_dots | acc])
+
+  defp tokenize(<<".", digit::utf8, _rest::binary>> = input, acc)
+       when digit >= ?0 and digit <= ?9 do
+    {number, remaining} = take_number(input)
+    tokenize(remaining, [{:number, decimal_new(number)} | acc])
+  end
+
   defp tokenize(<<".", rest::binary>>, acc), do: tokenize(rest, [:dot | acc])
   defp tokenize(<<"(", rest::binary>>, acc), do: tokenize(rest, [:lparen | acc])
   defp tokenize(<<")", rest::binary>>, acc), do: tokenize(rest, [:rparen | acc])
@@ -123,6 +140,7 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<":", rest::binary>>, acc), do: tokenize(rest, [:colon | acc])
   defp tokenize(<<"+", rest::binary>>, acc), do: tokenize(rest, [:plus | acc])
   defp tokenize(<<"-", rest::binary>>, acc), do: tokenize(rest, [:minus | acc])
+  defp tokenize(<<"**", rest::binary>>, acc), do: tokenize(rest, [:pow | acc])
   defp tokenize(<<"*", rest::binary>>, acc), do: tokenize(rest, [:mul | acc])
   defp tokenize(<<"/", rest::binary>>, acc), do: tokenize(rest, [:div | acc])
   defp tokenize(<<">=", rest::binary>>, acc), do: tokenize(rest, [:gte | acc])
@@ -157,6 +175,9 @@ defmodule Arbiter.FEEL do
         "every" -> :every
         "satisfies" -> :satisfies
         "function" -> :function
+        "if" -> :if
+        "then" -> :then
+        "else" -> :else
         _ -> {:identifier, word}
       end
 
@@ -182,7 +203,7 @@ defmodule Arbiter.FEEL do
   defp take_while(binary, predicate), do: take_while(binary, predicate, "")
 
   defp take_number(binary) do
-    case Regex.run(~r/^\d+(?:\.\d+)?/, binary) do
+    case Regex.run(~r/^(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?/, binary) do
       [number] ->
         rest = String.slice(binary, String.length(number)..-1//1) || ""
         {number, rest}
@@ -204,11 +225,24 @@ defmodule Arbiter.FEEL do
 
   # ---------- Parser ----------
 
+  defp parse_expression([:if | _] = tokens), do: parse_if(tokens)
   defp parse_expression([:for | _] = tokens), do: parse_for(tokens)
   defp parse_expression([:some | _] = tokens), do: parse_quantifier(tokens)
   defp parse_expression([:every | _] = tokens), do: parse_quantifier(tokens)
   defp parse_expression([:function | _] = tokens), do: parse_function(tokens)
   defp parse_expression(tokens), do: parse_or(tokens)
+
+  defp parse_if([:if | rest]) do
+    with {:ok, condition, [:then | rest2]} <- parse_expression(rest),
+         {:ok, then_branch, [:else | rest3]} <- parse_expression(rest2),
+         {:ok, else_branch, rest4} <- parse_expression(rest3) do
+      {:ok, {:if, condition, then_branch, else_branch}, rest4}
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid if-expression")}
+    end
+  end
+
+  defp parse_if(_tokens), do: {:error, error(:invalid_syntax, "invalid if-expression")}
 
   defp parse_for([:for, {:identifier, var}, :in | rest]) do
     with {:ok, source, [:return | rest2]} <- parse_expression(rest),
@@ -368,7 +402,21 @@ defmodule Arbiter.FEEL do
     end
   end
 
-  defp parse_unary(tokens), do: parse_postfix(tokens)
+  defp parse_unary(tokens), do: parse_power(tokens)
+
+  defp parse_power(tokens) do
+    with {:ok, base, rest} <- parse_postfix(tokens) do
+      case rest do
+        [:pow | rest2] ->
+          with {:ok, exponent, rest3} <- parse_unary(rest2) do
+            {:ok, {:binary, :pow, base, exponent}, rest3}
+          end
+
+        _ ->
+          {:ok, base, rest}
+      end
+    end
+  end
 
   defp parse_postfix(tokens) do
     with {:ok, base, rest} <- parse_primary(tokens) do
@@ -449,9 +497,45 @@ defmodule Arbiter.FEEL do
   defp parse_context_tail(_entries, _rest),
     do: {:error, error(:invalid_syntax, "invalid context literal")}
 
-  defp parse_context_key([{:identifier, key} | rest]), do: {:ok, key, rest}
-  defp parse_context_key([{:string, key} | rest]), do: {:ok, key, rest}
-  defp parse_context_key(_tokens), do: {:error, error(:invalid_syntax, "invalid context key")}
+  defp parse_context_key(tokens) do
+    {key_tokens, rest} = Enum.split_while(tokens, &(&1 != :colon))
+
+    case {context_key(key_tokens), rest} do
+      {{:ok, key}, [_colon | remaining]} -> {:ok, key, [:colon | remaining]}
+      _ -> {:error, error(:invalid_syntax, "invalid context key")}
+    end
+  end
+
+  defp context_key([{:string, key}]), do: {:ok, key}
+  defp context_key([]), do: :error
+
+  defp context_key(tokens) do
+    tokens
+    |> Enum.reduce_while({:ok, "", nil}, fn token, {:ok, acc, previous} ->
+      case context_key_token(token) do
+        {:word, value} ->
+          separator = if previous == :word, do: " ", else: ""
+          {:cont, {:ok, acc <> separator <> value, :word}}
+
+        {:operator, value} ->
+          {:cont, {:ok, acc <> value, :operator}}
+
+        :error ->
+          {:halt, :error}
+      end
+    end)
+    |> case do
+      {:ok, key, _previous} -> {:ok, key}
+      :error -> :error
+    end
+  end
+
+  defp context_key_token({:identifier, value}), do: {:word, value}
+  defp context_key_token(:plus), do: {:operator, "+"}
+  defp context_key_token(:minus), do: {:operator, "-"}
+  defp context_key_token(:mul), do: {:operator, "*"}
+  defp context_key_token(:div), do: {:operator, "/"}
+  defp context_key_token(_token), do: :error
 
   defp parse_list_or_range([:rbracket | rest]), do: {:ok, {:list, []}, rest}
 
@@ -525,6 +609,9 @@ defmodule Arbiter.FEEL do
   defp eval({:path, expr, key}, context) do
     with {:ok, value} <- eval(expr, context) do
       case value do
+        list when is_list(list) ->
+          {:ok, Enum.map(list, fn item -> if is_map(item), do: Map.get(item, key), else: nil end)}
+
         map when is_map(map) ->
           {:ok, Map.get(map, key)}
 
@@ -538,20 +625,10 @@ defmodule Arbiter.FEEL do
     with {:ok, source} <- eval(source_expr, context) do
       case source do
         list when is_list(list) ->
-          filtered =
-            Enum.filter(list, fn item ->
-              predicate_context = bind_item_context(context, item)
+          eval_list_filter(list, predicate, context)
 
-              case eval(predicate, predicate_context) do
-                {:ok, true} -> true
-                _ -> false
-              end
-            end)
-
-          {:ok, filtered}
-
-        _ ->
-          {:error, error(:type_error, "filter source must be a list")}
+        scalar ->
+          eval_scalar_filter(scalar, predicate, context)
       end
     end
   end
@@ -566,6 +643,17 @@ defmodule Arbiter.FEEL do
          start_inclusive: start_inclusive,
          end_inclusive: end_inclusive
        }}
+    end
+  end
+
+  defp eval({:if, condition_ast, then_ast, else_ast}, context) do
+    with {:ok, condition} <- eval(condition_ast, context) do
+      case condition do
+        true -> eval(then_ast, context)
+        false -> eval(else_ast, context)
+        nil -> eval(else_ast, context)
+        _ -> {:error, error(:type_error, "if condition must be boolean")}
+      end
     end
   end
 
@@ -656,6 +744,55 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp eval_list_filter(list, predicate, context) do
+    case eval(predicate, context) do
+      {:ok, %Decimal{} = index} ->
+        {:ok, list_index(list, index)}
+
+      _ ->
+        filtered =
+          Enum.filter(list, fn item ->
+            predicate_context = bind_item_context(context, item)
+
+            case eval(predicate, predicate_context) do
+              {:ok, true} -> true
+              _ -> false
+            end
+          end)
+
+        {:ok, filtered}
+    end
+  end
+
+  defp eval_scalar_filter(scalar, predicate, context) do
+    predicate_context = bind_item_context(context, scalar)
+
+    case eval(predicate, predicate_context) do
+      {:ok, true} -> {:ok, [scalar]}
+      {:ok, false} -> {:ok, []}
+      {:ok, nil} -> {:ok, []}
+      {:ok, %Decimal{} = index} -> {:ok, scalar_index(scalar, index)}
+      {:ok, _other} -> {:ok, nil}
+      {:error, %Error{} = error} -> {:error, error}
+    end
+  end
+
+  defp list_index(list, index) do
+    with {:ok, position} <- decimal_integer(index),
+         true <- position != 0 do
+      if position > 0, do: Enum.at(list, position - 1), else: Enum.at(list, position)
+    else
+      _ -> nil
+    end
+  end
+
+  defp scalar_index(scalar, index) do
+    case decimal_integer(index) do
+      {:ok, position} when position in [1, -1] -> scalar
+      _ -> nil
+    end
+  end
+
   defp bind_item_context(context, item) do
     base = Map.put(context, "item", item)
 
@@ -707,6 +844,7 @@ defmodule Arbiter.FEEL do
   defp eval_binary(:plus, left, right), do: plus(left, right)
   defp eval_binary(:minus, left, right), do: minus(left, right)
   defp eval_binary(:mul, left, right), do: decimal_binary(left, right, &decimal_mult/2)
+  defp eval_binary(:pow, left, right), do: decimal_power(left, right)
 
   defp eval_binary(:div, left, right) do
     case {left, right} do
@@ -718,7 +856,7 @@ defmodule Arbiter.FEEL do
 
       {%Decimal{} = l, %Decimal{} = r} ->
         if decimal_equal?(r, decimal_new("0")) do
-          {:error, error(:evaluation_error, "division by zero")}
+          {:ok, nil}
         else
           {:ok, decimal_div(l, r)}
         end
@@ -756,8 +894,14 @@ defmodule Arbiter.FEEL do
     end
   end
 
-  defp eval_binary(:eq, left, right), do: {:ok, equal_semantic?(left, right)}
-  defp eval_binary(:neq, left, right), do: {:ok, not equal_semantic?(left, right)}
+  defp eval_binary(:eq, left, right), do: {:ok, feel_equal(left, right)}
+
+  defp eval_binary(:neq, left, right) do
+    case feel_equal(left, right) do
+      nil -> {:ok, nil}
+      equal? -> {:ok, not equal?}
+    end
+  end
 
   defp eval_binary(:and, left, right), do: {:ok, feel_and(left, right)}
   defp eval_binary(:or, left, right), do: {:ok, feel_or(left, right)}
@@ -856,6 +1000,105 @@ defmodule Arbiter.FEEL do
       {_, nil} -> {:ok, nil}
       {%Decimal{} = l, %Decimal{} = r} -> {:ok, operation.(l, r)}
       _ -> {:error, error(:type_error, "arithmetic requires numbers")}
+    end
+  end
+
+  defp decimal_power(nil, _right), do: {:ok, nil}
+  defp decimal_power(_left, nil), do: {:ok, nil}
+
+  defp decimal_power(%Decimal{} = base, %Decimal{} = exponent) do
+    case decimal_integer(exponent) do
+      {:ok, integer} when integer < 0 ->
+        powered = decimal_integer_power(base, -integer)
+
+        if decimal_equal?(powered, decimal_new("0")) do
+          {:ok, nil}
+        else
+          {:ok, decimal_div(decimal_new("1"), powered)}
+        end
+
+      {:ok, integer} ->
+        {:ok, decimal_integer_power(base, integer)}
+
+      :error ->
+        {:error, error(:type_error, "exponent must be an integer")}
+    end
+  end
+
+  defp decimal_power(_left, _right),
+    do: {:error, error(:type_error, "exponentiation requires numbers")}
+
+  defp decimal_integer_power(_base, 0), do: decimal_new("1")
+
+  defp decimal_integer_power(base, exponent) do
+    decimal_integer_power(base, exponent, decimal_new("1"))
+  end
+
+  defp decimal_integer_power(_base, 0, acc), do: acc
+
+  defp decimal_integer_power(base, exponent, acc) when rem(exponent, 2) == 1 do
+    decimal_integer_power(decimal_mult(base, base), div(exponent, 2), decimal_mult(acc, base))
+  end
+
+  defp decimal_integer_power(base, exponent, acc) do
+    decimal_integer_power(decimal_mult(base, base), div(exponent, 2), acc)
+  end
+
+  defp decimal_integer(value) do
+    integer = Decimal.to_integer(value)
+    if decimal_equal?(value, decimal_new(integer)), do: {:ok, integer}, else: :error
+  rescue
+    _ -> :error
+  end
+
+  defp feel_equal(nil, nil), do: true
+  defp feel_equal(nil, _right), do: false
+  defp feel_equal(_left, nil), do: false
+  defp feel_equal(%Decimal{} = left, %Decimal{} = right), do: decimal_equal?(left, right)
+  defp feel_equal(left, right) when is_boolean(left) and is_boolean(right), do: left == right
+  defp feel_equal(left, right) when is_binary(left) and is_binary(right), do: left == right
+  defp feel_equal(%Date{} = left, %Date{} = right), do: Date.compare(left, right) == :eq
+  defp feel_equal(%Time{} = left, %Time{} = right), do: Time.compare(left, right) == :eq
+
+  defp feel_equal(%DateTime{} = left, %DateTime{} = right),
+    do: DateTime.compare(left, right) == :eq
+
+  defp feel_equal(%Duration{} = left, %Duration{} = right),
+    do: left.months == right.months and left.seconds == right.seconds
+
+  defp feel_equal(%Range{} = left, %Range{} = right) do
+    left.start_inclusive == right.start_inclusive and
+      left.end_inclusive == right.end_inclusive and
+      feel_equal(left.start, right.start) == true and
+      feel_equal(left.end, right.end) == true
+  end
+
+  defp feel_equal(left, right) when is_list(left) and is_list(right) do
+    if length(left) == length(right) do
+      left |> Enum.zip(right) |> Enum.map(fn {l, r} -> feel_equal(l, r) end) |> equality_all()
+    else
+      false
+    end
+  end
+
+  defp feel_equal(left, right)
+       when is_map(left) and is_map(right) and not is_struct(left) and not is_struct(right) do
+    if Map.keys(left) |> Enum.sort() == Map.keys(right) |> Enum.sort() do
+      left
+      |> Enum.map(fn {key, value} -> feel_equal(value, Map.fetch!(right, key)) end)
+      |> equality_all()
+    else
+      false
+    end
+  end
+
+  defp feel_equal(_left, _right), do: nil
+
+  defp equality_all(results) do
+    cond do
+      Enum.any?(results, &(&1 == false)) -> false
+      Enum.any?(results, &is_nil/1) -> nil
+      true -> true
     end
   end
 

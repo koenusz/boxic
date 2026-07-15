@@ -10,6 +10,8 @@ defmodule Arbiter.FEEL.Builtins do
     upper_case
     lower_case
     substring
+    substring_before
+    substring_after
     count
     sum
     min
@@ -55,6 +57,12 @@ defmodule Arbiter.FEEL.Builtins do
       {"substring", [value, %Decimal{} = start, %Decimal{} = len]} when is_binary(value) ->
         index = Decimal.to_integer(start) - 1
         {:ok, String.slice(value, max(index, 0), Decimal.to_integer(len))}
+
+      {"substring_before", [value, match]} when is_binary(value) and is_binary(match) ->
+        {:ok, substring_before(value, match)}
+
+      {"substring_after", [value, match]} when is_binary(value) and is_binary(match) ->
+        {:ok, substring_after(value, match)}
 
       {"count", [list]} when is_list(list) ->
         {:ok, Decimal.new(length(list))}
@@ -127,6 +135,24 @@ defmodule Arbiter.FEEL.Builtins do
           {:ok, naive} -> DateTime.from_naive(naive, "Etc/UTC")
           _ -> {:error, err(:evaluation_error, "invalid date_time literal")}
         end
+    end
+  end
+
+  defp substring_before(value, match) do
+    case :binary.match(value, match) do
+      {index, _length} -> binary_part(value, 0, index)
+      :nomatch -> ""
+    end
+  end
+
+  defp substring_after(value, match) do
+    case :binary.match(value, match) do
+      {index, length} ->
+        start = index + length
+        binary_part(value, start, byte_size(value) - start)
+
+      :nomatch ->
+        ""
     end
   end
 
