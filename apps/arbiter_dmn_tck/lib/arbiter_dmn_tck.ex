@@ -9,12 +9,16 @@ defmodule Arbiter.DMN.TCK do
 
   @feel_implemented_groups ~w(
     0001-filter
+    0050-feel-abs-function
+    0058-feel-number-function
     0032-conditionals
     0057-feel-context
     0064-feel-conjunction
     0065-feel-disjunction
     0066-feel-negation
+    0068-feel-equality
     0069-feel-list
+    0072-feel-in
     0090-feel-paths
     0100-feel-constants
     0101-feel-constants
@@ -22,6 +26,17 @@ defmodule Arbiter.DMN.TCK do
     0105-feel-math
     0106-feel-ternary-logic
     0107-feel-ternary-logic-not
+    1101-feel-floor-function
+    1102-feel-ceiling-function
+    1103-feel-substring-function
+    1104-feel-string-length-function
+    1105-feel-upper-case-function
+    1106-feel-lower-case-function
+    1110-feel-contains-function
+    1115-feel-date-function
+    1116-feel-time-function
+    1117-feel-date-and-time-function
+    1120-feel-duration-function
     1131-feel-function-invocation
   )
 

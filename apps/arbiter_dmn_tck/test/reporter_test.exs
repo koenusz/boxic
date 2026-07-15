@@ -46,6 +46,7 @@ defmodule Arbiter.DMN.TCK.ReporterTest do
 
     assert entry["expected"]["duration"] == %{
              "type" => "duration",
+             "kind" => "year_month",
              "months" => 1,
              "seconds" => 30
            }
@@ -79,7 +80,7 @@ defmodule Arbiter.DMN.TCK.ReporterTest do
   defp sample_result do
     value = %{
       "amount" => Decimal.new("1.25"),
-      "duration" => %Duration{months: 1, seconds: 30}
+      "duration" => %Duration{kind: :year_month, months: 1, seconds: 30}
     }
 
     test_case = %Case{

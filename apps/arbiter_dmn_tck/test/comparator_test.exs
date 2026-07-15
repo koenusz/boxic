@@ -12,7 +12,7 @@ defmodule Arbiter.DMN.TCK.ComparatorTest do
       "date" => ~D[2026-07-15],
       "time" => ~T[10:30:00],
       "date_time" => ~U[2026-07-15 10:30:00Z],
-      "duration" => %Duration{months: 2, seconds: 90},
+      "duration" => %Duration{kind: :year_month, months: 2, seconds: 90},
       "items" => [Decimal.new("2.0"), %{"ok" => true}]
     }
 
@@ -21,7 +21,7 @@ defmodule Arbiter.DMN.TCK.ComparatorTest do
       "date" => ~D[2026-07-15],
       "time" => ~T[10:30:00],
       "date_time" => equivalent_datetime,
-      "duration" => %Duration{months: 2, seconds: 90},
+      "duration" => %Duration{kind: :year_month, months: 2, seconds: 90},
       "items" => [Decimal.new("2"), %{"ok" => true}]
     }
 

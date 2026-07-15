@@ -4,6 +4,8 @@ defmodule Arbiter.DMN.TCK.Reporter do
   """
 
   alias Arbiter.FEEL.Duration
+  alias Arbiter.FEEL.DateTime, as: FeelDateTime
+  alias Arbiter.FEEL.Time, as: FeelTime
 
   @schema_version "1.0"
   @formats [:csv, :json, :both]
@@ -50,8 +52,19 @@ defmodule Arbiter.DMN.TCK.Reporter do
   def encode_value(%NaiveDateTime{} = value),
     do: %{"type" => "date_time", "value" => NaiveDateTime.to_iso8601(value)}
 
+  def encode_value(%FeelTime{} = value),
+    do: %{"type" => "time", "value" => FeelTime.to_string(value)}
+
+  def encode_value(%FeelDateTime{} = value),
+    do: %{"type" => "date_time", "value" => FeelDateTime.to_string(value)}
+
   def encode_value(%Duration{} = value),
-    do: %{"type" => "duration", "months" => value.months, "seconds" => value.seconds}
+    do: %{
+      "type" => "duration",
+      "kind" => Atom.to_string(value.kind),
+      "months" => value.months,
+      "seconds" => value.seconds
+    }
 
   def encode_value(%Arbiter.FEEL.Error{} = error),
     do: %{

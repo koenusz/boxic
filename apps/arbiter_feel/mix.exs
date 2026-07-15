@@ -25,7 +25,8 @@ defmodule ArbiterFeel.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:decimal, "~> 2.1"}
+      {:decimal, "~> 2.1"},
+      {:tzdata, "~> 1.1.4"}
     ]
   end
 end

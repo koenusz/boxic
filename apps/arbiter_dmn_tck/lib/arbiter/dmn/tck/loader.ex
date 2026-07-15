@@ -9,6 +9,8 @@ defmodule Arbiter.DMN.TCK.Loader do
 
   alias Arbiter.DMN.TCK.Case
   alias Arbiter.FEEL.Duration
+  alias Arbiter.FEEL.DateTime, as: FeelDateTime
+  alias Arbiter.FEEL.Time, as: FeelTime
 
   @default_root Path.expand("../../../../../../vendor/dmn-tck", __DIR__)
   @test_document_glob "TestCases/**/*-test-*.xml"
@@ -214,8 +216,13 @@ defmodule Arbiter.DMN.TCK.Loader do
   end
 
   defp parse_value(node) do
-    value = xpath_string(node, "./text()")
     type = xpath_string(node, "./@*[local-name()='type']")
+
+    value =
+      if type == "xsd:string",
+        do: xpath_raw_string(node, "./text()"),
+        else: xpath_string(node, "./text()")
+
     parse_typed_value(value, type)
   end
 
@@ -245,15 +252,15 @@ defmodule Arbiter.DMN.TCK.Loader do
   end
 
   defp parse_time(value) do
-    case Time.from_iso8601(value) do
+    case FeelTime.parse(value) do
       {:ok, time} -> time
       _ -> value
     end
   end
 
   defp parse_date_time(value) do
-    case DateTime.from_iso8601(value) do
-      {:ok, datetime, _offset} -> datetime
+    case FeelDateTime.parse(value) do
+      {:ok, datetime} -> datetime
       _ -> value
     end
   end
@@ -300,6 +307,15 @@ defmodule Arbiter.DMN.TCK.Loader do
     case :xmerl_xpath.string(query, node) do
       {:xmlObj, :string, value} -> value |> to_string() |> String.trim()
       value -> value |> to_string() |> String.trim()
+    end
+  end
+
+  defp xpath_raw_string(node, path) do
+    query = ~c"string(" ++ String.to_charlist(path) ++ ~c")"
+
+    case :xmerl_xpath.string(query, node) do
+      {:xmlObj, :string, value} -> to_string(value)
+      value -> to_string(value)
     end
   end
 

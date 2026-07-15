@@ -13,6 +13,8 @@ defmodule Arbiter.FEEL do
   alias Arbiter.FEEL.Function
   alias Arbiter.FEEL.Range
   alias Arbiter.FEEL.Duration
+  alias Arbiter.FEEL.DateTime, as: FeelDateTime
+  alias Arbiter.FEEL.Time, as: FeelTime
 
   @type ast ::
           {:literal, term()}
@@ -117,11 +119,66 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp tokenize(<<"@\"", rest::binary>>, acc) do
+    case take_string(rest, "") do
+      {:ok, value, remaining} ->
+        case parse_at_literal(value) do
+          {:ok, temporal} -> tokenize(remaining, [{:literal, temporal} | acc])
+          :error -> {:error, error(:invalid_syntax, "invalid at-literal")}
+        end
+
+      :error ->
+        {:error, error(:invalid_syntax, "unterminated at-literal")}
+    end
+  end
+
   defp tokenize(<<"substring before", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "substring_before"} | acc])
 
   defp tokenize(<<"substring after", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "substring_after"} | acc])
+
+  defp tokenize(<<"string length", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "string_length"} | acc])
+
+  defp tokenize(<<"upper case", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "upper_case"} | acc])
+
+  defp tokenize(<<"lower case", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "lower_case"} | acc])
+
+  defp tokenize(<<"list contains", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "list_contains"} | acc])
+
+  defp tokenize(<<"insert before", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "insert_before"} | acc])
+
+  defp tokenize(<<"index of", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "index_of"} | acc])
+
+  defp tokenize(<<"distinct values", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "distinct_values"} | acc])
+
+  defp tokenize(<<"new item", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "new_item"} | acc])
+
+  defp tokenize(<<"start position", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "start_position"} | acc])
+
+  defp tokenize(<<"grouping separator", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "grouping_separator"} | acc])
+
+  defp tokenize(<<"decimal separator", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "decimal_separator"} | acc])
+
+  defp tokenize(<<"time offset", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "time offset"} | acc])
+
+  defp tokenize(<<"start included", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "start included"} | acc])
+
+  defp tokenize(<<"end included", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "end included"} | acc])
 
   defp tokenize(<<"date and time", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "date_time"} | acc])
@@ -164,6 +221,7 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<char::utf8, _rest::binary>> = input, acc)
        when (char >= ?a and char <= ?z) or (char >= ?A and char <= ?Z) or char == ?_ do
     {word, remaining} = take_while(input, &identifier_char?/1)
+    {word, remaining} = consume_spaced_identifier(word, remaining)
 
     token =
       case word do
@@ -190,6 +248,46 @@ defmodule Arbiter.FEEL do
   end
 
   defp tokenize(_input, _acc), do: {:error, error(:invalid_syntax, "invalid token")}
+
+  defp consume_spaced_identifier("date", remaining) do
+    case Regex.run(~r/^\s+and\s+time/, remaining, return: :index) do
+      [{0, length}] ->
+        {"date_time", binary_part(remaining, length, byte_size(remaining) - length)}
+
+      _ ->
+        {"date", remaining}
+    end
+  end
+
+  defp consume_spaced_identifier(word, remaining), do: {word, remaining}
+
+  defp parse_at_literal(value) do
+    cond do
+      String.contains?(value, "T") ->
+        FeelDateTime.parse(value)
+
+      String.starts_with?(value, "P") or String.starts_with?(value, "-P") ->
+        Duration.parse_iso8601(value)
+
+      String.contains?(value, ":") ->
+        FeelTime.parse(value)
+
+      true ->
+        parse_at_date(value)
+    end
+  end
+
+  defp parse_at_date(value) do
+    case Regex.run(~r/^(-?(?:\d{4}|[1-9]\d{4,8}))-(\d{2})-(\d{2})$/, value,
+           capture: :all_but_first
+         ) do
+      [year, month, day] ->
+        Date.new(String.to_integer(year), String.to_integer(month), String.to_integer(day))
+
+      _ ->
+        :error
+    end
+  end
 
   defp identifier_char?(char) do
     (char >= ?a and char <= ?z) or
@@ -501,6 +599,12 @@ defmodule Arbiter.FEEL do
     parse_postfix_tail({:path, base, key}, rest)
   end
 
+  defp parse_postfix_tail(base, [:lbracket]), do: {:ok, base, [:lbracket]}
+
+  defp parse_postfix_tail(base, [:lbracket, operator | _] = rest)
+       when operator in [:eq, :neq, :gt, :gte, :lt, :lte],
+       do: {:ok, base, rest}
+
   defp parse_postfix_tail(base, [:lbracket | rest]) do
     with {:ok, predicate, [:rbracket | rest2]} <- parse_expression(rest) do
       parse_postfix_tail({:filter, base, predicate}, rest2)
@@ -521,6 +625,12 @@ defmodule Arbiter.FEEL do
 
   defp parse_call_args([:rparen | _] = rest), do: {:ok, [], rest}
 
+  defp parse_call_args([{:identifier, name}, :colon | rest]) do
+    with {:ok, value, rest2} <- parse_expression(rest) do
+      parse_call_args_tail([{:named_arg, name, value}], rest2)
+    end
+  end
+
   defp parse_call_args(tokens) do
     with {:ok, first, rest} <- parse_expression(tokens) do
       parse_call_args_tail([first], rest)
@@ -528,17 +638,26 @@ defmodule Arbiter.FEEL do
   end
 
   defp parse_call_args_tail(args, [:comma | rest]) do
-    with {:ok, arg, rest2} <- parse_expression(rest) do
+    with {:ok, arg, rest2} <- parse_call_arg(rest) do
       parse_call_args_tail(args ++ [arg], rest2)
     end
   end
 
   defp parse_call_args_tail(args, rest), do: {:ok, args, rest}
 
+  defp parse_call_arg([{:identifier, name}, :colon | rest]) do
+    with {:ok, value, rest2} <- parse_expression(rest) do
+      {:ok, {:named_arg, name, value}, rest2}
+    end
+  end
+
+  defp parse_call_arg(tokens), do: parse_expression(tokens)
+
   defp parse_primary([{:number, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:string, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:boolean, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:null, nil} | rest]), do: {:ok, {:literal, nil}, rest}
+  defp parse_primary([{:literal, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:identifier, name} | rest]), do: {:ok, {:identifier, name}, rest}
   defp parse_primary([:lbrace | rest]), do: parse_context_literal(rest)
   defp parse_primary([:lbracket | rest]), do: parse_list_or_range(rest)
@@ -707,7 +826,7 @@ defmodule Arbiter.FEEL do
           {:ok, Enum.map(list, fn item -> if is_map(item), do: Map.get(item, key), else: nil end)}
 
         map when is_map(map) ->
-          {:ok, Map.get(map, key)}
+          {:ok, property_value(map, key)}
 
         _ ->
           {:ok, nil}
@@ -822,7 +941,7 @@ defmodule Arbiter.FEEL do
 
   defp eval({:call, callee_ast, args_ast}, context) do
     with {:ok, callee} <- eval(callee_ast, context),
-         {:ok, arg_values} <- eval_list(args_ast, context, []) do
+         {:ok, arg_values} <- eval_call_args(args_ast, context, []) do
       apply_function(callee, arg_values)
     end
   end
@@ -847,6 +966,83 @@ defmodule Arbiter.FEEL do
     with {:ok, left_value} <- eval(left, context),
          {:ok, right_value} <- eval(right, context) do
       eval_binary(op, left_value, right_value)
+    end
+  end
+
+  defp property_value(%Date{} = value, "year"), do: decimal_new(value.year)
+  defp property_value(%Date{} = value, "month"), do: decimal_new(value.month)
+  defp property_value(%Date{} = value, "day"), do: decimal_new(value.day)
+  defp property_value(%Date{} = value, "weekday"), do: decimal_new(Date.day_of_week(value))
+
+  defp property_value(%FeelDateTime{date: date}, key) when key in ~w(year month day weekday),
+    do: property_value(date, key)
+
+  defp property_value(%FeelDateTime{time: time}, key), do: property_value(time, key)
+  defp property_value(%FeelTime{} = value, "hour"), do: decimal_new(value.hour)
+  defp property_value(%FeelTime{} = value, "minute"), do: decimal_new(value.minute)
+  defp property_value(%FeelTime{} = value, "second"), do: value.second
+
+  defp property_value(%FeelTime{zone: {:offset, seconds}}, "time offset"),
+    do: Duration.from_seconds(seconds)
+
+  defp property_value(%FeelTime{}, "time offset"), do: nil
+  defp property_value(%FeelTime{zone: {:iana, name}}, "timezone"), do: name
+  defp property_value(%FeelTime{}, "timezone"), do: nil
+
+  defp property_value(%Duration{kind: :year_month, months: months}, "years"),
+    do: decimal_new(div(months, 12))
+
+  defp property_value(%Duration{kind: :year_month, months: months}, "months"),
+    do: decimal_new(rem(months, 12))
+
+  defp property_value(%Duration{}, key) when key in ~w(years months), do: nil
+
+  defp property_value(%Duration{kind: :day_time, seconds: seconds}, "days"),
+    do: seconds_component(seconds, 86_400, :quotient)
+
+  defp property_value(%Duration{kind: :day_time, seconds: seconds}, "hours"),
+    do: seconds_component(seconds, 3_600, :remainder)
+
+  defp property_value(%Duration{kind: :day_time, seconds: seconds}, "minutes"),
+    do: seconds_component(seconds, 60, :remainder)
+
+  defp property_value(%Duration{kind: :day_time, seconds: seconds}, "seconds"),
+    do: Decimal.rem(decimal_value(seconds), Decimal.new(60))
+
+  defp property_value(%Duration{}, key) when key in ~w(days hours minutes seconds), do: nil
+
+  defp property_value(%Range{} = value, "start"), do: value.start
+  defp property_value(%Range{} = value, "end"), do: value.end
+  defp property_value(%Range{} = value, "start included"), do: value.start_inclusive
+  defp property_value(%Range{} = value, "end included"), do: value.end_inclusive
+  defp property_value(map, key), do: Map.get(map, key)
+
+  defp seconds_component(seconds, divisor, :quotient) do
+    seconds |> decimal_value() |> Decimal.div_int(divisor) |> Decimal.round(0, :down)
+  end
+
+  defp seconds_component(seconds, divisor, :remainder) do
+    seconds
+    |> decimal_value()
+    |> Decimal.div_int(divisor)
+    |> Decimal.round(0, :down)
+    |> Decimal.rem(Decimal.new(if(divisor == 3_600, do: 24, else: 60)))
+  end
+
+  defp decimal_value(%Decimal{} = value), do: value
+  defp decimal_value(value), do: decimal_new(value)
+
+  defp eval_call_args([], _context, acc), do: {:ok, Enum.reverse(acc)}
+
+  defp eval_call_args([{:named_arg, name, value_ast} | rest], context, acc) do
+    with {:ok, value} <- eval(value_ast, context) do
+      eval_call_args(rest, context, [{:named_arg, name, value} | acc])
+    end
+  end
+
+  defp eval_call_args([arg_ast | rest], context, acc) do
+    with {:ok, value} <- eval(arg_ast, context) do
+      eval_call_args(rest, context, [value | acc])
     end
   end
 
@@ -891,6 +1087,12 @@ defmodule Arbiter.FEEL do
 
   defp iteration_values({:sequence, %Decimal{} = first, %Decimal{} = last}) do
     numeric_sequence(first, last, true)
+  end
+
+  defp iteration_values({:sequence, %Date{} = first, %Date{} = last}) do
+    step = if Date.compare(first, last) in [:lt, :eq], do: 1, else: -1
+    count = abs(Date.diff(last, first))
+    {:ok, Enum.map(0..count, &Date.add(first, &1 * step))}
   end
 
   defp iteration_values(%Range{start: %Decimal{} = first, end: %Decimal{} = last}) do
@@ -1057,6 +1259,15 @@ defmodule Arbiter.FEEL do
       is_struct(left, DateTime) and is_struct(right, DateTime) ->
         {:ok, compare_from_op(op, DateTime.compare(left, right))}
 
+      match?(%FeelTime{}, left) and match?(%FeelTime{}, right) ->
+        compare_temporal(op, FeelTime.compare(left, right))
+
+      match?(%FeelDateTime{}, left) and match?(%FeelDateTime{}, right) ->
+        compare_temporal(op, FeelDateTime.compare(left, right))
+
+      match?(%Duration{}, left) and match?(%Duration{}, right) ->
+        compare_temporal(op, Duration.compare(left, right))
+
       is_binary(left) and is_binary(right) ->
         {:ok, compare_from_op(op, compare_strings(left, right))}
 
@@ -1103,11 +1314,23 @@ defmodule Arbiter.FEEL do
       {%Duration{} = duration, %DateTime{} = datetime} ->
         {:ok, Duration.add_to_datetime(datetime, duration)}
 
+      {%FeelDateTime{} = datetime, %Duration{} = duration} ->
+        temporal_arithmetic(FeelDateTime.add_duration(datetime, duration))
+
+      {%Duration{} = duration, %FeelDateTime{} = datetime} ->
+        temporal_arithmetic(FeelDateTime.add_duration(datetime, duration))
+
       {%Time{} = time, %Duration{} = duration} ->
         {:ok, Duration.add_to_time(time, duration)}
 
       {%Duration{} = duration, %Time{} = time} ->
         {:ok, Duration.add_to_time(time, duration)}
+
+      {%FeelTime{} = time, %Duration{months: 0} = duration} ->
+        {:ok, FeelTime.add_seconds(time, duration.seconds)}
+
+      {%Duration{months: 0} = duration, %FeelTime{} = time} ->
+        {:ok, FeelTime.add_seconds(time, duration.seconds)}
 
       {%Duration{} = l, %Duration{} = r} ->
         {:ok, Duration.add(l, r)}
@@ -1134,14 +1357,23 @@ defmodule Arbiter.FEEL do
       {%DateTime{} = left_datetime, %DateTime{} = right_datetime} ->
         {:ok, Duration.from_seconds(DateTime.diff(left_datetime, right_datetime, :second))}
 
+      {%FeelDateTime{} = left_datetime, %FeelDateTime{} = right_datetime} ->
+        temporal_arithmetic(FeelDateTime.difference(left_datetime, right_datetime))
+
       {%Date{} = date, %Duration{} = duration} ->
         {:ok, Duration.add_to_date(date, Duration.negate(duration))}
 
       {%DateTime{} = datetime, %Duration{} = duration} ->
         {:ok, Duration.add_to_datetime(datetime, Duration.negate(duration))}
 
+      {%FeelDateTime{} = datetime, %Duration{} = duration} ->
+        temporal_arithmetic(FeelDateTime.add_duration(datetime, Duration.negate(duration)))
+
       {%Time{} = time, %Duration{} = duration} ->
         {:ok, Duration.add_to_time(time, Duration.negate(duration))}
+
+      {%FeelTime{} = time, %Duration{months: 0} = duration} ->
+        {:ok, FeelTime.add_seconds(time, Duration.negate(duration).seconds)}
 
       {%Duration{} = l, %Duration{} = r} ->
         {:ok, Duration.subtract(l, r)}
@@ -1151,6 +1383,11 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp temporal_arithmetic({:ok, value}), do: {:ok, value}
+
+  defp temporal_arithmetic(:error),
+    do: {:error, error(:evaluation_error, "temporal operation failed")}
+
   defp compare_from_op(op, cmp) do
     case op do
       :gt -> cmp == :gt
@@ -1159,6 +1396,9 @@ defmodule Arbiter.FEEL do
       :lte -> cmp in [:lt, :eq]
     end
   end
+
+  defp compare_temporal(_op, :unordered), do: {:ok, nil}
+  defp compare_temporal(op, comparison), do: {:ok, compare_from_op(op, comparison)}
 
   defp compare_strings(left, right) when left == right, do: :eq
   defp compare_strings(left, right) when left < right, do: :lt
@@ -1229,6 +1469,14 @@ defmodule Arbiter.FEEL do
   defp feel_equal(nil, _right), do: false
   defp feel_equal(_left, nil), do: false
   defp feel_equal(%Decimal{} = left, %Decimal{} = right), do: decimal_equal?(left, right)
+  defp feel_equal(left, right) when is_integer(left) and is_integer(right), do: left == right
+
+  defp feel_equal(%Decimal{} = left, right) when is_integer(right),
+    do: decimal_equal?(left, decimal_new(right))
+
+  defp feel_equal(left, %Decimal{} = right) when is_integer(left),
+    do: decimal_equal?(decimal_new(left), right)
+
   defp feel_equal(left, right) when is_boolean(left) and is_boolean(right), do: left == right
   defp feel_equal(left, right) when is_binary(left) and is_binary(right), do: left == right
   defp feel_equal(%Date{} = left, %Date{} = right), do: Date.compare(left, right) == :eq
@@ -1237,8 +1485,29 @@ defmodule Arbiter.FEEL do
   defp feel_equal(%DateTime{} = left, %DateTime{} = right),
     do: DateTime.compare(left, right) == :eq
 
+  defp feel_equal(%FeelTime{} = left, %FeelTime{} = right),
+    do:
+      left.zone == right.zone and left.hour == right.hour and left.minute == right.minute and
+        Decimal.equal?(
+          Decimal.round(left.second, 0, :down),
+          Decimal.round(right.second, 0, :down)
+        )
+
+  defp feel_equal(%FeelDateTime{} = left, %FeelDateTime{} = right),
+    do:
+      if(left.time.zone == right.time.zone,
+        do:
+          Date.compare(left.date, right.date) == :eq and
+            feel_equal(left.time, right.time) == true,
+        else: FeelDateTime.compare(left, right) == :eq
+      )
+
   defp feel_equal(%Duration{} = left, %Duration{} = right),
-    do: left.months == right.months and left.seconds == right.seconds
+    do:
+      if(left.kind == right.kind,
+        do: left.months == right.months and feel_equal(left.seconds, right.seconds) == true,
+        else: nil
+      )
 
   defp feel_equal(%Range{} = left, %Range{} = right) do
     left.start_inclusive == right.start_inclusive and
@@ -1341,6 +1610,24 @@ defmodule Arbiter.FEEL do
   defp compare_for_unary_test(op, %DateTime{} = lhs, %DateTime{} = rhs)
        when op in [">", ">=", "<", "<=", "=", "!="] do
     unary_compare_result(op, DateTime.compare(lhs, rhs))
+  end
+
+  defp compare_for_unary_test(op, %FeelTime{} = lhs, %FeelTime{} = rhs)
+       when op in [">", ">=", "<", "<=", "=", "!="] do
+    unary_compare_result(op, FeelTime.compare(lhs, rhs))
+  end
+
+  defp compare_for_unary_test(op, %FeelDateTime{} = lhs, %FeelDateTime{} = rhs)
+       when op in [">", ">=", "<", "<=", "=", "!="] do
+    unary_compare_result(op, FeelDateTime.compare(lhs, rhs))
+  end
+
+  defp compare_for_unary_test(op, %Duration{} = lhs, %Duration{} = rhs)
+       when op in [">", ">=", "<", "<=", "=", "!="] do
+    case Duration.compare(lhs, rhs) do
+      :unordered -> {:ok, nil}
+      comparison -> unary_compare_result(op, comparison)
+    end
   end
 
   defp compare_for_unary_test(op, lhs, rhs)
@@ -1460,6 +1747,15 @@ defmodule Arbiter.FEEL do
 
   defp compare_for_bounds(%DateTime{} = left, %DateTime{} = right),
     do: DateTime.compare(left, right)
+
+  defp compare_for_bounds(%FeelTime{} = left, %FeelTime{} = right),
+    do: FeelTime.compare(left, right)
+
+  defp compare_for_bounds(%FeelDateTime{} = left, %FeelDateTime{} = right),
+    do: FeelDateTime.compare(left, right)
+
+  defp compare_for_bounds(%Duration{} = left, %Duration{} = right),
+    do: Duration.compare(left, right)
 
   defp compare_for_bounds(left, right) do
     cond do

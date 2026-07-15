@@ -8,6 +8,8 @@ defmodule Arbiter.DMN.TCK.Comparator do
   """
 
   alias Arbiter.FEEL.Duration
+  alias Arbiter.FEEL.DateTime, as: FeelDateTime
+  alias Arbiter.FEEL.Time, as: FeelTime
 
   @spec semantic_equal?(term(), term(), keyword()) :: boolean()
   def semantic_equal?(left, right, opts \\ []) do
@@ -32,8 +34,21 @@ defmodule Arbiter.DMN.TCK.Comparator do
   defp compare(%DateTime{} = left, %DateTime{} = right, _ordered),
     do: DateTime.compare(left, right) == :eq
 
+  defp compare(%NaiveDateTime{} = left, %NaiveDateTime{} = right, _ordered),
+    do: NaiveDateTime.compare(left, right) == :eq
+
+  defp compare(%FeelTime{} = left, %FeelTime{} = right, _ordered) do
+    left.hour == right.hour and left.minute == right.minute and left.zone == right.zone and
+      Decimal.equal?(left.second, right.second)
+  end
+
+  defp compare(%FeelDateTime{} = left, %FeelDateTime{} = right, ordered),
+    do: compare(left.date, right.date, ordered) and compare(left.time, right.time, ordered)
+
   defp compare(%Duration{} = left, %Duration{} = right, _ordered),
-    do: left.months == right.months and left.seconds == right.seconds
+    do:
+      left.kind == right.kind and left.months == right.months and
+        numeric_equal?(left.seconds, right.seconds)
 
   defp compare(left, right, true) when is_list(left) and is_list(right) do
     length(left) == length(right) and
@@ -51,6 +66,11 @@ defmodule Arbiter.DMN.TCK.Comparator do
   end
 
   defp compare(left, right, _ordered), do: left == right
+
+  defp numeric_equal?(%Decimal{} = left, %Decimal{} = right), do: Decimal.equal?(left, right)
+  defp numeric_equal?(%Decimal{} = left, right), do: Decimal.equal?(left, Decimal.new(right))
+  defp numeric_equal?(left, %Decimal{} = right), do: Decimal.equal?(Decimal.new(left), right)
+  defp numeric_equal?(left, right), do: left == right
 
   defp unordered_equal?(left, right) when length(left) != length(right), do: false
 

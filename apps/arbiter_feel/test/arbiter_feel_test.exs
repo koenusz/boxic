@@ -1,6 +1,8 @@
 defmodule Arbiter.FEELTest do
   use ExUnit.Case
 
+  alias Arbiter.FEEL.Time, as: FeelTime
+
   test "parse builds AST without evaluation" do
     assert {:ok, {:binary, :plus, {:identifier, "a"}, {:literal, %Decimal{} = _one}}} =
              Arbiter.FEEL.parse("a + 1")
@@ -138,13 +140,24 @@ defmodule Arbiter.FEELTest do
     assert Decimal.equal?(one, Decimal.new("1"))
     assert Decimal.equal?(two, Decimal.new("2"))
     assert Decimal.equal?(three, Decimal.new("3"))
+
+    assert {:ok, true} == Arbiter.FEEL.evaluate("list contains([1, 2], 2)")
+    assert {:ok, [one, two, three]} == Arbiter.FEEL.evaluate("concatenate([1], [2, 3])")
+    assert {:ok, [one, two, three]} == Arbiter.FEEL.evaluate("insert before([1, 3], 2, 2)")
+    assert {:ok, [one, three]} == Arbiter.FEEL.evaluate("remove([1, 2, 3], 2)")
+    assert {:ok, [three, two, one]} == Arbiter.FEEL.evaluate("reverse([1, 2, 3])")
+    assert {:ok, [one, three]} == Arbiter.FEEL.evaluate("index of([2, 1, 2], 2)")
+    assert {:ok, [one, two, three]} == Arbiter.FEEL.evaluate("union([1, 2], [2, 3])")
+    assert {:ok, [one, two]} == Arbiter.FEEL.evaluate("distinct values([1, 1, 2])")
+    assert {:ok, [one, two, three]} == Arbiter.FEEL.evaluate("flatten([1, [2, [3]]])")
+    assert {:ok, [two, three]} == Arbiter.FEEL.evaluate("sublist([1, 2, 3], 2)")
   end
 
   test "temporal constructors and arithmetic" do
     assert {:ok, %Date{year: 2026, month: 7, day: 16}} =
              Arbiter.FEEL.evaluate("date(\"2026-07-15\") + duration(\"P1D\")", %{})
 
-    assert {:ok, %Time{} = time} =
+    assert {:ok, %FeelTime{} = time} =
              Arbiter.FEEL.evaluate("time(\"10:00:00\") + duration(\"PT90M\")", %{})
 
     assert time.hour == 11
@@ -157,5 +170,21 @@ defmodule Arbiter.FEELTest do
                "date_time(\"2026-07-15T10:00:00+00:00\") = date_time(\"2026-07-15T12:00:00+02:00\")",
                %{}
              )
+  end
+
+  test "named-zone date-time arithmetic follows IANA transitions" do
+    assert {:ok, %Arbiter.FEEL.DateTime{} = result} =
+             Arbiter.FEEL.evaluate(
+               "date and time(\"2026-03-28T12:00:00@Europe/Paris\") + duration(\"PT24H\")"
+             )
+
+    assert Arbiter.FEEL.DateTime.to_string(result) ==
+             "2026-03-29T13:00:00@Europe/Paris"
+  end
+
+  test "general string conversion preserves temporal forms" do
+    assert {:ok, "P1Y2M"} = Arbiter.FEEL.evaluate("string(duration(\"P1Y2M\"))")
+    assert {:ok, "12.50"} = Arbiter.FEEL.evaluate("string(12.50)")
+    assert {:ok, "true"} = Arbiter.FEEL.evaluate("string(true)")
   end
 end

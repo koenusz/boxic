@@ -49,6 +49,9 @@ defmodule Arbiter.FEEL.AST do
   defp validate_node({:filter, source, predicate}),
     do: validate_children([source, predicate])
 
+  defp validate_node({:named_arg, name, value}) when is_binary(name) and name != "",
+    do: validate_node(value)
+
   defp validate_node({:range, start_inclusive, end_inclusive, first, last})
        when is_boolean(start_inclusive) and is_boolean(end_inclusive),
        do: validate_children([first, last])
