@@ -146,7 +146,7 @@ defmodule Arbiter.DMN.TCKTest do
     File.write!(
       model_path,
       """
-      <definitions name="error model" namespace="urn:test">
+      <definitions id="error_defs" name="error model" namespace="urn:test">
         <decision id="d1" name="Decision">
           <literalExpression><text>1 +</text></literalExpression>
         </decision>
