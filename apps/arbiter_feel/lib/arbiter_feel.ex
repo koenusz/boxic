@@ -2,18 +2,29 @@ defmodule Arbiter.FEEL do
   @moduledoc """
   FEEL entry point.
 
-  Iteration B supports an AST-backed parser and core evaluator semantics:
-  literals, arithmetic, comparisons, boolean operations, null handling, and
-  name resolution from context.
+  Supports an AST-backed parser and evaluator for core FEEL semantics and
+  WP-06 structural features: ranges, unary tests, path/filter expressions,
+  for-expressions, quantifiers, and user-defined closures.
   """
 
   alias Arbiter.FEEL.Error
+  alias Arbiter.FEEL.Function
+  alias Arbiter.FEEL.Range
 
   @type ast ::
           {:literal, term()}
           | {:identifier, String.t()}
           | {:unary, atom(), ast()}
           | {:binary, atom(), ast(), ast()}
+          | {:list, [ast()]}
+          | {:context, [{String.t(), ast()}]}
+          | {:path, ast(), String.t()}
+          | {:filter, ast(), ast()}
+          | {:range, boolean(), boolean(), ast(), ast()}
+          | {:for, String.t(), ast(), ast()}
+          | {:quantifier, :some | :every, String.t(), ast(), ast()}
+          | {:function, [String.t()], ast()}
+          | {:call, ast(), [ast()]}
   @type context :: %{optional(String.t()) => term()}
 
   @spec parse(String.t()) :: {:ok, ast()} | {:error, Error.t()}
@@ -48,6 +59,35 @@ defmodule Arbiter.FEEL do
     eval(ast, context)
   end
 
+  @spec evaluate_unary_test(String.t(), term(), context()) ::
+          {:ok, boolean()} | {:error, Error.t()}
+  def evaluate_unary_test(test_expression, value, context \\ %{})
+      when is_binary(test_expression) and is_map(context) do
+    trimmed = String.trim(test_expression)
+
+    cond do
+      trimmed == "-" ->
+        {:ok, true}
+
+      comparator_unary_test?(trimmed) ->
+        eval_comparator_unary_test(trimmed, value, context)
+
+      range_unary_test?(trimmed) ->
+        with {:ok, range_value} <- evaluate(trimmed, context),
+             true <- match?(%Range{}, range_value) do
+          {:ok, range_contains?(range_value, value)}
+        else
+          false -> {:error, error(:type_error, "range unary test expected a range")}
+          {:error, %Error{} = e} -> {:error, e}
+        end
+
+      true ->
+        with {:ok, expected} <- evaluate(trimmed, context) do
+          {:ok, equal_semantic?(value, expected)}
+        end
+    end
+  end
+
   # ---------- Tokenizer ----------
 
   defp tokenize(expression), do: tokenize(expression, [])
@@ -65,8 +105,16 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp tokenize(<<"..", rest::binary>>, acc), do: tokenize(rest, [:range_dots | acc])
+  defp tokenize(<<".", rest::binary>>, acc), do: tokenize(rest, [:dot | acc])
   defp tokenize(<<"(", rest::binary>>, acc), do: tokenize(rest, [:lparen | acc])
   defp tokenize(<<")", rest::binary>>, acc), do: tokenize(rest, [:rparen | acc])
+  defp tokenize(<<"[", rest::binary>>, acc), do: tokenize(rest, [:lbracket | acc])
+  defp tokenize(<<"]", rest::binary>>, acc), do: tokenize(rest, [:rbracket | acc])
+  defp tokenize(<<"{", rest::binary>>, acc), do: tokenize(rest, [:lbrace | acc])
+  defp tokenize(<<"}", rest::binary>>, acc), do: tokenize(rest, [:rbrace | acc])
+  defp tokenize(<<",", rest::binary>>, acc), do: tokenize(rest, [:comma | acc])
+  defp tokenize(<<":", rest::binary>>, acc), do: tokenize(rest, [:colon | acc])
   defp tokenize(<<"+", rest::binary>>, acc), do: tokenize(rest, [:plus | acc])
   defp tokenize(<<"-", rest::binary>>, acc), do: tokenize(rest, [:minus | acc])
   defp tokenize(<<"*", rest::binary>>, acc), do: tokenize(rest, [:mul | acc])
@@ -80,7 +128,7 @@ defmodule Arbiter.FEEL do
 
   defp tokenize(<<char::utf8, _rest::binary>> = input, acc)
        when char in [?0, ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9] do
-    {number, remaining} = take_while(input, &(&1 in [?0, ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?.]))
+    {number, remaining} = take_number(input)
     tokenize(remaining, [{:number, decimal_new(number)} | acc])
   end
 
@@ -96,6 +144,13 @@ defmodule Arbiter.FEEL do
         "and" -> :and
         "or" -> :or
         "not" -> :not
+        "for" -> :for
+        "in" -> :in
+        "return" -> :return
+        "some" -> :some
+        "every" -> :every
+        "satisfies" -> :satisfies
+        "function" -> :function
         _ -> {:identifier, word}
       end
 
@@ -120,6 +175,17 @@ defmodule Arbiter.FEEL do
 
   defp take_while(binary, predicate), do: take_while(binary, predicate, "")
 
+  defp take_number(binary) do
+    case Regex.run(~r/^\d+(?:\.\d+)?/, binary) do
+      [number] ->
+        rest = String.slice(binary, String.length(number)..-1//1) || ""
+        {number, rest}
+
+      _ ->
+        {"0", binary}
+    end
+  end
+
   defp take_while(<<char::utf8, rest::binary>>, predicate, acc) do
     if predicate.(char) do
       take_while(rest, predicate, acc <> <<char::utf8>>)
@@ -132,7 +198,55 @@ defmodule Arbiter.FEEL do
 
   # ---------- Parser ----------
 
+  defp parse_expression([:for | _] = tokens), do: parse_for(tokens)
+  defp parse_expression([:some | _] = tokens), do: parse_quantifier(tokens)
+  defp parse_expression([:every | _] = tokens), do: parse_quantifier(tokens)
+  defp parse_expression([:function | _] = tokens), do: parse_function(tokens)
   defp parse_expression(tokens), do: parse_or(tokens)
+
+  defp parse_for([:for, {:identifier, var}, :in | rest]) do
+    with {:ok, source, [:return | rest2]} <- parse_expression(rest),
+         {:ok, body, rest3} <- parse_expression(rest2) do
+      {:ok, {:for, var, source, body}, rest3}
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid for-expression")}
+    end
+  end
+
+  defp parse_for(_tokens), do: {:error, error(:invalid_syntax, "invalid for-expression")}
+
+  defp parse_quantifier([kind, {:identifier, var}, :in | rest]) when kind in [:some, :every] do
+    with {:ok, source, [:satisfies | rest2]} <- parse_expression(rest),
+         {:ok, predicate, rest3} <- parse_expression(rest2) do
+      {:ok, {:quantifier, kind, var, source, predicate}, rest3}
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid quantifier expression")}
+    end
+  end
+
+  defp parse_quantifier(_tokens),
+    do: {:error, error(:invalid_syntax, "invalid quantifier expression")}
+
+  defp parse_function([:function, :lparen | rest]) do
+    with {:ok, params, [:rparen | rest2]} <- parse_param_list(rest),
+         {:ok, body, rest3} <- parse_expression(rest2) do
+      {:ok, {:function, params, body}, rest3}
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid function expression")}
+    end
+  end
+
+  defp parse_function(_tokens),
+    do: {:error, error(:invalid_syntax, "invalid function expression")}
+
+  defp parse_param_list([:rparen | _] = rest), do: {:ok, [], rest}
+  defp parse_param_list([{:identifier, param} | rest]), do: parse_param_list_tail([param], rest)
+  defp parse_param_list(_tokens), do: {:error, error(:invalid_syntax, "invalid parameter list")}
+
+  defp parse_param_list_tail(params, [:comma, {:identifier, param} | rest]),
+    do: parse_param_list_tail(params ++ [param], rest)
+
+  defp parse_param_list_tail(params, rest), do: {:ok, params, rest}
 
   defp parse_or(tokens) do
     with {:ok, left, rest} <- parse_and(tokens) do
@@ -248,31 +362,243 @@ defmodule Arbiter.FEEL do
     end
   end
 
-  defp parse_unary(tokens), do: parse_primary(tokens)
+  defp parse_unary(tokens), do: parse_postfix(tokens)
+
+  defp parse_postfix(tokens) do
+    with {:ok, base, rest} <- parse_primary(tokens) do
+      parse_postfix_tail(base, rest)
+    end
+  end
+
+  defp parse_postfix_tail(base, [:dot, {:identifier, key} | rest]) do
+    parse_postfix_tail({:path, base, key}, rest)
+  end
+
+  defp parse_postfix_tail(base, [:lbracket | rest]) do
+    with {:ok, predicate, [:rbracket | rest2]} <- parse_expression(rest) do
+      parse_postfix_tail({:filter, base, predicate}, rest2)
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid bracket filter")}
+    end
+  end
+
+  defp parse_postfix_tail(base, [:lparen | rest]) do
+    with {:ok, args, [:rparen | rest2]} <- parse_call_args(rest) do
+      parse_postfix_tail({:call, base, args}, rest2)
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid call expression")}
+    end
+  end
+
+  defp parse_postfix_tail(base, rest), do: {:ok, base, rest}
+
+  defp parse_call_args([:rparen | _] = rest), do: {:ok, [], rest}
+
+  defp parse_call_args(tokens) do
+    with {:ok, first, rest} <- parse_expression(tokens) do
+      parse_call_args_tail([first], rest)
+    end
+  end
+
+  defp parse_call_args_tail(args, [:comma | rest]) do
+    with {:ok, arg, rest2} <- parse_expression(rest) do
+      parse_call_args_tail(args ++ [arg], rest2)
+    end
+  end
+
+  defp parse_call_args_tail(args, rest), do: {:ok, args, rest}
 
   defp parse_primary([{:number, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:string, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:boolean, value} | rest]), do: {:ok, {:literal, value}, rest}
   defp parse_primary([{:null, nil} | rest]), do: {:ok, {:literal, nil}, rest}
   defp parse_primary([{:identifier, name} | rest]), do: {:ok, {:identifier, name}, rest}
+  defp parse_primary([:lbrace | rest]), do: parse_context_literal(rest)
+  defp parse_primary([:lbracket | rest]), do: parse_list_or_range(rest)
+  defp parse_primary([:lparen | rest]), do: parse_group_or_range(rest)
 
-  defp parse_primary([:lparen | rest]) do
-    with {:ok, expr, [:rparen | rest2]} <- parse_expression(rest) do
-      {:ok, expr, rest2}
+  defp parse_primary(_tokens), do: {:error, error(:invalid_syntax, "expected expression")}
+
+  defp parse_context_literal([:rbrace | rest]), do: {:ok, {:context, []}, rest}
+
+  defp parse_context_literal(tokens) do
+    with {:ok, key, [:colon | rest]} <- parse_context_key(tokens),
+         {:ok, expr, rest2} <- parse_expression(rest),
+         {:ok, entries, rest3} <- parse_context_tail([{key, expr}], rest2) do
+      {:ok, {:context, entries}, rest3}
     else
-      {:ok, _expr, _rest} -> {:error, error(:invalid_syntax, "missing closing parenthesis")}
-      {:error, %Error{} = error} -> {:error, error}
+      _ -> {:error, error(:invalid_syntax, "invalid context literal")}
     end
   end
 
-  defp parse_primary(_tokens), do: {:error, error(:invalid_syntax, "expected expression")}
+  defp parse_context_tail(entries, [:comma | rest]) do
+    with {:ok, key, [:colon | rest2]} <- parse_context_key(rest),
+         {:ok, expr, rest3} <- parse_expression(rest2) do
+      parse_context_tail(entries ++ [{key, expr}], rest3)
+    end
+  end
+
+  defp parse_context_tail(entries, [:rbrace | rest]), do: {:ok, entries, rest}
+
+  defp parse_context_tail(_entries, _rest),
+    do: {:error, error(:invalid_syntax, "invalid context literal")}
+
+  defp parse_context_key([{:identifier, key} | rest]), do: {:ok, key, rest}
+  defp parse_context_key([{:string, key} | rest]), do: {:ok, key, rest}
+  defp parse_context_key(_tokens), do: {:error, error(:invalid_syntax, "invalid context key")}
+
+  defp parse_list_or_range([:rbracket | rest]), do: {:ok, {:list, []}, rest}
+
+  defp parse_list_or_range(tokens) do
+    with {:ok, first, rest} <- parse_expression(tokens) do
+      case rest do
+        [:range_dots | rest2] -> parse_range_rest(true, first, rest2)
+        _ -> parse_list_tail([first], rest)
+      end
+    end
+  end
+
+  defp parse_group_or_range(tokens) do
+    with {:ok, expr, rest} <- parse_expression(tokens) do
+      case rest do
+        [:range_dots | rest2] -> parse_range_rest(false, expr, rest2)
+        [:rparen | rest2] -> {:ok, expr, rest2}
+        _ -> {:error, error(:invalid_syntax, "missing closing parenthesis")}
+      end
+    end
+  end
+
+  defp parse_range_rest(start_inclusive, start_ast, tokens) do
+    with {:ok, finish_ast, rest} <- parse_expression(tokens) do
+      case rest do
+        [:rbracket | rest2] ->
+          {:ok, {:range, start_inclusive, true, start_ast, finish_ast}, rest2}
+
+        [:rparen | rest2] ->
+          {:ok, {:range, start_inclusive, false, start_ast, finish_ast}, rest2}
+
+        _ ->
+          {:error, error(:invalid_syntax, "invalid range end delimiter")}
+      end
+    end
+  end
+
+  defp parse_list_tail(items, [:comma | rest]) do
+    with {:ok, next_item, rest2} <- parse_expression(rest) do
+      parse_list_tail(items ++ [next_item], rest2)
+    end
+  end
+
+  defp parse_list_tail(items, [:rbracket | rest]), do: {:ok, {:list, items}, rest}
+
+  defp parse_list_tail(_items, _rest),
+    do: {:error, error(:invalid_syntax, "invalid list literal")}
 
   # ---------- Evaluator ----------
 
   defp eval({:literal, value}, _context), do: {:ok, value}
 
-  defp eval({:identifier, name}, context) do
-    {:ok, Map.get(context, name)}
+  defp eval({:identifier, name}, context), do: {:ok, Map.get(context, name)}
+
+  defp eval({:list, items}, context) do
+    eval_list(items, context, [])
+  end
+
+  defp eval({:context, entries}, context) do
+    eval_context_entries(entries, context, %{})
+  end
+
+  defp eval({:path, expr, key}, context) do
+    with {:ok, value} <- eval(expr, context) do
+      case value do
+        map when is_map(map) ->
+          {:ok, Map.get(map, key)}
+
+        _ ->
+          {:ok, nil}
+      end
+    end
+  end
+
+  defp eval({:filter, source_expr, predicate}, context) do
+    with {:ok, source} <- eval(source_expr, context) do
+      case source do
+        list when is_list(list) ->
+          filtered =
+            Enum.filter(list, fn item ->
+              predicate_context = bind_item_context(context, item)
+
+              case eval(predicate, predicate_context) do
+                {:ok, true} -> true
+                _ -> false
+              end
+            end)
+
+          {:ok, filtered}
+
+        _ ->
+          {:error, error(:type_error, "filter source must be a list")}
+      end
+    end
+  end
+
+  defp eval({:range, start_inclusive, end_inclusive, start_ast, end_ast}, context) do
+    with {:ok, start_value} <- eval(start_ast, context),
+         {:ok, end_value} <- eval(end_ast, context) do
+      {:ok,
+       %Range{
+         start: start_value,
+         end: end_value,
+         start_inclusive: start_inclusive,
+         end_inclusive: end_inclusive
+       }}
+    end
+  end
+
+  defp eval({:for, var, source_ast, body_ast}, context) do
+    with {:ok, source} <- eval(source_ast, context) do
+      case source do
+        list when is_list(list) ->
+          list
+          |> Enum.reduce_while({:ok, []}, fn item, {:ok, acc} ->
+            scoped_context = Map.put(context, var, item)
+
+            case eval(body_ast, scoped_context) do
+              {:ok, value} -> {:cont, {:ok, acc ++ [value]}}
+              {:error, %Error{} = e} -> {:halt, {:error, e}}
+            end
+          end)
+
+        _ ->
+          {:error, error(:type_error, "for-expression source must be a list")}
+      end
+    end
+  end
+
+  defp eval({:quantifier, kind, var, source_ast, predicate_ast}, context) do
+    with {:ok, source} <- eval(source_ast, context) do
+      case source do
+        list when is_list(list) ->
+          case kind do
+            :some -> {:ok, Enum.any?(list, &quantifier_match?(&1, var, predicate_ast, context))}
+            :every -> {:ok, Enum.all?(list, &quantifier_match?(&1, var, predicate_ast, context))}
+          end
+
+        _ ->
+          {:error, error(:type_error, "quantifier source must be a list")}
+      end
+    end
+  end
+
+  defp eval({:function, params, body}, context) do
+    {:ok, %Function{params: params, body: body, closure: context}}
+  end
+
+  defp eval({:call, callee_ast, args_ast}, context) do
+    with {:ok, callee} <- eval(callee_ast, context),
+         {:ok, arg_values} <- eval_list(args_ast, context, []) do
+      apply_function(callee, arg_values)
+    end
   end
 
   defp eval({:unary, :not, expr}, context) do
@@ -297,6 +623,68 @@ defmodule Arbiter.FEEL do
       eval_binary(op, left_value, right_value)
     end
   end
+
+  defp eval_list([], _context, acc), do: {:ok, acc}
+
+  defp eval_list([item_ast | rest], context, acc) do
+    with {:ok, value} <- eval(item_ast, context) do
+      eval_list(rest, context, acc ++ [value])
+    end
+  end
+
+  defp eval_context_entries([], _context, acc), do: {:ok, acc}
+
+  defp eval_context_entries([{key, value_ast} | rest], context, acc) do
+    scoped_context = Map.merge(context, acc)
+
+    with {:ok, value} <- eval(value_ast, scoped_context) do
+      eval_context_entries(rest, context, Map.put(acc, key, value))
+    end
+  end
+
+  defp bind_item_context(context, item) do
+    base = Map.put(context, "item", item)
+
+    case item do
+      map when is_map(map) and not is_struct(map) ->
+        Enum.reduce(map, base, fn
+          {k, v}, acc when is_binary(k) -> Map.put(acc, k, v)
+          _entry, acc -> acc
+        end)
+
+      _ ->
+        base
+    end
+  end
+
+  defp quantifier_match?(item, var, predicate_ast, context) do
+    scoped_context = Map.put(context, var, item)
+
+    case eval(predicate_ast, scoped_context) do
+      {:ok, true} -> true
+      _ -> false
+    end
+  end
+
+  defp apply_function(%Function{params: params, body: body, closure: closure}, args)
+       when length(params) == length(args) do
+    call_context =
+      params
+      |> Enum.zip(args)
+      |> Enum.reduce(closure, fn {name, value}, acc -> Map.put(acc, name, value) end)
+
+    eval(body, call_context)
+  end
+
+  defp apply_function(%Function{}, _args),
+    do: {:error, error(:arity_error, "function called with invalid arity")}
+
+  defp apply_function(fun, args) when is_function(fun, length(args)) do
+    {:ok, apply(fun, args)}
+  end
+
+  defp apply_function(_callee, _args),
+    do: {:error, error(:type_error, "attempted to call a non-function value")}
 
   defp eval_binary(:plus, left, right), do: decimal_binary(left, right, &decimal_add/2)
   defp eval_binary(:minus, left, right), do: decimal_binary(left, right, &decimal_sub/2)
@@ -362,6 +750,91 @@ defmodule Arbiter.FEEL do
 
   defp equal_semantic?(%Decimal{} = left, %Decimal{} = right), do: decimal_equal?(left, right)
   defp equal_semantic?(left, right), do: left == right
+
+  defp comparator_unary_test?(expression) do
+    Regex.match?(~r/^(<=|>=|<|>|!=|=)\s*.+$/, expression)
+  end
+
+  defp range_unary_test?(expression) do
+    String.starts_with?(expression, "[") or String.starts_with?(expression, "(")
+  end
+
+  defp eval_comparator_unary_test(expression, value, context) do
+    %{"op" => op, "rhs" => rhs} =
+      Regex.named_captures(~r/^(?<op><=|>=|<|>|!=|=)\s*(?<rhs>.+)$/, expression)
+
+    with {:ok, rhs_value} <- evaluate(rhs, context) do
+      case compare_for_unary_test(op, value, rhs_value) do
+        {:ok, result} -> {:ok, result}
+        {:error, %Error{} = e} -> {:error, e}
+      end
+    end
+  end
+
+  defp compare_for_unary_test(_op, nil, _rhs), do: {:ok, false}
+  defp compare_for_unary_test(_op, _lhs, nil), do: {:ok, false}
+
+  defp compare_for_unary_test(op, %Decimal{} = lhs, %Decimal{} = rhs) do
+    cmp = decimal_compare(lhs, rhs)
+
+    result =
+      case op do
+        ">" -> cmp == :gt
+        ">=" -> cmp in [:gt, :eq]
+        "<" -> cmp == :lt
+        "<=" -> cmp in [:lt, :eq]
+        "=" -> cmp == :eq
+        "!=" -> cmp != :eq
+      end
+
+    {:ok, result}
+  end
+
+  defp compare_for_unary_test(op, lhs, rhs) when op in ["=", "!="] do
+    eq = equal_semantic?(lhs, rhs)
+    {:ok, if(op == "=", do: eq, else: not eq)}
+  end
+
+  defp compare_for_unary_test(_op, _lhs, _rhs),
+    do: {:error, error(:type_error, "unary test comparison requires compatible values")}
+
+  defp range_contains?(%Range{} = range, value) do
+    lower_ok = range_lower_ok?(range, value)
+    upper_ok = range_upper_ok?(range, value)
+    lower_ok and upper_ok
+  end
+
+  defp range_lower_ok?(%Range{start: nil}, _value), do: true
+
+  defp range_lower_ok?(%Range{start: start, start_inclusive: inclusive}, value) do
+    case compare_for_bounds(value, start) do
+      :gt -> true
+      :eq -> inclusive
+      _ -> false
+    end
+  end
+
+  defp range_upper_ok?(%Range{end: nil}, _value), do: true
+
+  defp range_upper_ok?(%Range{end: finish, end_inclusive: inclusive}, value) do
+    case compare_for_bounds(value, finish) do
+      :lt -> true
+      :eq -> inclusive
+      _ -> false
+    end
+  end
+
+  defp compare_for_bounds(%Decimal{} = left, %Decimal{} = right), do: decimal_compare(left, right)
+
+  defp compare_for_bounds(left, right) do
+    cond do
+      left == right -> :eq
+      left < right -> :lt
+      true -> :gt
+    end
+  rescue
+    _ -> :not_comparable
+  end
 
   defp feel_not(nil), do: nil
   defp feel_not(true), do: false

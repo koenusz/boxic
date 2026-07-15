@@ -977,28 +977,28 @@ The sections below convert the roadmap into a traceable implementation plan.
 
 Each requirement must be testable and map to one or more implementation work packages.
 
-| Requirement ID | Requirement | Verification |
-|---|---|---|
-| RQ-ARCH-001 | Project is an umbrella with `arbiter_feel`, `arbiter_dmn`, and `arbiter_dmn_tck` apps. | `mix compile`; app discovery in umbrella; CI build job. |
-| RQ-ARCH-002 | Dependency direction is `arbiter_dmn -> arbiter_feel`; TCK is non-production. | Compile-time deps and boundary checks in tests. |
-| RQ-FEEL-001 | FEEL parser returns AST without evaluation side effects. | Parser unit tests and purity checks. |
-| RQ-FEEL-002 | FEEL evaluation returns `{:ok, value}` or structured `{:error, error}` tuples. | Evaluator contract tests. |
-| RQ-FEEL-003 | FEEL numbers use `Decimal` semantics end-to-end. | Numeric TCK groups and unit tests. |
-| RQ-FEEL-004 | FEEL null semantics and three-valued logic are implemented. | FEEL logic TCK groups. |
-| RQ-FEEL-005 | FEEL unary tests, ranges, contexts, and lists are supported per scope. | Structural FEEL TCK groups. |
-| RQ-FEEL-006 | FEEL temporal semantics (date/time/date-time/duration) are explicit and deterministic. | Temporal TCK groups and regression tests. |
-| RQ-DMN-001 | DMN XML is parsed into a normalized internal model. | Parser and model validation tests. |
-| RQ-DMN-002 | DMN evaluator executes literal expressions through FEEL integration. | End-to-end DMN literal-expression TCK groups. |
-| RQ-DMN-003 | Decision tables execute with rule matching and separate hit-policy reduction. | Decision-table unit tests and TCK groups. |
-| RQ-DMN-004 | Supported hit policies produce deterministic, spec-aligned outputs. | Hit-policy targeted TCK groups. |
-| RQ-DMN-005 | DRG features (BKMs, invocations, dependencies, decision services) execute correctly. | Full-graph DMN groups and regression suite. |
-| RQ-TCK-001 | Upstream TCK corpus is vendored unmodified at a pinned commit. | Vendored pin integrity checks in CI. |
-| RQ-TCK-002 | Every discovered test case receives explicit status (`passed`, `failed`, `unsupported`, `missing`, `error`). | Runner classification tests and report validation. |
-| RQ-TCK-003 | Comparator normalizes expected/actual values semantically (not string form). | Comparator tests across value types. |
-| RQ-TCK-004 | Compatibility reports include mandatory metadata and machine-readable outputs. | CSV/JSON schema checks in CI. |
-| RQ-TCK-005 | Compatibility execution and CI do not require Java runners or Java orchestration. | CI job definitions and execution-path integration tests. |
-| RQ-CI-001 | PR and nightly pipelines enforce quality gates and publish artifacts. | CI workflow runs and artifact retention checks. |
-| RQ-REL-001 | Releases document compatibility deltas and pinned TCK revision. | Release checklist verification. |
+| Requirement ID | Requirement                                                                                                  | Verification                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| RQ-ARCH-001    | Project is an umbrella with `arbiter_feel`, `arbiter_dmn`, and `arbiter_dmn_tck` apps.                       | `mix compile`; app discovery in umbrella; CI build job.  |
+| RQ-ARCH-002    | Dependency direction is `arbiter_dmn -> arbiter_feel`; TCK is non-production.                                | Compile-time deps and boundary checks in tests.          |
+| RQ-FEEL-001    | FEEL parser returns AST without evaluation side effects.                                                     | Parser unit tests and purity checks.                     |
+| RQ-FEEL-002    | FEEL evaluation returns `{:ok, value}` or structured `{:error, error}` tuples.                               | Evaluator contract tests.                                |
+| RQ-FEEL-003    | FEEL numbers use `Decimal` semantics end-to-end.                                                             | Numeric TCK groups and unit tests.                       |
+| RQ-FEEL-004    | FEEL null semantics and three-valued logic are implemented.                                                  | FEEL logic TCK groups.                                   |
+| RQ-FEEL-005    | FEEL unary tests, ranges, contexts, and lists are supported per scope.                                       | Structural FEEL TCK groups.                              |
+| RQ-FEEL-006    | FEEL temporal semantics (date/time/date-time/duration) are explicit and deterministic.                       | Temporal TCK groups and regression tests.                |
+| RQ-DMN-001     | DMN XML is parsed into a normalized internal model.                                                          | Parser and model validation tests.                       |
+| RQ-DMN-002     | DMN evaluator executes literal expressions through FEEL integration.                                         | End-to-end DMN literal-expression TCK groups.            |
+| RQ-DMN-003     | Decision tables execute with rule matching and separate hit-policy reduction.                                | Decision-table unit tests and TCK groups.                |
+| RQ-DMN-004     | Supported hit policies produce deterministic, spec-aligned outputs.                                          | Hit-policy targeted TCK groups.                          |
+| RQ-DMN-005     | DRG features (BKMs, invocations, dependencies, decision services) execute correctly.                         | Full-graph DMN groups and regression suite.              |
+| RQ-TCK-001     | Upstream TCK corpus is vendored unmodified at a pinned commit.                                               | Vendored pin integrity checks in CI.                     |
+| RQ-TCK-002     | Every discovered test case receives explicit status (`passed`, `failed`, `unsupported`, `missing`, `error`). | Runner classification tests and report validation.       |
+| RQ-TCK-003     | Comparator normalizes expected/actual values semantically (not string form).                                 | Comparator tests across value types.                     |
+| RQ-TCK-004     | Compatibility reports include mandatory metadata and machine-readable outputs.                               | CSV/JSON schema checks in CI.                            |
+| RQ-TCK-005     | Compatibility execution and CI do not require Java runners or Java orchestration.                            | CI job definitions and execution-path integration tests. |
+| RQ-CI-001      | PR and nightly pipelines enforce quality gates and publish artifacts.                                        | CI workflow runs and artifact retention checks.          |
+| RQ-REL-001     | Releases document compatibility deltas and pinned TCK revision.                                              | Release checklist verification.                          |
 
 ---
 
@@ -1006,49 +1006,49 @@ Each requirement must be testable and map to one or more implementation work pac
 
 Each work package is independently reviewable and tied to explicit outputs.
 
-| Work Package | Scope | Depends On | Primary Outputs | Exit Criteria |
-|---|---|---|---|---|
-| WP-00 | Umbrella/bootstrap and repository conventions. | None | umbrella structure, baseline CI, naming conventions | `mix test` passes in umbrella; CI green. |
-| WP-01 | Vendor and pin upstream DMN TCK. | WP-00 | `vendor/dmn-tck` snapshot, pin file, update script | Pinned commit enforced in CI. |
-| WP-02 | TCK discovery and case loading. | WP-01 | `Loader`, internal case struct, malformed-case handling | Full corpus enumerates with no silent skips. |
-| WP-03 | Result model and reporting pipeline. | WP-02 | status model, CSV/JSON reporter, summary output | Reports generated with required metadata fields. |
-| WP-04 | FEEL parser contract hardening. | WP-00 | parser API, AST validation layer | Parser tests pass; no evaluation in parse stage. |
-| WP-05 | FEEL evaluator core semantics. | WP-04 | arithmetic, comparisons, logic, null semantics | Core FEEL profile measurable via TCK subset. |
-| WP-06 | FEEL structural expressions. | WP-05 | unary tests, ranges, list/context semantics | Structural FEEL groups executed with pass/fail metrics. |
-| WP-07 | FEEL built-ins and temporal semantics. | WP-06 | built-ins and temporal modules | Temporal TCK groups run and tracked. |
-| WP-08 | DMN normalized model and validator. | WP-00 | DMN parser, model structs, validation | Literal model loads into normalized structures. |
-| WP-09 | DMN literal-expression execution path. | WP-08, WP-05 | executor wiring to FEEL | End-to-end literal-expression TCK case passes. |
-| WP-10 | Decision table engine. | WP-09, WP-06 | input evaluation, rule matching, outputs | Decision-table groups execute with classification. |
-| WP-11 | Hit policy module. | WP-10 | all target hit policy reducers | Per-policy compatibility reported independently. |
-| WP-12 | Full DMN graph features. | WP-11, WP-07 | DRG execution, BKMs, invocations, services | Advanced DMN groups execute and report coverage. |
-| WP-13 | CI maturity and release gates. | WP-03, WP-12 | PR/nightly workflows, release checklist | No regression gate and reporting gate enforced. |
+| Work Package | Scope                                          | Depends On   | Primary Outputs                                         | Exit Criteria                                           |
+| ------------ | ---------------------------------------------- | ------------ | ------------------------------------------------------- | ------------------------------------------------------- |
+| WP-00        | Umbrella/bootstrap and repository conventions. | None         | umbrella structure, baseline CI, naming conventions     | `mix test` passes in umbrella; CI green.                |
+| WP-01        | Vendor and pin upstream DMN TCK.               | WP-00        | `vendor/dmn-tck` snapshot, pin file, update script      | Pinned commit enforced in CI.                           |
+| WP-02        | TCK discovery and case loading.                | WP-01        | `Loader`, internal case struct, malformed-case handling | Full corpus enumerates with no silent skips.            |
+| WP-03        | Result model and reporting pipeline.           | WP-02        | status model, CSV/JSON reporter, summary output         | Reports generated with required metadata fields.        |
+| WP-04        | FEEL parser contract hardening.                | WP-00        | parser API, AST validation layer                        | Parser tests pass; no evaluation in parse stage.        |
+| WP-05        | FEEL evaluator core semantics.                 | WP-04        | arithmetic, comparisons, logic, null semantics          | Core FEEL profile measurable via TCK subset.            |
+| WP-06        | FEEL structural expressions.                   | WP-05        | unary tests, ranges, list/context semantics             | Structural FEEL groups executed with pass/fail metrics. |
+| WP-07        | FEEL built-ins and temporal semantics.         | WP-06        | built-ins and temporal modules                          | Temporal TCK groups run and tracked.                    |
+| WP-08        | DMN normalized model and validator.            | WP-00        | DMN parser, model structs, validation                   | Literal model loads into normalized structures.         |
+| WP-09        | DMN literal-expression execution path.         | WP-08, WP-05 | executor wiring to FEEL                                 | End-to-end literal-expression TCK case passes.          |
+| WP-10        | Decision table engine.                         | WP-09, WP-06 | input evaluation, rule matching, outputs                | Decision-table groups execute with classification.      |
+| WP-11        | Hit policy module.                             | WP-10        | all target hit policy reducers                          | Per-policy compatibility reported independently.        |
+| WP-12        | Full DMN graph features.                       | WP-11, WP-07 | DRG execution, BKMs, invocations, services              | Advanced DMN groups execute and report coverage.        |
+| WP-13        | CI maturity and release gates.                 | WP-03, WP-12 | PR/nightly workflows, release checklist                 | No regression gate and reporting gate enforced.         |
 
 ---
 
 ## 21. Requirement-to-Work Mapping (Trace Matrix)
 
-| Requirement ID | Implemented By | Validated By |
-|---|---|---|
-| RQ-ARCH-001 | WP-00 | Umbrella compile/test CI job |
-| RQ-ARCH-002 | WP-00 | Dependency boundary tests |
-| RQ-FEEL-001 | WP-04 | Parser unit tests |
-| RQ-FEEL-002 | WP-05 | Evaluator contract tests |
-| RQ-FEEL-003 | WP-05 | FEEL numeric TCK profile |
-| RQ-FEEL-004 | WP-05 | FEEL logic/null TCK profile |
-| RQ-FEEL-005 | WP-06 | FEEL structural TCK profile |
-| RQ-FEEL-006 | WP-07 | FEEL temporal TCK profile |
-| RQ-DMN-001 | WP-08 | DMN parser/validator tests |
-| RQ-DMN-002 | WP-09 | DMN literal-expression TCK profile |
-| RQ-DMN-003 | WP-10 | Decision-table TCK profile |
-| RQ-DMN-004 | WP-11 | Hit-policy per-group TCK profile |
-| RQ-DMN-005 | WP-12 | Full DMN advanced profile |
-| RQ-TCK-001 | WP-01 | CI vendored pin integrity check |
-| RQ-TCK-002 | WP-02, WP-03 | Runner classification tests |
-| RQ-TCK-003 | WP-03 | Comparator semantic equality tests |
-| RQ-TCK-004 | WP-03 | Report schema and metadata checks |
-| RQ-TCK-005 | WP-03, WP-13 | CI and execution-path verification |
-| RQ-CI-001 | WP-13 | PR/nightly workflow verification |
-| RQ-REL-001 | WP-13 | Release checklist sign-off |
+| Requirement ID | Implemented By | Validated By                       |
+| -------------- | -------------- | ---------------------------------- |
+| RQ-ARCH-001    | WP-00          | Umbrella compile/test CI job       |
+| RQ-ARCH-002    | WP-00          | Dependency boundary tests          |
+| RQ-FEEL-001    | WP-04          | Parser unit tests                  |
+| RQ-FEEL-002    | WP-05          | Evaluator contract tests           |
+| RQ-FEEL-003    | WP-05          | FEEL numeric TCK profile           |
+| RQ-FEEL-004    | WP-05          | FEEL logic/null TCK profile        |
+| RQ-FEEL-005    | WP-06          | FEEL structural TCK profile        |
+| RQ-FEEL-006    | WP-07          | FEEL temporal TCK profile          |
+| RQ-DMN-001     | WP-08          | DMN parser/validator tests         |
+| RQ-DMN-002     | WP-09          | DMN literal-expression TCK profile |
+| RQ-DMN-003     | WP-10          | Decision-table TCK profile         |
+| RQ-DMN-004     | WP-11          | Hit-policy per-group TCK profile   |
+| RQ-DMN-005     | WP-12          | Full DMN advanced profile          |
+| RQ-TCK-001     | WP-01          | CI vendored pin integrity check    |
+| RQ-TCK-002     | WP-02, WP-03   | Runner classification tests        |
+| RQ-TCK-003     | WP-03          | Comparator semantic equality tests |
+| RQ-TCK-004     | WP-03          | Report schema and metadata checks  |
+| RQ-TCK-005     | WP-03, WP-13   | CI and execution-path verification |
+| RQ-CI-001      | WP-13          | PR/nightly workflow verification   |
+| RQ-REL-001     | WP-13          | Release checklist sign-off         |
 
 No requirement should exist without both a work package and a validation path.
 
@@ -1058,16 +1058,16 @@ No requirement should exist without both a work package and a validation path.
 
 Each milestone is complete only when all included requirements are verified.
 
-| Milestone | Included Work Packages | Gate Criteria |
-|---|---|---|
-| M0 Foundation | WP-00, WP-01 | Umbrella green, TCK pinned and discoverable. |
-| M1 Harness | WP-02, WP-03 | Corpus fully enumerated; all tests classified; reports emitted. |
-| M2 FEEL Core | WP-04, WP-05 | Core FEEL profile stable with published pass/fail counts. |
-| M3 FEEL Advanced | WP-06, WP-07 | Structural and temporal profiles executable and tracked. |
-| M4 DMN Minimal | WP-08, WP-09 | DMN literal-expression flow passes end-to-end against upstream case(s). |
-| M5 Tables and Policies | WP-10, WP-11 | Decision-table and hit-policy groups execute with independent compatibility metrics. |
-| M6 Advanced DMN | WP-12 | DRG and advanced features reported with compatibility deltas. |
-| M7 Release Readiness | WP-13 | Regression gates active; release checklist complete; compatibility report published. |
+| Milestone              | Included Work Packages | Gate Criteria                                                                        |
+| ---------------------- | ---------------------- | ------------------------------------------------------------------------------------ |
+| M0 Foundation          | WP-00, WP-01           | Umbrella green, TCK pinned and discoverable.                                         |
+| M1 Harness             | WP-02, WP-03           | Corpus fully enumerated; all tests classified; reports emitted.                      |
+| M2 FEEL Core           | WP-04, WP-05           | Core FEEL profile stable with published pass/fail counts.                            |
+| M3 FEEL Advanced       | WP-06, WP-07           | Structural and temporal profiles executable and tracked.                             |
+| M4 DMN Minimal         | WP-08, WP-09           | DMN literal-expression flow passes end-to-end against upstream case(s).              |
+| M5 Tables and Policies | WP-10, WP-11           | Decision-table and hit-policy groups execute with independent compatibility metrics. |
+| M6 Advanced DMN        | WP-12                  | DRG and advanced features reported with compatibility deltas.                        |
+| M7 Release Readiness   | WP-13                  | Regression gates active; release checklist complete; compatibility report published. |
 
 ---
 
@@ -1135,33 +1135,33 @@ Status values:
 
 ### 25.1 Phase Status (as of 2026-07-15)
 
-| Phase | Status | Notes |
-|---|---|---|
-| Phase 0 — Repository and Fork Setup | done | Umbrella created; applications scaffolded; baseline CI and vendored TCK path in place. |
-| Phase 1 — TCK Harness Foundation | done | Loader, runner, comparator, reporter, and `mix tck` task implemented with explicit statuses. |
-| Phase 2 — FEEL Core Compliance | in_review | Core parser/evaluator semantics implemented for arithmetic/comparison/boolean/null and context lookup; core profile passing current vendored cases. |
-| Phase 3 — FEEL Structural Features | not_started | Planned after core baseline hardening. |
-| Phase 4 — Built-in Functions and Temporal Semantics | not_started | Planned after structural FEEL features. |
-| Phase 5 — Minimal DMN Execution | in_progress | Literal-expression DMN execution path works; continue broadening model coverage. |
-| Phase 6 — Decision Tables | not_started | Awaiting post-core FEEL stabilization. |
-| Phase 7 — Hit Policies | not_started | Depends on decision-table engine. |
-| Phase 8 — Full DMN Graph Features | not_started | Depends on earlier DMN phases. |
+| Phase                                               | Status      | Notes                                                                                                                                               |
+| --------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phase 0 — Repository and Fork Setup                 | done        | Umbrella created; applications scaffolded; baseline CI and vendored TCK path in place.                                                              |
+| Phase 1 — TCK Harness Foundation                    | done        | Loader, runner, comparator, reporter, and `mix tck` task implemented with explicit statuses.                                                        |
+| Phase 2 — FEEL Core Compliance                      | done        | Core parser/evaluator semantics validated with passing tests and core profile reporting.                                                           |
+| Phase 3 — FEEL Structural Features                  | in_progress | Initial structural support implemented: ranges, unary tests, path/filter, quantifiers, for, and closures.                                         |
+| Phase 4 — Built-in Functions and Temporal Semantics | not_started | Planned after structural FEEL features.                                                                                                             |
+| Phase 5 — Minimal DMN Execution                     | in_progress | Literal-expression DMN execution path works; continue broadening model coverage.                                                                    |
+| Phase 6 — Decision Tables                           | not_started | Awaiting post-core FEEL stabilization.                                                                                                              |
+| Phase 7 — Hit Policies                              | not_started | Depends on decision-table engine.                                                                                                                   |
+| Phase 8 — Full DMN Graph Features                   | not_started | Depends on earlier DMN phases.                                                                                                                      |
 
 ### 25.2 Work Package Status (as of 2026-07-15)
 
-| Work Package | Status | Evidence |
-|---|---|---|
-| WP-00 | done | Umbrella compiles/tests; CI workflow exists. |
-| WP-01 | done | Vendored snapshot workflow, pin file, update script, and CI pin integrity verification are in place. |
-| WP-02 | done | TCK discovery and case normalization implemented. |
-| WP-03 | done | Status model and CSV/JSON reporting implemented with metadata. |
-| WP-04 | done | FEEL parser contract tests added and passing. |
-| WP-05 | in_review | Core FEEL evaluator semantics implemented; core profile currently green on vendored baseline set. |
-| WP-06 | not_started | No ranges/unary tests/path/filter yet. |
-| WP-07 | not_started | No temporal/built-in breadth yet. |
-| WP-08 | in_progress | Normalized model skeleton and parser exist; validation depth still minimal. |
-| WP-09 | done | End-to-end DMN literal-expression flow exercised by tests and TCK run. |
-| WP-10 | not_started | Decision-table execution not implemented yet. |
-| WP-11 | not_started | Hit-policy reducers not implemented yet. |
-| WP-12 | not_started | DRG/BKM/decision-service execution not implemented yet. |
-| WP-13 | in_progress | CI and quality gates exist; release-grade regression and pin-integrity gates being hardened. |
+| Work Package | Status      | Evidence                                                                                             |
+| ------------ | ----------- | ---------------------------------------------------------------------------------------------------- |
+| WP-00        | done        | Umbrella compiles/tests; CI workflow exists.                                                         |
+| WP-01        | done        | Vendored snapshot workflow, pin file, update script, and CI pin integrity verification are in place. |
+| WP-02        | done        | TCK discovery and case normalization implemented.                                                    |
+| WP-03        | done        | Status model and CSV/JSON reporting implemented with metadata.                                       |
+| WP-04        | done        | FEEL parser contract tests added and passing.                                                        |
+| WP-05        | done        | Core FEEL evaluator semantics and validation baseline are complete and passing.                      |
+| WP-06        | in_progress | Implemented ranges, unary tests, path/filter, for, some/every, and function closure execution.      |
+| WP-07        | not_started | No temporal/built-in breadth yet.                                                                    |
+| WP-08        | in_progress | Normalized model skeleton and parser exist; validation depth still minimal.                          |
+| WP-09        | done        | End-to-end DMN literal-expression flow exercised by tests and TCK run.                               |
+| WP-10        | not_started | Decision-table execution not implemented yet.                                                        |
+| WP-11        | not_started | Hit-policy reducers not implemented yet.                                                             |
+| WP-12        | not_started | DRG/BKM/decision-service execution not implemented yet.                                              |
+| WP-13        | in_progress | CI and quality gates exist; release-grade regression and pin-integrity gates being hardened.         |
