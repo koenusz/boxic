@@ -8,25 +8,25 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-16T17:18:29.527690Z",
+    "execution_date": "2026-07-16T17:33:32.440197Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
   "summary": {
     "error": 0,
-    "disabled": 104,
-    "total": 1381,
+    "disabled": 99,
+    "total": 1386,
     "unsupported": 0,
-    "supported": 1381,
+    "supported": 1386,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 1485,
     "excluded_by_suite": 2060,
-    "passed": 1381,
+    "passed": 1386,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 93.0,
-    "coverage_percent": 38.96
+    "suite_coverage_percent": 93.33,
+    "coverage_percent": 39.1
   },
   "results": [
     {
@@ -7678,6 +7678,30 @@
     },
     {
       "error": null,
+      "id": "test_001",
+      "status": "passed",
+      "group": "0086-import",
+      "actual": "Hello John Doe!",
+      "expected": "Hello John Doe!",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0086-import/0086-import-test-01.xml",
+      "decision": "A Decision Ctx with DT",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "test_002",
+      "status": "passed",
+      "group": "0086-import",
+      "actual": "Respectfully, Hello John Doe!",
+      "expected": "Respectfully, Hello John Doe!",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0086-import/0086-import-test-01.xml",
+      "decision": "A Decision Ctx with DT",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "001",
       "status": "passed",
       "group": "0087-chapter-11-example",
@@ -7794,6 +7818,18 @@
       "error": null,
       "id": "001",
       "status": "passed",
+      "group": "0088-no-decision-logic",
+      "actual": "John Doe is Graduated with merit with grade: A and evaluation: A very motivated, hard-working student!",
+      "expected": "John Doe is Graduated with merit with grade: A and evaluation: A very motivated, hard-working student!",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0088-no-decision-logic/0088-no-decision-logic-test-01.xml",
+      "decision": "Graduation result",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
       "group": "0088-recursion",
       "actual": {
         "type": "number",
@@ -7824,6 +7860,30 @@
       "compliance_level": "non-compliant",
       "case_file": "TestCases/non-compliant/0088-recursion/0088-recursion-test-01.xml",
       "decision": "tree_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0089-nested-inputdata-imports",
+      "actual": "B: Evaluating Say Hello to: Hello, B.A.John; B2: Evaluating Say Hello to: Hello, B.A.John",
+      "expected": "B: Evaluating Say Hello to: Hello, B.A.John; B2: Evaluating Say Hello to: Hello, B.A.John",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0089-nested-inputdata-imports/0089-nested-inputdata-imports-test-01.xml",
+      "decision": "Model C Decision based on Bs",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0091-local-hrefs",
+      "actual": "decision_001 input_001 bkm_001",
+      "expected": "decision_001 input_001 bkm_001",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0091-local-hrefs/0091-local-hrefs-test-01.xml",
+      "decision": "decision_002",
       "expected_error": false
     },
     {

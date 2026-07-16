@@ -134,8 +134,12 @@ defmodule Arbiter.DMN.TCK do
     0040-singlenestedcontext
     0041-multiple-nestedcontext
     0085-decision-services
+    0086-import
     0087-chapter-11-example
     0088-recursion
+    0088-no-decision-logic
+    0089-nested-inputdata-imports
+    0091-local-hrefs
     0099-arithmetic-negation
     0100-arithmetic
     0108-first-hitpolicy

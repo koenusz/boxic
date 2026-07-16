@@ -34,8 +34,41 @@ defmodule Arbiter.DMN do
 
   @spec load(String.t()) :: {:ok, Model.t()} | {:error, term()}
   def load(path_or_xml) when is_binary(path_or_xml) do
-    with {:ok, xml} <- read_xml(path_or_xml),
-         {:ok, document} <- parse_xml(xml),
+    if File.regular?(path_or_xml) do
+      load_file(path_or_xml)
+    else
+      load_xml(path_or_xml)
+    end
+  end
+
+  defp load_file(path) do
+    with {:ok, xml} <- File.read(path),
+         {:ok, model} <- load_xml(xml) do
+      imported_models =
+        path
+        |> Path.dirname()
+        |> Path.join("*.dmn")
+        |> Path.wildcard()
+        |> Enum.reject(&(&1 == path))
+        |> Enum.flat_map(fn imported_path ->
+          case File.read(imported_path) do
+            {:ok, imported_xml} ->
+              case load_xml(imported_xml) do
+                {:ok, imported} -> [imported]
+                {:error, _reason} -> []
+              end
+
+            {:error, _reason} ->
+              []
+          end
+        end)
+
+      {:ok, merge_imported_models(model, imported_closure(model, imported_models))}
+    end
+  end
+
+  defp load_xml(xml) do
+    with {:ok, document} <- parse_xml(xml),
          :ok <- definitions_document?(document) do
       {:ok, build_model(document)}
     end
@@ -96,10 +129,6 @@ defmodule Arbiter.DMN do
     end
   end
 
-  defp read_xml(path_or_xml) do
-    if File.exists?(path_or_xml), do: File.read(path_or_xml), else: {:ok, path_or_xml}
-  end
-
   defp parse_xml(xml) do
     try do
       {document, rest} =
@@ -157,6 +186,10 @@ defmodule Arbiter.DMN do
 
     %Model{
       definitions: definitions,
+      imports:
+        document
+        |> nodes("./*[local-name()='import']")
+        |> Map.new(&{attr(&1, "namespace"), attr(&1, "name")}),
       input_data: input_data,
       decisions: decisions,
       bkms: bkms,
@@ -164,6 +197,86 @@ defmodule Arbiter.DMN do
       decision_services: decision_services,
       issues: input_issues ++ decision_issues ++ bkm_issues ++ service_issues
     }
+  end
+
+  defp merge_imported_models(model, imported_models) do
+    Enum.reduce(imported_models, model, fn imported, %Model{} = result ->
+      namespace = imported.definitions.namespace
+
+      %Model{
+        result
+        | imports: Map.merge(result.imports, imported.imports),
+          decisions:
+            merge_qualified(result.decisions, imported.decisions, namespace, &qualify_node/2),
+          input_data:
+            merge_qualified(result.input_data, imported.input_data, namespace, fn node, _ ->
+              node
+            end),
+          bkms: merge_qualified(result.bkms, imported.bkms, namespace, &qualify_node/2),
+          item_definitions:
+            merge_qualified(
+              result.item_definitions,
+              imported.item_definitions,
+              namespace,
+              fn node, _ -> node end
+            ),
+          decision_services:
+            merge_qualified(
+              result.decision_services,
+              imported.decision_services,
+              namespace,
+              fn node, _ -> node end
+            ),
+          issues: result.issues ++ imported.issues
+      }
+    end)
+  end
+
+  defp imported_closure(model, candidates) do
+    available = Map.new(candidates, &{&1.definitions.namespace, &1})
+    collect_imports(Map.keys(model.imports), available, MapSet.new(), [])
+  end
+
+  defp collect_imports([], _available, _seen, result), do: Enum.reverse(result)
+
+  defp collect_imports([namespace | rest], available, seen, result) do
+    if MapSet.member?(seen, namespace) do
+      collect_imports(rest, available, seen, result)
+    else
+      seen = MapSet.put(seen, namespace)
+
+      case Map.get(available, namespace) do
+        nil ->
+          collect_imports(rest, available, seen, result)
+
+        imported ->
+          collect_imports(
+            Map.keys(imported.imports) ++ rest,
+            available,
+            seen,
+            [imported | result]
+          )
+      end
+    end
+  end
+
+  defp merge_qualified(target, source, namespace, transform) do
+    Enum.reduce(source, target, fn {id, node}, result ->
+      Map.put(result, namespace <> "#" <> id, transform.(node, namespace))
+    end)
+  end
+
+  defp qualify_node(%{requirements: requirements} = node, namespace) do
+    qualified =
+      Enum.map(requirements, fn requirement ->
+        if is_binary(requirement.href) and not String.contains?(requirement.href, "#") do
+          %{requirement | href: namespace <> "#" <> requirement.href}
+        else
+          requirement
+        end
+      end)
+
+    %{node | requirements: qualified}
   end
 
   defp parse_item_definition(node) do
@@ -868,11 +981,11 @@ defmodule Arbiter.DMN do
     with {:ok, dependency} <- fetch_reference(model.decisions, :decision, id) do
       case existing_node_value(context, dependency) do
         {:ok, value} ->
-          {:ok, bind_value(context, dependency, value), memo}
+          {:ok, bind_reference_value(context, dependency, value, id, model), memo}
 
         :error ->
           with {:ok, value, memo} <- evaluate_decision(model, dependency, context, memo, visiting) do
-            {:ok, bind_value(context, dependency, value), memo}
+            {:ok, bind_reference_value(context, dependency, value, id, model), memo}
           end
       end
     end
@@ -885,26 +998,22 @@ defmodule Arbiter.DMN do
          memo,
          _visiting
        ) do
-    cond do
-      Map.has_key?(model.bkms, id) ->
-        bkm = Map.fetch!(model.bkms, id)
-
+    case fetch_reference(Map.merge(model.bkms, model.decision_services), :knowledge, id) do
+      {:ok, %BusinessKnowledgeModel{} = bkm} ->
         callable =
           {:external_function, fn args -> invoke_bkm_from_feel(model, bkm, context, args) end}
 
-        {:ok, bind_value(context, bkm, callable), memo}
+        {:ok, bind_reference_value(context, bkm, callable, id, model), memo}
 
-      Map.has_key?(model.decision_services, id) ->
-        service = Map.fetch!(model.decision_services, id)
-
+      {:ok, %DecisionService{} = service} ->
         callable =
           {:external_function,
            fn args -> invoke_decision_service(model, service, context, args) end}
 
-        {:ok, bind_value(context, service, callable), memo}
+        {:ok, bind_reference_value(context, service, callable, id, model), memo}
 
-      true ->
-        {:error, {:unresolved_reference, :knowledge, id}}
+      {:error, _reason} = error ->
+        error
     end
   end
 
@@ -918,7 +1027,7 @@ defmodule Arbiter.DMN do
     with {:ok, input} <- fetch_reference(model.input_data, :input_data, id),
          {:ok, value} <- input_value(context, input),
          {:ok, value} <- coerce_type(value, input.variable && input.variable.type_ref, model) do
-      {:ok, bind_value(context, input, value), memo}
+      {:ok, bind_reference_value(context, input, value, id, model), memo}
     end
   end
 
@@ -927,8 +1036,16 @@ defmodule Arbiter.DMN do
 
   defp fetch_reference(index, kind, id) do
     case Map.fetch(index, id) do
-      {:ok, value} -> {:ok, value}
-      :error -> {:error, {:unresolved_reference, kind, id}}
+      {:ok, value} ->
+        {:ok, value}
+
+      :error ->
+        fragment = id |> String.split("#") |> List.last()
+
+        case Map.fetch(index, fragment) do
+          {:ok, value} -> {:ok, value}
+          :error -> {:error, {:unresolved_reference, kind, id}}
+        end
     end
   end
 
@@ -985,6 +1102,24 @@ defmodule Arbiter.DMN do
     [node.name, node.variable && node.variable.name, node.id]
     |> Enum.reject(&is_nil/1)
     |> Enum.reduce(context, &Map.put(&2, &1, value))
+  end
+
+  defp bind_reference_value(context, node, value, href, model) do
+    context = bind_value(context, node, value)
+
+    case String.split(href, "#", parts: 2) do
+      [namespace, _id] ->
+        case Map.get(model.imports, namespace) do
+          alias_name when is_binary(alias_name) ->
+            Map.update(context, alias_name, %{node.name => value}, &Map.put(&1, node.name, value))
+
+          _ ->
+            context
+        end
+
+      _ ->
+        context
+    end
   end
 
   defp evaluate_invocation(%Invocation{} = invocation, context, model) do
@@ -1225,12 +1360,32 @@ defmodule Arbiter.DMN do
   defp coerce_type(value, "Any", _model), do: {:ok, value}
 
   defp coerce_type(value, type, model) do
-    case Enum.find_value(model.item_definitions, fn {_id, definition} ->
-           definition.name == type && definition
-         end) do
+    case find_item_definition(model, type) do
       nil -> {:error, {:type_error, type}}
       definition -> coerce_item_definition(value, definition, model)
     end
+  end
+
+  defp find_item_definition(model, type) do
+    qualified =
+      case String.split(type, ".", parts: 2) do
+        [alias_name, local_name] ->
+          Enum.find_value(model.imports, fn
+            {namespace, ^alias_name} ->
+              Map.get(model.item_definitions, namespace <> "#" <> local_name)
+
+            _entry ->
+              nil
+          end)
+
+        _ ->
+          nil
+      end
+
+    qualified ||
+      Enum.find_value(model.item_definitions, fn {_id, definition} ->
+        definition.name == type && definition
+      end)
   end
 
   defp coerce_duration_kind(duration, "duration"), do: {:ok, duration}
@@ -1642,11 +1797,15 @@ defmodule Arbiter.DMN do
             nil -> %{}
           end
 
-        if is_binary(requirement.href) and Map.has_key?(target, requirement.href),
+        if is_binary(requirement.href) and reference_exists?(target, requirement.href),
           do: [],
           else: [{:unresolved_reference, decision_id, requirement.kind, requirement.href}]
       end)
     end)
+  end
+
+  defp reference_exists?(target, href) do
+    Map.has_key?(target, href) or Map.has_key?(target, href |> String.split("#") |> List.last())
   end
 
   defp required(value, fields, owner) do

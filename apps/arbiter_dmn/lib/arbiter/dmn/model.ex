@@ -12,6 +12,7 @@ defmodule Arbiter.DMN.Model do
 
   defstruct [
     :definitions,
+    imports: %{},
     decisions: %{},
     input_data: %{},
     bkms: %{},
@@ -23,6 +24,7 @@ defmodule Arbiter.DMN.Model do
   @type issue :: term()
   @type t :: %__MODULE__{
           definitions: Definitions.t(),
+          imports: %{optional(String.t()) => String.t()},
           decisions: %{optional(String.t()) => Arbiter.DMN.Model.Decision.t()},
           input_data: %{optional(String.t()) => Arbiter.DMN.Model.InputData.t()},
           bkms: map(),

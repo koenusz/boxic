@@ -318,4 +318,14 @@ defmodule Arbiter.DMNTest do
     assert {:ok, result} = Arbiter.DMN.evaluate(model, "Result")
     assert Decimal.equal?(result, Decimal.new(0))
   end
+
+  test "loads namespace imports and resolves qualified local and external references" do
+    path = Path.expand("fixtures/imports/main.dmn", __DIR__)
+
+    assert {:ok, model} = Arbiter.DMN.load(path)
+    assert :ok = Arbiter.DMN.validate(model)
+
+    assert {:ok, "Hello Ada"} =
+             Arbiter.DMN.evaluate(model, "Message", %{"Person Input" => %{"name" => "Ada"}})
+  end
 end
