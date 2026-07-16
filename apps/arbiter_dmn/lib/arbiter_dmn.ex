@@ -438,9 +438,20 @@ defmodule Arbiter.DMN do
       item = parser.(node)
 
       cond do
-        is_nil(item.id) -> {items, [{:missing_id, struct_name(item), item.name} | issues]}
-        Map.has_key?(items, item.id) -> {items, [{:duplicate_id, item.id} | issues]}
-        true -> {Map.put(items, item.id, item), issues}
+        is_nil(item.id) and is_binary(Map.get(item, :name)) ->
+          item = Map.put(item, :id, item.name)
+
+          {Map.put(items, item.name, item),
+           [{:missing_id, struct_name(item), item.name} | issues]}
+
+        is_nil(item.id) ->
+          {items, [{:missing_id, struct_name(item), item.name} | issues]}
+
+        Map.has_key?(items, item.id) ->
+          {items, [{:duplicate_id, item.id} | issues]}
+
+        true ->
+          {Map.put(items, item.id, item), issues}
       end
     end)
   end
@@ -669,7 +680,7 @@ defmodule Arbiter.DMN do
 
   defp validate_for_evaluation(model, decision) do
     errors =
-      model.issues ++
+      Enum.reject(model.issues, &match?({:missing_id, _, _}, &1)) ++
         validate_definitions(model.definitions) ++
         required(decision, [:name], {:decision, decision.id}) ++
         validate_expression(decision.expression, decision.id)

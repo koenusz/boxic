@@ -165,6 +165,15 @@ defmodule Arbiter.FEELTest do
     assert Decimal.equal?(stddev, Decimal.new("2.0816659994661"))
   end
 
+  test "Unicode escapes, regex functions, and canonical string conversion" do
+    assert {:ok, "🐎"} = Arbiter.FEEL.evaluate("\"\\U01F40E\"")
+    assert {:ok, true} = Arbiter.FEEL.evaluate(~S|matches("aA", "(a)\1", "i")|)
+    assert {:ok, ["John", "Doe"]} = Arbiter.FEEL.evaluate(~S|split("John Doe", "\s")|)
+
+    assert {:ok, "{a: \"foo\", b: [1, \"bar\"]}"} =
+             Arbiter.FEEL.evaluate(~S|string({a: "foo", b: [1, "bar"]})|)
+  end
+
   test "temporal constructors and arithmetic" do
     assert {:ok, %Date{year: 2026, month: 7, day: 16}} =
              Arbiter.FEEL.evaluate("date(\"2026-07-15\") + duration(\"P1D\")", %{})

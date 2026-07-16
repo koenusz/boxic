@@ -27,6 +27,7 @@ defmodule Arbiter.DMN.TCK do
     0064-feel-conjunction
     0065-feel-disjunction
     0066-feel-negation
+    0067-feel-split-function
     0068-feel-equality
     0069-feel-list
     0072-feel-in
@@ -34,6 +35,8 @@ defmodule Arbiter.DMN.TCK do
     0075-feel-exponent
     0077-feel-nan
     0078-feel-infinity
+    0079-feel-string-function
+    0083-feel-unicode
     0084-feel-for-loops
     0090-feel-paths
     0092-feel-lambda
@@ -51,12 +54,17 @@ defmodule Arbiter.DMN.TCK do
     1104-feel-string-length-function
     1105-feel-upper-case-function
     1106-feel-lower-case-function
+    1107-feel-substring-before-function
+    1108-feel-substring-after-function
+    1109-feel-replace-function
     1110-feel-contains-function
+    1111-feel-matches-function
     1115-feel-date-function
     1116-feel-time-function
     1117-feel-date-and-time-function
     1120-feel-duration-function
     1131-feel-function-invocation
+    1140-feel-string-join-function
     1141-feel-round-up-function
     1142-feel-round-down-function
     1143-feel-round-half-up-function

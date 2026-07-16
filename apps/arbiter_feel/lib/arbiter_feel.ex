@@ -141,6 +141,12 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<"string length", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "string_length"} | acc])
 
+  defp tokenize(<<"string join", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "string_join"} | acc])
+
+  defp tokenize(<<"ends with", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "ends_with"} | acc])
+
   defp tokenize(<<"upper case", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "upper_case"} | acc])
 
@@ -259,6 +265,11 @@ defmodule Arbiter.FEEL do
     tokenize(remaining, [token | acc])
   end
 
+  defp tokenize(<<char::utf8, _rest::binary>> = input, acc) when char > 127 do
+    {word, remaining} = take_while(input, &identifier_char?/1)
+    tokenize(remaining, [{:identifier, word} | acc])
+  end
+
   defp tokenize(_input, _acc), do: {:error, error(:invalid_syntax, "invalid token")}
 
   defp consume_spaced_identifier("date", remaining) do
@@ -305,10 +316,50 @@ defmodule Arbiter.FEEL do
     (char >= ?a and char <= ?z) or
       (char >= ?A and char <= ?Z) or
       (char >= ?0 and char <= ?9) or
-      char == ?_
+      char == ?_ or char > 127
   end
 
   defp take_string(<<"\"", rest::binary>>, acc), do: {:ok, acc, rest}
+
+  defp take_string(<<"\\\"", rest::binary>>, acc), do: take_string(rest, acc <> "\"")
+  defp take_string(<<"\\\\", rest::binary>>, acc), do: take_string(rest, acc <> "\\")
+  defp take_string(<<"\\n", rest::binary>>, acc), do: take_string(rest, acc <> "\n")
+  defp take_string(<<"\\r", rest::binary>>, acc), do: take_string(rest, acc <> "\r")
+  defp take_string(<<"\\t", rest::binary>>, acc), do: take_string(rest, acc <> "\t")
+
+  defp take_string(<<"\\u", hex::binary-size(4), rest::binary>>, acc) do
+    with {codepoint, ""} <- Integer.parse(hex, 16) do
+      case {codepoint, rest} do
+        {high, <<"\\u", low_hex::binary-size(4), remaining::binary>>}
+        when high in 0xD800..0xDBFF ->
+          with {low, ""} when low in 0xDC00..0xDFFF <- Integer.parse(low_hex, 16) do
+            combined = 0x10000 + (high - 0xD800) * 0x400 + low - 0xDC00
+            take_string(remaining, acc <> <<combined::utf8>>)
+          else
+            _ -> :error
+          end
+
+        {value, _} when value in 0xD800..0xDFFF ->
+          :error
+
+        {value, _} ->
+          take_string(rest, acc <> <<value::utf8>>)
+      end
+    else
+      _ -> :error
+    end
+  end
+
+  defp take_string(<<"\\U", hex::binary-size(6), rest::binary>>, acc) do
+    with {codepoint, ""} when codepoint <= 0x10FFFF <- Integer.parse(hex, 16) do
+      take_string(rest, acc <> <<codepoint::utf8>>)
+    else
+      _ -> :error
+    end
+  end
+
+  defp take_string(<<"\\", char::utf8, rest::binary>>, acc),
+    do: take_string(rest, acc <> "\\" <> <<char::utf8>>)
 
   defp take_string(<<char::utf8, rest::binary>>, acc),
     do: take_string(rest, acc <> <<char::utf8>>)

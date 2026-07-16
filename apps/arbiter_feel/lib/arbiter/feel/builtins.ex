@@ -15,6 +15,11 @@ defmodule Arbiter.FEEL.Builtins do
     substring_before
     substring_after
     contains
+    ends_with
+    split
+    replace
+    matches
+    string_join
     list_contains
     count
     all
@@ -103,6 +108,45 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"contains", [value, match]} when is_binary(value) and is_binary(match) ->
         {:ok, String.contains?(value, match)}
+
+      {"ends_with", [value, match]} when is_binary(value) and is_binary(match) ->
+        {:ok, String.ends_with?(value, match)}
+
+      {"split", [value, delimiter]} when is_binary(value) and is_binary(delimiter) ->
+        regex_split(value, delimiter)
+
+      {"replace", [input, pattern, replacement]}
+      when is_binary(input) and is_binary(pattern) and is_binary(replacement) ->
+        regex_replace(input, pattern, replacement, "")
+
+      {"replace", [input, pattern, replacement, flags]}
+      when is_binary(input) and is_binary(pattern) and is_binary(replacement) and is_binary(flags) ->
+        regex_replace(input, pattern, replacement, flags)
+
+      {"matches", [input, pattern]} when is_binary(input) and is_binary(pattern) ->
+        regex_matches(input, pattern, "")
+
+      {"matches", [input, pattern, flags]}
+      when is_binary(input) and is_binary(pattern) and is_binary(flags) ->
+        regex_matches(input, pattern, flags)
+
+      {"matches", [input, pattern, nil]} when is_binary(input) and is_binary(pattern) ->
+        regex_matches(input, pattern, "")
+
+      {"string_join", [list]} when is_list(list) ->
+        string_join(list, "")
+
+      {"string_join", [list, delimiter]} when is_list(list) and is_binary(delimiter) ->
+        string_join(list, delimiter)
+
+      {"string_join", [list, nil]} when is_list(list) ->
+        string_join(list, "")
+
+      {"string_join", [value]} when is_binary(value) ->
+        {:ok, value}
+
+      {"string_join", [value, delimiter]} when is_binary(value) and is_binary(delimiter) ->
+        {:ok, value}
 
       {"count", [list]} when is_list(list) ->
         {:ok, Decimal.new(length(list))}
@@ -273,7 +317,7 @@ defmodule Arbiter.FEEL.Builtins do
         {:ok, Atom.to_string(value)}
 
       {"string", [nil]} ->
-        {:ok, "null"}
+        {:ok, nil}
 
       {"string", [%Date{} = value]} ->
         {:ok, Date.to_iso8601(value)}
@@ -288,7 +332,10 @@ defmodule Arbiter.FEEL.Builtins do
         {:ok, Duration.to_string(value)}
 
       {"string", [value]} when is_list(value) ->
-        stringify_list(value)
+        {:ok, stringify_value(value)}
+
+      {"string", [value]} when is_map(value) and not is_struct(value) ->
+        {:ok, stringify_value(value)}
 
       {"number", [value]} when is_binary(value) ->
         {:ok, Decimal.new(value)}
@@ -395,7 +442,14 @@ defmodule Arbiter.FEEL.Builtins do
     "upper_case" => ["string"],
     "lower_case" => ["string"],
     "substring" => ["string", "start_position", "length"],
+    "substring_before" => ["string", "match"],
+    "substring_after" => ["string", "match"],
     "contains" => ["string", "match"],
+    "ends_with" => ["string", "match"],
+    "split" => ["string", "delimiter"],
+    "replace" => ["input", "pattern", "replacement", "flags"],
+    "matches" => ["input", "pattern", "flags"],
+    "string_join" => ["list", "delimiter"],
     "list_contains" => ["list", "element"],
     "all" => ["list"],
     "any" => ["list"],
@@ -425,6 +479,7 @@ defmodule Arbiter.FEEL.Builtins do
     "round_half_up" => ["n", "scale"],
     "round_half_down" => ["n", "scale"],
     "abs" => ["n"],
+    "string" => ["from"],
     "number" => ["from", "grouping_separator", "decimal_separator"],
     "duration" => ["from"],
     "date" => [["from"], ["year", "month", "day"]],
@@ -560,6 +615,13 @@ defmodule Arbiter.FEEL.Builtins do
   defp time_zone(_value), do: :error
 
   defp substring_before(value, match) do
+    case match do
+      "" -> ""
+      _ -> substring_before_match(value, match)
+    end
+  end
+
+  defp substring_before_match(value, match) do
     case :binary.match(value, match) do
       {index, _length} -> binary_part(value, 0, index)
       :nomatch -> ""
@@ -567,6 +629,13 @@ defmodule Arbiter.FEEL.Builtins do
   end
 
   defp substring_after(value, match) do
+    case match do
+      "" -> value
+      _ -> substring_after_match(value, match)
+    end
+  end
+
+  defp substring_after_match(value, match) do
     case :binary.match(value, match) do
       {index, length} ->
         start = index + length
@@ -861,17 +930,104 @@ defmodule Arbiter.FEEL.Builtins do
 
   defp feel_equal?(left, right), do: left == right
 
-  defp stringify_list(values) do
-    values
-    |> Enum.reduce_while({:ok, []}, fn value, {:ok, acc} ->
-      case invoke_normalized("string", [value]) do
-        {:ok, string} -> {:cont, {:ok, [string | acc]}}
-        {:error, error} -> {:halt, {:error, error}}
+  defp string_join(values, delimiter) do
+    values = Enum.reject(values, &is_nil/1)
+
+    if Enum.all?(values, &is_binary/1),
+      do: {:ok, Enum.join(values, delimiter)},
+      else: {:error, err(:type_error, "string join expects strings")}
+  end
+
+  defp stringify_value(value) when is_binary(value), do: "\"#{escape_string(value)}\""
+  defp stringify_value(%Decimal{} = value), do: Decimal.to_string(value, :normal)
+  defp stringify_value(value) when is_boolean(value), do: Atom.to_string(value)
+  defp stringify_value(nil), do: "null"
+
+  defp stringify_value(value) when is_list(value),
+    do: "[" <> Enum.map_join(value, ", ", &stringify_value/1) <> "]"
+
+  defp stringify_value(value) when is_map(value) and not is_struct(value) do
+    entries =
+      value
+      |> Enum.sort_by(&elem(&1, 0))
+      |> Enum.map_join(", ", fn {key, item} ->
+        "#{stringify_context_key(key)}: #{stringify_value(item)}"
+      end)
+
+    "{" <> entries <> "}"
+  end
+
+  defp stringify_context_key(key) do
+    if Regex.match?(~r/^[\p{L}_][\p{L}\p{N}_ ]*$/u, key),
+      do: key,
+      else: "\"#{escape_string(key)}\""
+  end
+
+  defp escape_string(value),
+    do: value |> String.replace("\\", "\\\\") |> String.replace("\"", "\\\"")
+
+  defp regex_split(input, pattern) do
+    with {:ok, regex} <- compile_regex(pattern, "") do
+      {:ok, Regex.split(regex, input, trim: false)}
+    end
+  end
+
+  defp regex_matches(input, pattern, flags) do
+    with {:ok, pattern} <- normalize_match_pattern(pattern, flags),
+         {:ok, regex} <- compile_regex(pattern, flags) do
+      {:ok, Regex.match?(regex, input)}
+    end
+  end
+
+  defp normalize_match_pattern(pattern, flags) do
+    if Regex.match?(~r/\[[^]]*\\\d[^]]*\]/, pattern) do
+      {:error, err(:evaluation_error, "invalid regular expression back-reference")}
+    else
+      pattern =
+        pattern
+        |> maybe_normalize_extended_pattern(flags)
+        |> String.replace("\\p{IsBasicLatin}", "[\\x{0000}-\\x{007F}]")
+        |> String.replace("[A-Z-[OI]]", "[A-HJ-NP-Z]")
+        |> replace_xml_schema_dot()
+
+      {:ok, pattern}
+    end
+  end
+
+  defp maybe_normalize_extended_pattern(pattern, flags) do
+    if String.contains?(flags, "x") do
+      pattern
+      |> String.replace("[ ]", "__FEEL_LITERAL_SPACE__")
+      |> String.replace(~r/\\\s+/, "\\")
+      |> String.replace(~r/\s+/, "")
+      |> String.replace("__FEEL_LITERAL_SPACE__", "[ ]")
+    else
+      pattern
+    end
+  end
+
+  defp replace_xml_schema_dot(pattern) do
+    Regex.replace(~r/(?<!\\)\./, pattern, "[^\\r\\n]")
+  end
+
+  defp regex_replace(input, pattern, replacement, flags) do
+    with {:ok, regex} <- compile_regex(pattern, flags) do
+      replacement = Regex.replace(~r/\$(\d+)/, replacement, "\\\\g{\\1}")
+      {:ok, Regex.replace(regex, input, replacement)}
+    end
+  end
+
+  defp compile_regex(pattern, flags) do
+    if Regex.match?(~r/^[simxq]*$/, flags) do
+      pattern = if String.contains?(flags, "q"), do: Regex.escape(pattern), else: pattern
+      options = String.replace(flags, "q", "") <> "u"
+
+      case Regex.compile(pattern, options) do
+        {:ok, regex} -> {:ok, regex}
+        {:error, _reason} -> {:error, err(:evaluation_error, "invalid regular expression")}
       end
-    end)
-    |> case do
-      {:ok, strings} -> {:ok, "[" <> (strings |> Enum.reverse() |> Enum.join(", ")) <> "]"}
-      error -> error
+    else
+      {:error, err(:evaluation_error, "invalid regular expression flags")}
     end
   end
 

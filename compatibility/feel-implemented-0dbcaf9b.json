@@ -8,7 +8,7 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-16T14:58:28.687643Z",
+    "execution_date": "2026-07-16T15:11:21.829369Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
@@ -4341,6 +4341,162 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0066-feel-negation/0066-feel-negation-test-01.xml",
       "decision": "decision003_d",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": [
+        "John",
+        "Doe"
+      ],
+      "expected": [
+        "John",
+        "Doe"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_a",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": [
+        "a",
+        "b",
+        "c",
+        "",
+        ""
+      ],
+      "expected": [
+        "a",
+        "b",
+        "c",
+        "",
+        ""
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision001_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: split/0",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: split/1",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": [
+        "foo",
+        "bar"
+      ],
+      "expected": [
+        "foo",
+        "bar"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for split",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: split/2",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: split/2",
+        "type": "feel_error"
+      },
+      "id": "008_a",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision008_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: split/2",
+        "type": "feel_error"
+      },
+      "id": "008_b",
+      "status": "passed",
+      "group": "0067-feel-split-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0067-feel-split-function/0067-feel-split-function-test-01.xml",
+      "decision": "decision008_b",
       "expected_error": true
     },
     {
@@ -11621,6 +11777,680 @@
     },
     {
       "error": null,
+      "id": "boolean_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "true",
+      "expected": "true",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "boolean_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "false",
+      "expected": "false",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "boolean_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{a: \"foo\"}",
+      "expected": "{a: \"foo\"}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{a: \"foo\", b: {bar: \"baz\"}}",
+      "expected": "{a: \"foo\", b: {bar: \"baz\"}}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{\"{\": \"foo\"}",
+      "expected": "{\"{\": \"foo\"}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_004",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{\":\": \"foo\"}",
+      "expected": "{\":\": \"foo\"}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_005",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{\",\": \"foo\"}",
+      "expected": "{\",\": \"foo\"}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_006",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{\"}\": \"foo\"}",
+      "expected": "{\"}\": \"foo\"}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_007",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "{\"\\\"\": \"foo\"}",
+      "expected": "{\"\\\"\": \"foo\"}",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "context_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "2018-12-10T00:00:00",
+      "expected": "2018-12-10T00:00:00",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dateTime_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "2018-12-10T10:30:00.0001",
+      "expected": "2018-12-10T10:30:00.0001",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dateTime_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "2018-12-10T10:30:00.0001+05:00:01",
+      "expected": "2018-12-10T10:30:00.0001+05:00:01",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dateTime_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dateTime_004",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "2018-12-10T10:30:00@Etc/UTC",
+      "expected": "2018-12-10T10:30:00@Etc/UTC",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dateTime_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "2018-12-10",
+      "expected": "2018-12-10",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "date_001",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string/0",
+        "type": "feel_error"
+      },
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string/2",
+        "type": "feel_error"
+      },
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string/2",
+        "type": "feel_error"
+      },
+      "id": "decision_004",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "decision_004",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "dt_duration_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P1D",
+      "expected": "P1D",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dt_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "-P1D",
+      "expected": "-P1D",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dt_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "PT0S",
+      "expected": "PT0S",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dt_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_004",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P1DT2H3M4.1234S",
+      "expected": "P1DT2H3M4.1234S",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dt_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_005",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P2DT1H",
+      "expected": "P2DT1H",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "dt_duration_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "[1, 2, 3, \"foo\"]",
+      "expected": "[1, 2, 3, \"foo\"]",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "list_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "[1, 2, 3, [4, 5, \"foo\"]]",
+      "expected": "[1, 2, 3, [4, 5, \"foo\"]]",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "list_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "[\"\\\"foo\\\"\"]",
+      "expected": "[\"\\\"foo\\\"\"]",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "list_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "null_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "123.45",
+      "expected": "123.45",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "number_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "string_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "10:30:00.0001",
+      "expected": "10:30:00.0001",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "time_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "10:30:00.0001+05:00:01",
+      "expected": "10:30:00.0001+05:00:01",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "time_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "10:30:00@Etc/UTC",
+      "expected": "10:30:00@Etc/UTC",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "time_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_001",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P1Y",
+      "expected": "P1Y",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "ym_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_002",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "-P1Y",
+      "expected": "-P1Y",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "ym_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_003",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P0M",
+      "expected": "P0M",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "ym_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_004",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P1Y2M",
+      "expected": "P1Y2M",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "ym_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_005",
+      "status": "passed",
+      "group": "0079-feel-string-function",
+      "actual": "P2Y1M",
+      "expected": "P2Y1M",
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0079-feel-string-function/0079-feel-string-function-test-01.xml",
+      "decision": "ym_duration_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_001_a",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_001_b",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_001_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "6"
+      },
+      "expected": {
+        "type": "number",
+        "value": "6"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_003_a",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "1"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_003_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_004",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_004_a",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_004_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_005",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_005_a",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_005_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_006",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "🐎": "bar"
+      },
+      "expected": {
+        "🐎": "bar"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_007",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": {
+        "🐎": "😀"
+      },
+      "expected": {
+        "🐎": "😀"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "decision_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "endswith_001",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "endswith_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "substring_004",
+      "status": "passed",
+      "group": "0083-feel-unicode",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0083-feel-unicode/0083-feel-unicode-test-01.xml",
+      "decision": "substring_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "decision_001",
       "status": "passed",
       "group": "0084-feel-for-loops",
@@ -15074,6 +15904,570 @@
       "expected_error": false
     },
     {
+      "error": null,
+      "id": "001_2e948ccdc7",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_001_2e948ccdc7",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002_f4de663db7",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "f",
+      "expected": "f",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_002_f4de663db7",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_60bc15bade",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_003_60bc15bade",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004_6f93aa7654",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_004_6f93aa7654",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_c8e030633c",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_005_c8e030633c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006_1c3d39811d",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_006_1c3d39811d",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_ea4e4a38b0",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "ab",
+      "expected": "ab",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_007_ea4e4a38b0",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008_501b0a5990",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_008_501b0a5990",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "009_a79c5a4111",
+      "status": "passed",
+      "group": "1107-feel-substring-before-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1107-feel-substring-before-function/1107-feel-substring-before-function-test-01.xml",
+      "decision": "feel-substring-before-function_009_a79c5a4111",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_f532be66f2",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "ar",
+      "expected": "ar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_001_f532be66f2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002_f20d66fc1e",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "obar",
+      "expected": "obar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_002_f20d66fc1e",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_367612fc8b",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_003_367612fc8b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004_e448ee2dad",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_004_e448ee2dad",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_429efdafd0",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_005_429efdafd0",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006_bf89d6b618",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_006_bf89d6b618",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_529baaeb0b",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_007_529baaeb0b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008_1e611924ea",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "bc",
+      "expected": "bc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_008_1e611924ea",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "009_712fe2842f",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "ar",
+      "expected": "ar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_009_712fe2842f",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010_40e159d07a",
+      "status": "passed",
+      "group": "1108-feel-substring-after-function",
+      "actual": "ar",
+      "expected": "ar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1108-feel-substring-after-function/1108-feel-substring-after-function-test-01.xml",
+      "decision": "feel-substring-after-function_010_40e159d07a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_7637e5a8ed",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "[1=ab][2=]cd",
+      "expected": "[1=ab][2=]cd",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_001_7637e5a8ed",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002_b5c242ccd4",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "a",
+      "expected": "a",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_002_b5c242ccd4",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_bf7aa95050",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "#",
+      "expected": "#",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_003_bf7aa95050",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004_55a2186006",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_004_55a2186006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_271d93aa68",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_005_271d93aa68",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006_9cd005d2e2",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "#ar",
+      "expected": "#ar",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_006_9cd005d2e2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_91583e38c9",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_007_91583e38c9",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "008_8c7c3871f8",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "a*cada*",
+      "expected": "a*cada*",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_008_8c7c3871f8",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "009_b1e4220bc9",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "*",
+      "expected": "*",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_009_b1e4220bc9",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010_cd4e7a6d9f",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "*c*bra",
+      "expected": "*c*bra",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_010_cd4e7a6d9f",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "011_c310665f57",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "brcdbr",
+      "expected": "brcdbr",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_011_c310665f57",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "012_b0cf9e6723",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abbraccaddabbra",
+      "expected": "abbraccaddabbra",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_012_b0cf9e6723",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "013_f669d03fa9",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "b",
+      "expected": "b",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_013_f669d03fa9",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "014_cea33baeee",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "bbbb",
+      "expected": "bbbb",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_014_cea33baeee",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "015_57ce78ec8a",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "carted",
+      "expected": "carted",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_015_57ce78ec8a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "016_1c38095f50",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "Xant",
+      "expected": "Xant",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_016_1c38095f50",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "017_b9c3c03b87",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "(012) 345-6789",
+      "expected": "(012) 345-6789",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_017_b9c3c03b87",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "018_aba3349043",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "facet[i][o][u]sl[y]",
+      "expected": "facet[i][o][u]sl[y]",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_018_aba3349043",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "019_6ef91033ad",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "###",
+      "expected": "###",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_019_6ef91033ad",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "020_52d93a8851",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "#.#.#.",
+      "expected": "#.#.#.",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_020_52d93a8851",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "021_e33828e3da",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "###",
+      "expected": "###",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_021_e33828e3da",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "022_bd75fac0bd",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "###",
+      "expected": "###",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_022_bd75fac0bd",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "023_5c337d3725",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "# # # # ",
+      "expected": "# # # # ",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_023_5c337d3725",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "024_4a89220cd6",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_024_4a89220cd6",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "025_b7f9525875",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "###",
+      "expected": "###",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_025_b7f9525875",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "026_acb176590a",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_026_acb176590a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "027_d8d25f40e5",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "###",
+      "expected": "###",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_027_d8d25f40e5",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "028_96e8c698af",
+      "status": "passed",
+      "group": "1109-feel-replace-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1109-feel-replace-function/1109-feel-replace-function-test-01.xml",
+      "decision": "feel-replace-function_028_96e8c698af",
+      "expected_error": false
+    },
+    {
       "error": {
         "code": "arity_error",
         "message": "invalid built-in invocation: contains/2",
@@ -15204,6 +16598,560 @@
       "case_file": "TestCases/compliance-level-3/1110-feel-contains-function/1110-feel-contains-function-test-01.xml",
       "decision": "feel-contains-function_010_9ae03e0e59",
       "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: matches/2",
+        "type": "feel_error"
+      },
+      "id": "K-MatchesFunc-1",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K-MatchesFunc-1",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: matches/1",
+        "type": "feel_error"
+      },
+      "id": "K-MatchesFunc-2",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K-MatchesFunc-2",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: matches/3",
+        "type": "feel_error"
+      },
+      "id": "K-MatchesFunc-3",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K-MatchesFunc-3",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: matches/4",
+        "type": "feel_error"
+      },
+      "id": "K-MatchesFunc-4",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K-MatchesFunc-4",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression flags",
+        "type": "feel_error"
+      },
+      "id": "K-MatchesFunc-5",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K-MatchesFunc-5",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression flags",
+        "type": "feel_error"
+      },
+      "id": "K-MatchesFunc-6",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K-MatchesFunc-6",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-1",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-1",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-10",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-10",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression back-reference",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-11",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-11",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression back-reference",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-12",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-12",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression back-reference",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-13",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-13",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression back-reference",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-14",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-14",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-15",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": [
+        false,
+        true
+      ],
+      "expected": [
+        false,
+        true
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-15",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-17",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-17",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-2",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-3",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-3",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-4",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-4",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-5",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-5",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "K2-MatchesFunc-6",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-6",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-7",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-7",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-8",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-8",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression",
+        "type": "feel_error"
+      },
+      "id": "K2-MatchesFunc-9",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "K2-MatchesFunc-9",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "caselessmatch01",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch01",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch02",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch02",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch03",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch03",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch07",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch07",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch08",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch08",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch09",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch09",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch10",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch10",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch11",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch11",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch12",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch12",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "caselessmatch13",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "caselessmatch13",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "fn-matches-27",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-matches-27",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "fn-matches-28",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-matches-28",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "fn-matches-45",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-matches-45",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "fn-matches2args-1",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-matches2args-1",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid regular expression flags",
+        "type": "feel_error"
+      },
+      "id": "fn-matchesErr-1",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-matchesErr-1",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "fn-null-flags",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-null-flags",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: matches/2",
+        "type": "feel_error"
+      },
+      "id": "fn-null-input",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-null-input",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: matches/2",
+        "type": "feel_error"
+      },
+      "id": "fn-null-pattern",
+      "status": "passed",
+      "group": "1111-feel-matches-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1111-feel-matches-function/1111-feel-matches-function-test-01.xml",
+      "decision": "fn-null-pattern",
+      "expected_error": true
     },
     {
       "error": {
@@ -19433,13 +21381,13 @@
       "status": "passed",
       "group": "1120-feel-duration-function",
       "actual": {
-        "kind": "day_time",
+        "kind": "year_month",
         "months": 0,
         "seconds": 0,
         "type": "duration"
       },
       "expected": {
-        "kind": "day_time",
+        "kind": "year_month",
         "months": 0,
         "seconds": 0,
         "type": "duration"
@@ -19455,13 +21403,13 @@
       "status": "passed",
       "group": "1120-feel-duration-function",
       "actual": {
-        "kind": "day_time",
+        "kind": "year_month",
         "months": 0,
         "seconds": 0,
         "type": "duration"
       },
       "expected": {
-        "kind": "day_time",
+        "kind": "year_month",
         "months": 0,
         "seconds": 0,
         "type": "duration"
@@ -20022,6 +21970,302 @@
       "case_file": "TestCases/compliance-level-3/1131-feel-function-invocation/1131-feel-function-invocation-test-01.xml",
       "decision": "decision008",
       "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "a and b and c",
+      "expected": "a and b and c",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "abc",
+      "expected": "abc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_a",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "a",
+      "expected": "a",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision005_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_b",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "a",
+      "expected": "a",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision005_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006_a",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "ac",
+      "expected": "ac",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision006_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006_b",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "aXc",
+      "expected": "aXc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision006_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_a",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision007_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_b",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "",
+      "expected": "",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision007_b",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string_join/0",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string_join/3",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010_a",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "ac",
+      "expected": "ac",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision010_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010_b",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "aXc",
+      "expected": "aXc",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision010_b",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for string_join",
+        "type": "feel_error"
+      },
+      "id": "011_a",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision011_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for string_join",
+        "type": "feel_error"
+      },
+      "id": "011_b",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision011_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string_join/1",
+        "type": "feel_error"
+      },
+      "id": "012_a",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision012_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string_join/2",
+        "type": "feel_error"
+      },
+      "id": "012_b",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision012_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "string join expects strings",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: string_join/2",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "015",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "a",
+      "expected": "a",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "016",
+      "status": "passed",
+      "group": "1140-feel-string-join-function",
+      "actual": "a",
+      "expected": "a",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1140-feel-string-join-function/1140-feel-string-join-function-test-01.xml",
+      "decision": "decision016",
+      "expected_error": false
     },
     {
       "error": null,
@@ -21066,18 +23310,18 @@
   ],
   "summary": {
     "error": 0,
-    "disabled": 676,
-    "total": 1384,
+    "disabled": 507,
+    "total": 1553,
     "unsupported": 0,
-    "supported": 1384,
+    "supported": 1553,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 2060,
     "excluded_by_suite": 1485,
-    "passed": 1384,
+    "passed": 1553,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 67.18,
-    "coverage_percent": 39.04
+    "suite_coverage_percent": 75.39,
+    "coverage_percent": 43.81
   }
 }

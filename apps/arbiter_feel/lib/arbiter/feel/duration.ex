@@ -38,7 +38,11 @@ defmodule Arbiter.FEEL.Duration do
           seconds = number(captures["seconds"])
 
           sign = if captures["sign"] == "-", do: -1, else: 1
-          kind = if years != 0 or months != 0, do: :year_month, else: :day_time
+
+          kind =
+            if captures["years"] not in [nil, ""] or captures["months"] not in [nil, ""],
+              do: :year_month,
+              else: :day_time
 
           {:ok,
            %__MODULE__{
@@ -119,11 +123,19 @@ defmodule Arbiter.FEEL.Duration do
     date_part = if days > 0, do: "#{days}D", else: ""
 
     time_part =
-      [if(hours > 0, do: "#{hours}H"), if(minutes > 0, do: "#{minutes}M"), format_seconds(second)]
+      [
+        if(hours > 0, do: "#{hours}H"),
+        if(minutes > 0, do: "#{minutes}M"),
+        if(Decimal.equal?(second, Decimal.new(0)) and (days > 0 or hours > 0 or minutes > 0),
+          do: nil,
+          else: format_seconds(second)
+        )
+      ]
       |> Enum.reject(&is_nil/1)
       |> Enum.join()
 
-    sign <> "P" <> date_part <> "T" <> time_part
+    time_marker = if time_part == "", do: "", else: "T"
+    sign <> "P" <> date_part <> time_marker <> time_part
   end
 
   @spec add_to_date(Date.t(), t()) :: Date.t()
