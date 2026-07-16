@@ -27,6 +27,15 @@ defmodule Arbiter.DMN.TCK.ComparatorTest do
 
     assert Comparator.semantic_equal?(left, right)
     assert Comparator.semantic_equal?(Decimal.new("2.0"), 2)
+
+    assert Comparator.semantic_equal?(
+             Decimal.new("966.396742204988"),
+             Decimal.new("966.3967422049753602")
+           )
+
+    refute Comparator.semantic_equal?(Decimal.new("1"), Decimal.new("1.000001"))
+    assert Comparator.semantic_equal?(true, "true")
+    assert Comparator.semantic_equal?("false", false)
   end
 
   test "supports explicit unordered list comparison without losing multiplicity" do

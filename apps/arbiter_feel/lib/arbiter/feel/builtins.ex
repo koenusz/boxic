@@ -16,6 +16,7 @@ defmodule Arbiter.FEEL.Builtins do
     substring_after
     contains
     ends_with
+    starts_with
     split
     replace
     matches
@@ -54,6 +55,7 @@ defmodule Arbiter.FEEL.Builtins do
     sum
     min
     max
+    mean
     append
     concatenate
     insert_before
@@ -104,7 +106,21 @@ defmodule Arbiter.FEEL.Builtins do
   @spec invoke(String.t(), [term()]) :: {:ok, term()} | {:error, Arbiter.FEEL.Error.t()}
   def invoke(name, args) do
     with {:ok, normalized_args} <- normalize_args(name, args) do
-      invoke_normalized(name, normalized_args)
+      case invoke_normalized(name, normalized_args) do
+        {:error, _error} = original ->
+          coerced_args =
+            Enum.map(normalized_args, fn
+              [value] -> value
+              value -> value
+            end)
+
+          if coerced_args == normalized_args,
+            do: original,
+            else: invoke_normalized(name, coerced_args)
+
+        result ->
+          result
+      end
     end
   rescue
     _ -> {:error, err(:evaluation_error, "built-in invocation failed")}
@@ -138,6 +154,9 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"ends_with", [value, match]} when is_binary(value) and is_binary(match) ->
         {:ok, String.ends_with?(value, match)}
+
+      {"starts_with", [value, match]} when is_binary(value) and is_binary(match) ->
+        {:ok, String.starts_with?(value, match)}
 
       {"split", [value, delimiter]} when is_binary(value) and is_binary(delimiter) ->
         regex_split(value, delimiter)
@@ -294,6 +313,15 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"max", [list]} when is_list(list) ->
         max_list(list)
+
+      {"max", values} when length(values) > 1 ->
+        max_list(values)
+
+      {"mean", [list]} when is_list(list) ->
+        mean_list(list)
+
+      {"mean", values} when values != [] ->
+        mean_list(values)
 
       {"append", [list | values]} when is_list(list) and values != [] ->
         {:ok, list ++ values}
@@ -566,6 +594,7 @@ defmodule Arbiter.FEEL.Builtins do
     "substring_after" => ["string", "match"],
     "contains" => ["string", "match"],
     "ends_with" => ["string", "match"],
+    "starts_with" => ["string", "match"],
     "split" => ["string", "delimiter"],
     "replace" => ["input", "pattern", "replacement", "flags"],
     "matches" => ["input", "pattern", "flags"],
@@ -979,6 +1008,18 @@ defmodule Arbiter.FEEL.Builtins do
     case Enum.all?(values, &match?(%Decimal{}, &1)) do
       true -> {:ok, Enum.reduce(values, fn value, current -> decimal_max(value, current) end)}
       false -> {:error, err(:type_error, "max expects a list of numbers")}
+    end
+  end
+
+  defp mean_list(values) do
+    if values != [] and Enum.all?(values, &match?(%Decimal{}, &1)) do
+      {:ok,
+       values
+       |> Enum.reduce(Decimal.new(0), &Decimal.add/2)
+       |> Decimal.div(Decimal.new(length(values)))
+       |> Decimal.round(14)}
+    else
+      {:error, err(:type_error, "mean expects numbers")}
     end
   end
 

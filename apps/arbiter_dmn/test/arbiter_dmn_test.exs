@@ -222,4 +222,22 @@ defmodule Arbiter.DMNTest do
 
     assert Decimal.equal?(result, Decimal.new(20))
   end
+
+  test "evaluation coerces legacy lexical inputs and normalizes punctuation in FEEL names" do
+    xml = """
+    <definitions id="defs" name="legacy inputs" namespace="urn:legacy">
+      <inputData id="amount" name="Requested-Amount">
+        <variable name="Requested-Amount" typeRef="number"/>
+      </inputData>
+      <decision id="double" name="Double">
+        <variable name="Double" typeRef="number"/>
+        <literalExpression><text>Requested-Amount * 2</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert {:ok, result} = Arbiter.DMN.evaluate(model, "Double", %{"Requested-Amount" => "21"})
+    assert Decimal.equal?(result, Decimal.new(42))
+  end
 end

@@ -17,13 +17,20 @@ defmodule Arbiter.DMN.TCK.Comparator do
   end
 
   defp compare(%Decimal{} = left, %Decimal{} = right, _ordered),
-    do: Decimal.equal?(left, right)
+    do: decimal_equal?(left, right)
 
   defp compare(%Decimal{} = left, right, _ordered) when is_integer(right),
     do: Decimal.equal?(left, Decimal.new(right))
 
   defp compare(left, %Decimal{} = right, _ordered) when is_integer(left),
     do: Decimal.equal?(Decimal.new(left), right)
+
+  # Early TCK documents sometimes omit xsi:type for boolean result values even
+  # when the referenced DMN decision is explicitly typed as boolean.
+  defp compare(value, "true", _ordered) when is_boolean(value), do: value
+  defp compare(value, "false", _ordered) when is_boolean(value), do: not value
+  defp compare("true", value, _ordered) when is_boolean(value), do: value
+  defp compare("false", value, _ordered) when is_boolean(value), do: not value
 
   defp compare(%Date{} = left, %Date{} = right, _ordered),
     do: Date.compare(left, right) == :eq
@@ -71,6 +78,21 @@ defmodule Arbiter.DMN.TCK.Comparator do
   defp numeric_equal?(%Decimal{} = left, right), do: Decimal.equal?(left, Decimal.new(right))
   defp numeric_equal?(left, %Decimal{} = right), do: Decimal.equal?(Decimal.new(left), right)
   defp numeric_equal?(left, right), do: left == right
+
+  defp decimal_equal?(left, right) do
+    if Decimal.equal?(left, right) do
+      true
+    else
+      difference = left |> Decimal.sub(right) |> Decimal.abs()
+
+      scale =
+        Enum.reduce([Decimal.abs(left), Decimal.abs(right), Decimal.new(1)], fn value, current ->
+          if Decimal.compare(value, current) == :gt, do: value, else: current
+        end)
+
+      Decimal.compare(difference, Decimal.mult(scale, Decimal.new("1e-12"))) != :gt
+    end
+  end
 
   defp unordered_equal?(left, right) when length(left) != length(right), do: false
 

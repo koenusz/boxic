@@ -205,6 +205,9 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<"ends with", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "ends_with"} | acc])
 
+  defp tokenize(<<"starts with", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "starts_with"} | acc])
+
   defp tokenize(<<"upper case", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "upper_case"} | acc])
 
@@ -1160,6 +1163,7 @@ defmodule Arbiter.FEEL do
       case value do
         nil -> {:ok, nil}
         %Decimal{} = decimal -> {:ok, decimal_negate(decimal)}
+        %Duration{} = duration -> {:ok, Duration.negate(duration)}
         _ -> {:error, error(:type_error, "negation requires a number")}
       end
     end
@@ -1482,6 +1486,13 @@ defmodule Arbiter.FEEL do
 
   defp eval_binary(:plus, left, right), do: plus(left, right)
   defp eval_binary(:minus, left, right), do: minus(left, right)
+
+  defp eval_binary(:mul, %Duration{} = duration, %Decimal{} = factor),
+    do: {:ok, Duration.scale(duration, factor)}
+
+  defp eval_binary(:mul, %Decimal{} = factor, %Duration{} = duration),
+    do: {:ok, Duration.scale(duration, factor)}
+
   defp eval_binary(:mul, left, right), do: decimal_binary(left, right, &decimal_mult/2)
   defp eval_binary(:pow, left, right), do: decimal_power(left, right)
 
@@ -1498,6 +1509,19 @@ defmodule Arbiter.FEEL do
           {:ok, nil}
         else
           {:ok, decimal_div(l, r)}
+        end
+
+      {%Duration{} = duration, %Decimal{} = divisor} ->
+        if decimal_equal?(divisor, decimal_new("0")) do
+          {:ok, nil}
+        else
+          {:ok, Duration.scale(duration, decimal_div(decimal_new("1"), divisor))}
+        end
+
+      {%Duration{} = left_duration, %Duration{} = right_duration} ->
+        case Duration.ratio(left_duration, right_duration) do
+          {:ok, ratio} -> {:ok, ratio}
+          :error -> {:error, error(:type_error, "division requires compatible durations")}
         end
 
       _ ->
@@ -1694,8 +1718,11 @@ defmodule Arbiter.FEEL do
       {%Duration{months: 0} = duration, %FeelTime{} = time} ->
         {:ok, FeelTime.add_seconds(time, duration.seconds)}
 
-      {%Duration{} = l, %Duration{} = r} ->
+      {%Duration{kind: kind} = l, %Duration{kind: kind} = r} ->
         {:ok, Duration.add(l, r)}
+
+      {%Duration{}, %Duration{}} ->
+        {:error, error(:type_error, "duration kinds must match")}
 
       _ ->
         {:error, error(:type_error, "addition requires compatible values")}
@@ -1722,6 +1749,25 @@ defmodule Arbiter.FEEL do
       {%FeelDateTime{} = left_datetime, %FeelDateTime{} = right_datetime} ->
         temporal_arithmetic(FeelDateTime.difference(left_datetime, right_datetime))
 
+      {%FeelDateTime{} = left_datetime, %Date{} = right_date} ->
+        temporal_arithmetic(
+          FeelDateTime.difference(
+            left_datetime,
+            date_at_midnight(right_date, left_datetime.time.zone)
+          )
+        )
+
+      {%Date{} = left_date, %FeelDateTime{} = right_datetime} ->
+        temporal_arithmetic(
+          FeelDateTime.difference(
+            date_at_midnight(left_date, right_datetime.time.zone),
+            right_datetime
+          )
+        )
+
+      {%FeelTime{} = left_time, %FeelTime{} = right_time} ->
+        temporal_arithmetic(FeelTime.difference(left_time, right_time))
+
       {%Date{} = date, %Duration{} = duration} ->
         {:ok, Duration.add_to_date(date, Duration.negate(duration))}
 
@@ -1737,8 +1783,11 @@ defmodule Arbiter.FEEL do
       {%FeelTime{} = time, %Duration{months: 0} = duration} ->
         {:ok, FeelTime.add_seconds(time, Duration.negate(duration).seconds)}
 
-      {%Duration{} = l, %Duration{} = r} ->
+      {%Duration{kind: kind} = l, %Duration{kind: kind} = r} ->
         {:ok, Duration.subtract(l, r)}
+
+      {%Duration{}, %Duration{}} ->
+        {:error, error(:type_error, "duration kinds must match")}
 
       _ ->
         {:error, error(:type_error, "subtraction requires compatible values")}
@@ -1749,6 +1798,11 @@ defmodule Arbiter.FEEL do
 
   defp temporal_arithmetic(:error),
     do: {:error, error(:evaluation_error, "temporal operation failed")}
+
+  defp date_at_midnight(date, _zone) do
+    {:ok, time} = FeelTime.new(0, 0, 0, {:offset, 0})
+    FeelDateTime.new(date, time)
+  end
 
   defp compare_from_op(op, cmp) do
     case op do
@@ -1797,7 +1851,11 @@ defmodule Arbiter.FEEL do
         {:ok, decimal_integer_power(base, integer)}
 
       :error ->
-        {:error, error(:type_error, "exponent must be an integer")}
+        {:ok,
+         base
+         |> Decimal.to_float()
+         |> :math.pow(Decimal.to_float(exponent))
+         |> Decimal.from_float()}
     end
   end
 

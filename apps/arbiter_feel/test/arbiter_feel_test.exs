@@ -1,6 +1,7 @@
 defmodule Arbiter.FEELTest do
   use ExUnit.Case
 
+  alias Arbiter.FEEL.Duration
   alias Arbiter.FEEL.Time, as: FeelTime
 
   test "parse builds AST without evaluation" do
@@ -225,5 +226,21 @@ defmodule Arbiter.FEELTest do
     assert {:ok, "P1Y2M"} = Arbiter.FEEL.evaluate("string(duration(\"P1Y2M\"))")
     assert {:ok, "12.50"} = Arbiter.FEEL.evaluate("string(12.50)")
     assert {:ok, "true"} = Arbiter.FEEL.evaluate("string(true)")
+  end
+
+  test "duration arithmetic preserves kinds and temporal boundary semantics" do
+    assert {:ok, %Duration{kind: :day_time} = scaled} =
+             Arbiter.FEEL.evaluate(~S|duration("PT1H") * 2.5|)
+
+    assert Decimal.equal?(Decimal.new(scaled.seconds), Decimal.new(9_000))
+
+    assert {:ok, %Duration{kind: :year_month, months: 6}} =
+             Arbiter.FEEL.evaluate(~S|duration("P1Y") / 2|)
+
+    assert {:error, %{code: :type_error}} =
+             Arbiter.FEEL.evaluate(~S|duration("P1Y") + duration("P1D")|)
+
+    assert {:ok, ~D[2021-01-01]} =
+             Arbiter.FEEL.evaluate(~S|@"2021-01-02" - @"PT1S"|)
   end
 end

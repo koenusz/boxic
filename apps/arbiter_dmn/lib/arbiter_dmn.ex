@@ -63,7 +63,8 @@ defmodule Arbiter.DMN do
   @spec evaluate(Model.t(), String.t(), map()) :: {:ok, term()} | {:error, term()}
   def evaluate(%Model{} = model, decision_name, context \\ %{})
       when is_binary(decision_name) and is_map(context) do
-    with {:ok, decision} <- find_decision(model, decision_name),
+    with {:ok, context} <- coerce_input_context(model, context),
+         {:ok, decision} <- find_decision(model, decision_name),
          {:ok, value, _memo} <- evaluate_decision(model, decision, context, %{}, MapSet.new()) do
       {:ok, value}
     end
@@ -223,6 +224,7 @@ defmodule Arbiter.DMN do
       id: attr(node, "id"),
       name: attr(node, "name"),
       variable: parse_variable(node),
+      requirements: parse_requirements(node),
       parameters:
         if(logic,
           do: Enum.map(nodes(logic, "./*[local-name()='formalParameter']"), &parse_parameter/1),
@@ -914,7 +916,8 @@ defmodule Arbiter.DMN do
          _visiting
        ) do
     with {:ok, input} <- fetch_reference(model.input_data, :input_data, id),
-         {:ok, value} <- input_value(context, input) do
+         {:ok, value} <- input_value(context, input),
+         {:ok, value} <- coerce_type(value, input.variable && input.variable.type_ref, model) do
       {:ok, bind_value(context, input, value), memo}
     end
   end
@@ -942,6 +945,28 @@ defmodule Arbiter.DMN do
       {:found, value} -> {:ok, value}
       nil -> {:error, {:missing_input, input.name || input.id}}
     end
+  end
+
+  defp coerce_input_context(model, context) do
+    Enum.reduce_while(model.input_data, {:ok, context}, fn {_id, input}, {:ok, result} ->
+      keys =
+        [input.name, input.variable && input.variable.name, input.id] |> Enum.reject(&is_nil/1)
+
+      case Enum.find(keys, &Map.has_key?(result, &1)) do
+        nil ->
+          {:cont, {:ok, result}}
+
+        key ->
+          case coerce_type(
+                 Map.fetch!(result, key),
+                 input.variable && input.variable.type_ref,
+                 model
+               ) do
+            {:ok, value} -> {:cont, {:ok, Enum.reduce(keys, result, &Map.put(&2, &1, value))}}
+            {:error, _reason} = error -> {:halt, error}
+          end
+      end
+    end)
   end
 
   defp existing_node_value(context, node) do
@@ -972,7 +997,10 @@ defmodule Arbiter.DMN do
          values = Enum.map(bkm.parameters, &Map.fetch!(bindings, &1.name)),
          {:ok, values} <- coerce_parameter_values(values, bkm.parameters, model),
          bindings = Map.new(Enum.zip(Enum.map(bkm.parameters, & &1.name), values)),
-         {:ok, result} <- evaluate_expression(bkm.expression, Map.merge(context, bindings), model) do
+         {:ok, bkm_context, _memo} <-
+           resolve_requirements(model, bkm, context, %{}, MapSet.new()),
+         {:ok, result} <-
+           evaluate_expression(bkm.expression, Map.merge(bkm_context, bindings), model) do
       coerce_type(result, bkm.variable && bkm.variable.type_ref, model)
     else
       nil -> {:error, :missing_invocation_function}
@@ -997,10 +1025,12 @@ defmodule Arbiter.DMN do
 
     with {:ok, values} <- normalize_service_args(args, names),
          {:ok, values} <- coerce_parameter_values(values, bkm.parameters, model),
+         {:ok, bkm_context, _memo} <-
+           resolve_requirements(model, bkm, outer_context, %{}, MapSet.new()),
          {:ok, result} <-
            evaluate_expression(
              bkm.expression,
-             Map.merge(outer_context, Map.new(Enum.zip(names, values))),
+             Map.merge(bkm_context, Map.new(Enum.zip(names, values))),
              model
            ) do
       coerce_type(result, bkm.variable && bkm.variable.type_ref, model)
@@ -1107,12 +1137,32 @@ defmodule Arbiter.DMN do
 
   defp coerce_type(value, "string", _model) when is_binary(value), do: {:ok, value}
   defp coerce_type(%Decimal{} = value, "number", _model), do: {:ok, value}
+
+  defp coerce_type(value, "number", _model) when is_binary(value) do
+    case Decimal.parse(value) do
+      {number, ""} -> {:ok, number}
+      _ -> {:error, {:type_error, "number"}}
+    end
+  end
+
   defp coerce_type(value, "boolean", _model) when is_boolean(value), do: {:ok, value}
+  defp coerce_type("true", "boolean", _model), do: {:ok, true}
+  defp coerce_type("false", "boolean", _model), do: {:ok, false}
   defp coerce_type(%Date{} = value, "date", _model), do: {:ok, value}
   defp coerce_type(%Arbiter.FEEL.Time{} = value, "time", _model), do: {:ok, value}
   defp coerce_type(%Arbiter.FEEL.DateTime{} = value, "date and time", _model), do: {:ok, value}
   defp coerce_type(%Arbiter.FEEL.DateTime{} = value, "dateTime", _model), do: {:ok, value}
   defp coerce_type(%Arbiter.FEEL.Duration{} = value, "duration", _model), do: {:ok, value}
+
+  defp coerce_type(%Arbiter.FEEL.Duration{kind: :day_time} = value, "dayTimeDuration", _model),
+    do: {:ok, value}
+
+  defp coerce_type(
+         %Arbiter.FEEL.Duration{kind: :year_month} = value,
+         "yearMonthDuration",
+         _model
+       ),
+       do: {:ok, value}
 
   defp coerce_type(
          %Arbiter.FEEL.Duration{kind: :day_time} = value,
@@ -1247,7 +1297,7 @@ defmodule Arbiter.DMN do
   end
 
   defp reduce_hit_policy(table, _rules, [], context)
-       when table.hit_policy in ~w(UNIQUE FIRST ANY PRIORITY),
+       when table.hit_policy in ~w(UNIQUE FIRST ANY PRIORITY COLLECT),
        do: evaluate_default_outputs(table.outputs, context)
 
   defp reduce_hit_policy(%DecisionTable{hit_policy: "UNIQUE"}, rules, results, _context) do
@@ -1447,7 +1497,9 @@ defmodule Arbiter.DMN do
   defp normalize_feel_names(expression, context) do
     context
     |> Map.keys()
-    |> Enum.filter(&(is_binary(&1) and String.contains?(&1, " ")))
+    |> Enum.filter(fn name ->
+      is_binary(name) and not Regex.match?(~r/^[\p{L}_][\p{L}\p{N}_]*$/u, name)
+    end)
     |> Enum.sort_by(&String.length/1, :desc)
     |> Enum.with_index()
     |> Enum.reduce({expression, context}, fn {name, index}, {source, bindings} ->

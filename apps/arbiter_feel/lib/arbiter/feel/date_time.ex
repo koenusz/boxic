@@ -30,6 +30,7 @@ defmodule Arbiter.FEEL.DateTime do
     case String.split(value, "T", parts: 2) do
       [date_part, time_part] ->
         with {:ok, date} <- parse_date(date_part),
+             {:ok, date, time_part} <- normalize_end_of_day(date, time_part),
              {:ok, time} <- FeelTime.parse(time_part) do
           {:ok, new(date, time)}
         end
@@ -38,6 +39,12 @@ defmodule Arbiter.FEEL.DateTime do
         :error
     end
   end
+
+  defp normalize_end_of_day(date, "24:00:00" <> zone),
+    do: {:ok, Date.add(date, 1), "00:00:00" <> zone}
+
+  defp normalize_end_of_day(_date, "24:" <> _rest), do: :error
+  defp normalize_end_of_day(date, time), do: {:ok, date, time}
 
   @spec to_string(t()) :: String.t()
   def to_string(%__MODULE__{date: date, time: time}) do
@@ -58,10 +65,14 @@ defmodule Arbiter.FEEL.DateTime do
     {:ok, %{value | date: Duration.add_to_date(value.date, duration)}}
   end
 
-  def add_duration(%__MODULE__{time: %FeelTime{zone: {:iana, zone}}} = value, %Duration{
-        kind: :day_time,
-        seconds: seconds
-      }) do
+  def add_duration(
+        %__MODULE__{date: %{year: year}, time: %FeelTime{zone: {:iana, zone}}} = value,
+        %Duration{
+          kind: :day_time,
+          seconds: seconds
+        }
+      )
+      when year > 0 do
     with {:ok, datetime} <- to_elixir_datetime(value, zone),
          {whole_seconds, fraction} <- split_seconds(seconds),
          shifted <-
@@ -92,8 +103,20 @@ defmodule Arbiter.FEEL.DateTime do
          {:ok, right_seconds} <- instant_seconds(right) do
       {:ok, Duration.from_seconds(Decimal.sub(left_seconds, right_seconds))}
     else
-      _ -> :error
+      _ when left.time.zone == right.time.zone ->
+        {:ok, Duration.from_seconds(Decimal.sub(local_seconds(left), local_seconds(right)))}
+
+      _ ->
+        :error
     end
+  end
+
+  defp local_seconds(%__MODULE__{date: date, time: time}) do
+    date
+    |> Date.to_gregorian_days()
+    |> Kernel.*(86_400)
+    |> Decimal.new()
+    |> Decimal.add(FeelTime.local_seconds(time))
   end
 
   def instant_seconds(%__MODULE__{date: date, time: %FeelTime{zone: {:offset, offset}} = time}) do

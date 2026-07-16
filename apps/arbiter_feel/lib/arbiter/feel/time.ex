@@ -97,6 +97,23 @@ defmodule Arbiter.FEEL.Time do
     end
   end
 
+  @spec difference(t(), t()) :: {:ok, Arbiter.FEEL.Duration.t()} | :error
+  def difference(%__MODULE__{} = left, %__MODULE__{} = right) do
+    case {comparison_seconds(left), comparison_seconds(right)} do
+      {{:ok, left_seconds}, {:ok, right_seconds}} ->
+        {:ok, Arbiter.FEEL.Duration.from_seconds(Decimal.sub(left_seconds, right_seconds))}
+
+      _ when left.zone == right.zone ->
+        {:ok,
+         Arbiter.FEEL.Duration.from_seconds(
+           Decimal.sub(local_seconds(left), local_seconds(right))
+         )}
+
+      _ ->
+        :error
+    end
+  end
+
   @spec add_seconds(t(), integer() | Decimal.t()) :: t()
   def add_seconds(%__MODULE__{} = value, seconds) do
     day = Decimal.new(86_400)

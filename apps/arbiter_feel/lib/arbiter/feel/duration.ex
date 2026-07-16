@@ -72,9 +72,9 @@ defmodule Arbiter.FEEL.Duration do
   end
 
   @spec add(t(), t()) :: t()
-  def add(%__MODULE__{} = left, %__MODULE__{} = right) do
+  def add(%__MODULE__{kind: kind} = left, %__MODULE__{kind: kind} = right) do
     %__MODULE__{
-      kind: if(left.kind == right.kind, do: left.kind, else: :day_time),
+      kind: kind,
       months: left.months + right.months,
       seconds: add_number(left.seconds, right.seconds)
     }
@@ -82,6 +82,36 @@ defmodule Arbiter.FEEL.Duration do
 
   @spec subtract(t(), t()) :: t()
   def subtract(%__MODULE__{} = left, %__MODULE__{} = right), do: add(left, negate(right))
+
+  @spec scale(t(), Decimal.t()) :: t()
+  def scale(%__MODULE__{kind: :year_month} = duration, factor) do
+    months =
+      duration.months
+      |> Decimal.new()
+      |> Decimal.mult(factor)
+      |> Decimal.round(0, :down)
+      |> Decimal.to_integer()
+
+    %{duration | months: months, seconds: 0}
+  end
+
+  def scale(%__MODULE__{kind: :day_time} = duration, factor) do
+    %{duration | months: 0, seconds: Decimal.mult(decimal(duration.seconds), factor)}
+  end
+
+  @spec ratio(t(), t()) :: {:ok, Decimal.t()} | :error
+  def ratio(%__MODULE__{kind: kind} = left, %__MODULE__{kind: kind} = right) do
+    {left_value, right_value} =
+      if kind == :year_month,
+        do: {Decimal.new(left.months), Decimal.new(right.months)},
+        else: {decimal(left.seconds), decimal(right.seconds)}
+
+    if Decimal.equal?(right_value, Decimal.new(0)),
+      do: :error,
+      else: {:ok, Decimal.div(left_value, right_value)}
+  end
+
+  def ratio(%__MODULE__{}, %__MODULE__{}), do: :error
 
   @spec compare(t(), t()) :: :lt | :eq | :gt | :unordered
   def compare(%__MODULE__{kind: kind} = left, %__MODULE__{kind: kind} = right) do
@@ -140,9 +170,16 @@ defmodule Arbiter.FEEL.Duration do
 
   @spec add_to_date(Date.t(), t()) :: Date.t()
   def add_to_date(%Date{} = date, %__MODULE__{} = duration) do
+    day_delta =
+      duration.seconds
+      |> decimal()
+      |> Decimal.div(Decimal.new(86_400))
+      |> Decimal.round(0, :floor)
+      |> Decimal.to_integer()
+
     date
     |> add_months(duration.months)
-    |> Date.add(div(truncate(duration.seconds), 86_400))
+    |> Date.add(day_delta)
   end
 
   @spec add_to_datetime(DateTime.t(), t()) :: DateTime.t()
@@ -178,7 +215,7 @@ defmodule Arbiter.FEEL.Duration do
   defp add_months(%Date{} = date, months_delta) do
     total_month = date.month + months_delta
     year = date.year + floor_div(total_month - 1, 12)
-    month = rem(total_month - 1, 12) + 1
+    month = Integer.mod(total_month - 1, 12) + 1
     day = min(date.day, Date.days_in_month(%Date{year: year, month: month, day: 1}))
 
     {:ok, shifted} = Date.new(year, month, day)

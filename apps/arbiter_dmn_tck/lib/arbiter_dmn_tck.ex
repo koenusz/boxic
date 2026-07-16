@@ -93,13 +93,34 @@ defmodule Arbiter.DMN.TCK do
 
   @feel_additional_groups ~w(0001-filter 0032-conditionals)
   @dmn_implemented_groups ~w(
+    0001-input-data-string
+    0002-input-data-number
+    0002-string-functions
+    0003-input-data-string-allowed-values
+    0003-iteration
     0004-simpletable-U
+    0006-join
+    0007-date-time
+    0008-LX-arithmetic
+    0008-listGen
+    0009-append-flatten
+    0010-concatenate
     0010-multi-output-U
+    0011-insert-remove
+    0012-list-functions
+    0013-sort
+    0014-loan-comparison
+    0015-all-any
     0016-some-every
+    0020-vacation-days
+    0021-singleton-list
     0033-for-loops
+    0035-test-structure-output
     0037-dt-on-bkm-implicit-params
     0038-dt-on-bkm-explicit-params
     0085-decision-services
+    0099-arithmetic-negation
+    0100-arithmetic
     0108-first-hitpolicy
     0109-ruleOrder-hitpolicy
     0110-outputOrder-hitpolicy

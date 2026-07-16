@@ -129,7 +129,7 @@ end
 
 defmodule Arbiter.DMN.Model.BusinessKnowledgeModel do
   @moduledoc "Normalized callable business knowledge model."
-  defstruct [:id, :name, :variable, :expression, parameters: []]
+  defstruct [:id, :name, :variable, :expression, parameters: [], requirements: []]
   @type t :: %__MODULE__{}
 end
 

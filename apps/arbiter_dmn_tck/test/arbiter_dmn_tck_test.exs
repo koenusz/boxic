@@ -210,18 +210,19 @@ defmodule Arbiter.DMN.TCKTest do
            end)
   end
 
+  @tag timeout: 300_000
   test "DMN implemented profile is an explicit passing decision-table baseline" do
     result = TCK.run(suite: "dmn", profile: "implemented")
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > 0
-    assert result.summary.total == 77
-    assert result.summary.passed == 77
+    assert result.summary.total == 1_290
+    assert result.summary.passed == 1_290
     assert result.summary.failed == 0
     assert result.summary.error == 0
-    assert result.summary.disabled == result.summary.suite_total - 77
+    assert result.summary.disabled == result.summary.suite_total - 1_290
 
-    assert length(TCK.profile_groups("dmn", "implemented")) == 19
+    assert length(TCK.profile_groups("dmn", "implemented")) == 40
   end
 
   defp temporary_corpus_root do
