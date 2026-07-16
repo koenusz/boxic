@@ -6,7 +6,7 @@ defmodule Arbiter.FEEL.Function do
   defstruct [:params, :body, :closure]
 
   @type t :: %__MODULE__{
-          params: [String.t()],
+          params: [{String.t(), String.t() | nil}],
           body: term(),
           closure: map()
         }

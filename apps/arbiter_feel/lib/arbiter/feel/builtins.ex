@@ -20,6 +20,12 @@ defmodule Arbiter.FEEL.Builtins do
     replace
     matches
     string_join
+    get_value
+    get_entries
+    context
+    context_put
+    context_merge
+    is
     list_contains
     count
     all
@@ -147,6 +153,42 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"string_join", [value, delimiter]} when is_binary(value) and is_binary(delimiter) ->
         {:ok, value}
+
+      {"get_value", [map, key]}
+      when is_map(map) and not is_struct(map) and is_binary(key) ->
+        {:ok, Map.get(map, key)}
+
+      {"get_entries", [map]} when is_map(map) and not is_struct(map) ->
+        {:ok,
+         map
+         |> Enum.sort_by(&elem(&1, 0))
+         |> Enum.map(fn {key, value} -> %{"key" => key, "value" => value} end)}
+
+      {"context", [entries]} when is_list(entries) ->
+        context_from_entries(entries)
+
+      {"context", [entry]} when is_map(entry) and not is_struct(entry) ->
+        context_from_entries([entry])
+
+      {"context_put", [context, key, value]}
+      when is_map(context) and not is_struct(context) and is_binary(key) ->
+        {:ok, Map.put(context, key, value)}
+
+      {"context_put", [context, keys, value]}
+      when is_map(context) and not is_struct(context) and is_list(keys) ->
+        context_put_path(context, keys, value)
+
+      {"context_merge", [contexts]} when is_list(contexts) ->
+        context_merge(contexts)
+
+      {"context_merge", [context]} when is_map(context) and not is_struct(context) ->
+        {:ok, context}
+
+      {"is", [left, right]} ->
+        {:ok, identical?(left, right)}
+
+      {"is", args} when length(args) != 2 ->
+        {:ok, false}
 
       {"count", [list]} when is_list(list) ->
         {:ok, Decimal.new(length(list))}
@@ -450,6 +492,12 @@ defmodule Arbiter.FEEL.Builtins do
     "replace" => ["input", "pattern", "replacement", "flags"],
     "matches" => ["input", "pattern", "flags"],
     "string_join" => ["list", "delimiter"],
+    "get_value" => ["m", "key"],
+    "get_entries" => ["m"],
+    "context" => ["entries"],
+    "context_put" => [["context", "key", "value"], ["context", "keys", "value"]],
+    "context_merge" => ["contexts"],
+    "is" => ["value1", "value2"],
     "list_contains" => ["list", "element"],
     "all" => ["list"],
     "any" => ["list"],
@@ -505,9 +553,13 @@ defmodule Arbiter.FEEL.Builtins do
       entries = Enum.map(args, fn {:named_arg, key, value} -> {key, value} end)
       names = Enum.map(entries, &elem(&1, 0))
 
+      invalid_context_key? =
+        name == "context_put" and
+          Enum.any?(entries, fn {key, value} -> key == "key" and is_list(value) end)
+
       parameters = Enum.find(signatures, fn signature -> names -- signature == [] end)
 
-      if parameters && length(names) == length(Enum.uniq(names)) do
+      if (parameters && length(names) == length(Enum.uniq(names))) and not invalid_context_key? do
         values_by_name = Map.new(entries)
         values = Enum.map(parameters, &Map.get(values_by_name, &1, :missing))
 
@@ -937,6 +989,61 @@ defmodule Arbiter.FEEL.Builtins do
       do: {:ok, Enum.join(values, delimiter)},
       else: {:error, err(:type_error, "string join expects strings")}
   end
+
+  defp context_from_entries(entries) do
+    entries
+    |> Enum.reduce_while({:ok, %{}}, fn
+      %{"key" => key, "value" => value}, {:ok, result} when is_binary(key) ->
+        if Map.has_key?(result, key),
+          do: {:halt, {:error, err(:evaluation_error, "duplicate context key")}},
+          else: {:cont, {:ok, Map.put(result, key, value)}}
+
+      _entry, _result ->
+        {:halt, {:error, err(:type_error, "invalid context entry")}}
+    end)
+  end
+
+  defp context_put_path(_context, [], _value),
+    do: {:error, err(:evaluation_error, "context path cannot be empty")}
+
+  defp context_put_path(context, keys, value) do
+    if Enum.all?(keys, &(is_binary(&1) and &1 != "")) do
+      put_context_path(context, keys, value)
+    else
+      {:error, err(:type_error, "context path expects non-empty string keys")}
+    end
+  end
+
+  defp put_context_path(context, [key], value), do: {:ok, Map.put(context, key, value)}
+
+  defp put_context_path(context, [key | rest], value) do
+    case Map.get(context, key) do
+      nested when is_map(nested) and not is_struct(nested) ->
+        with {:ok, updated} <- put_context_path(nested, rest, value) do
+          {:ok, Map.put(context, key, updated)}
+        end
+
+      _ ->
+        {:error, err(:evaluation_error, "context path does not exist")}
+    end
+  end
+
+  defp context_merge(contexts) do
+    if Enum.all?(contexts, &(is_map(&1) and not is_struct(&1))) do
+      {:ok, Enum.reduce(contexts, %{}, &Map.merge(&2, &1))}
+    else
+      {:error, err(:type_error, "context merge expects contexts")}
+    end
+  end
+
+  defp identical?(%Decimal{} = left, %Decimal{} = right), do: Decimal.equal?(left, right)
+  defp identical?(%FeelTime{} = left, %FeelTime{} = right), do: left == right
+  defp identical?(%FeelDateTime{} = left, %FeelDateTime{} = right), do: left == right
+
+  defp identical?(%Duration{} = left, %Duration{} = right),
+    do: Duration.compare(left, right) == :eq
+
+  defp identical?(left, right), do: left == right
 
   defp stringify_value(value) when is_binary(value), do: "\"#{escape_string(value)}\""
   defp stringify_value(%Decimal{} = value), do: Decimal.to_string(value, :normal)

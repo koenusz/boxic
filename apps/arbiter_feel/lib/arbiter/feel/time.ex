@@ -126,7 +126,7 @@ defmodule Arbiter.FEEL.Time do
   defp parse_zone("Z"), do: {:ok, {:offset, 0}}
 
   defp parse_zone("@" <> name) do
-    if Tzdata.zone_exists?(name), do: {:ok, {:iana, name}}, else: :error
+    if name == "Etc/GMT" or Tzdata.zone_exists?(name), do: {:ok, {:iana, name}}, else: :error
   end
 
   defp parse_zone(<<sign, hour::binary-size(2), ?:, minute::binary-size(2), rest::binary>>)

@@ -152,10 +152,14 @@ defmodule Arbiter.DMN do
   end
 
   defp parse_item_definition(node) do
+    function_item = node |> nodes("./*[local-name()='functionItem']") |> List.first()
+
     %ItemDefinition{
       id: attr(node, "id"),
       name: attr(node, "name"),
-      type_ref: child_text_value(node, "typeRef"),
+      type_ref:
+        child_text_value(node, "typeRef") ||
+          (function_item && "function:" <> (attr(function_item, "outputTypeRef") || "Any")),
       allowed_values: child_text(node, "allowedValues"),
       is_collection: attr(node, "isCollection") == "true",
       components:
@@ -359,6 +363,7 @@ defmodule Arbiter.DMN do
 
     %Invocation{
       id: attr(node, "id"),
+      type_ref: attr(node, "typeRef"),
       function: function && parse_expression_node(function),
       bindings: Enum.map(nodes(node, "./*[local-name()='binding']"), &parse_binding/1)
     }
@@ -705,7 +710,9 @@ defmodule Arbiter.DMN do
         with :ok <- validate_for_evaluation(model, decision),
              {:ok, dependency_context, memo} <-
                resolve_requirements(model, decision, context, memo, visiting),
-             {:ok, value} <- evaluate_expression(decision.expression, dependency_context, model) do
+             {:ok, value} <- evaluate_expression(decision.expression, dependency_context, model),
+             {:ok, value} <-
+               coerce_type(value, decision.variable && decision.variable.type_ref, model) do
           {:ok, value, Map.put(memo, decision.id, value)}
         else
           nil -> {:error, {:missing_expression, decision.id}}
@@ -715,10 +722,14 @@ defmodule Arbiter.DMN do
     end
   end
 
-  defp evaluate_expression(%LiteralExpression{text: text}, context, _model)
+  defp evaluate_expression(%LiteralExpression{text: text, type_ref: type_ref}, context, model)
        when is_binary(text) do
     {text, context} = normalize_feel_names(text, context)
-    Arbiter.FEEL.evaluate(text, context)
+    context = Map.put(context, "__feel_types__", model.item_definitions)
+
+    with {:ok, value} <- Arbiter.FEEL.evaluate(text, context) do
+      coerce_type(value, type_ref, model)
+    end
   end
 
   defp evaluate_expression(%DecisionTable{} = table, context, _model),
@@ -918,24 +929,44 @@ defmodule Arbiter.DMN do
     with %LiteralExpression{text: function_name} when is_binary(function_name) <-
            invocation.function,
          {:ok, bkm} <- find_bkm(model, String.trim(function_name)),
+         :ok <- validate_invocation_result_shape(invocation, bkm),
          {:ok, bindings} <- evaluate_bindings(invocation.bindings, context, model),
-         :ok <- validate_bkm_arguments(bkm, bindings) do
-      evaluate_expression(bkm.expression, Map.merge(context, bindings), model)
+         :ok <- validate_bkm_arguments(bkm, bindings),
+         values = Enum.map(bkm.parameters, &Map.fetch!(bindings, &1.name)),
+         {:ok, values} <- coerce_parameter_values(values, bkm.parameters, model),
+         bindings = Map.new(Enum.zip(Enum.map(bkm.parameters, & &1.name), values)),
+         {:ok, result} <- evaluate_expression(bkm.expression, Map.merge(context, bindings), model) do
+      coerce_type(result, bkm.variable && bkm.variable.type_ref, model)
     else
       nil -> {:error, :missing_invocation_function}
       error -> error
     end
   end
 
+  defp validate_invocation_result_shape(
+         %Invocation{type_ref: type},
+         %BusinessKnowledgeModel{expression: %LiteralExpression{text: text}}
+       )
+       when type in ["string", "number", "boolean"] and is_binary(text) do
+    if String.starts_with?(String.trim(text), "["),
+      do: {:error, {:invocation_type_error, type}},
+      else: :ok
+  end
+
+  defp validate_invocation_result_shape(_invocation, _bkm), do: :ok
+
   defp invoke_bkm_from_feel(model, bkm, outer_context, args) do
     names = Enum.map(bkm.parameters, & &1.name)
 
-    with {:ok, values} <- normalize_service_args(args, names) do
-      evaluate_expression(
-        bkm.expression,
-        Map.merge(outer_context, Map.new(Enum.zip(names, values))),
-        model
-      )
+    with {:ok, values} <- normalize_service_args(args, names),
+         {:ok, values} <- coerce_parameter_values(values, bkm.parameters, model),
+         {:ok, result} <-
+           evaluate_expression(
+             bkm.expression,
+             Map.merge(outer_context, Map.new(Enum.zip(names, values))),
+             model
+           ) do
+      coerce_type(result, bkm.variable && bkm.variable.type_ref, model)
     end
   end
 
@@ -976,10 +1007,13 @@ defmodule Arbiter.DMN do
     with {:ok, service_context} <- service_arguments(model, service, args, outer_context),
          {:ok, outputs, _memo} <-
            evaluate_service_outputs(model, service.output_decisions, service_context, %{}) do
-      case outputs do
-        [{_name, value}] -> {:ok, value}
-        values -> {:ok, Map.new(values)}
-      end
+      result =
+        case outputs do
+          [{_name, value}] -> value
+          values -> Map.new(values)
+        end
+
+      coerce_type(result, service.variable && service.variable.type_ref, model)
     end
   end
 
@@ -1004,10 +1038,120 @@ defmodule Arbiter.DMN do
     with {:ok, inputs} <- service_inputs(model, references),
          names = Enum.map(inputs, & &1.name),
          {:ok, values} <- normalize_service_args(args, names),
-         :ok <- validate_service_types(inputs, values) do
+         {:ok, values} <- coerce_input_values(values, inputs, model) do
       {:ok, Map.merge(outer_context, Map.new(Enum.zip(names, values)))}
     end
   end
+
+  defp coerce_input_values(values, inputs, model) do
+    types = Enum.map(inputs, fn input -> input.variable && input.variable.type_ref end)
+    coerce_values(values, types, model)
+  end
+
+  defp coerce_parameter_values(values, parameters, model) do
+    coerce_values(values, Enum.map(parameters, & &1.type_ref), model)
+  end
+
+  defp coerce_values(values, types, model) do
+    Enum.zip(values, types)
+    |> Enum.reduce_while({:ok, []}, fn {value, type}, {:ok, result} ->
+      case coerce_type(value, type, model) do
+        {:ok, coerced} -> {:cont, {:ok, result ++ [coerced]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp coerce_type(value, nil, _model), do: {:ok, value}
+  defp coerce_type(nil, _type, _model), do: {:ok, nil}
+
+  defp coerce_type([value], type, model) when type in ["string", "number", "boolean"],
+    do: coerce_type(value, type, model)
+
+  defp coerce_type(value, "string", _model) when is_binary(value), do: {:ok, value}
+  defp coerce_type(%Decimal{} = value, "number", _model), do: {:ok, value}
+  defp coerce_type(value, "boolean", _model) when is_boolean(value), do: {:ok, value}
+  defp coerce_type(%Date{} = value, "date", _model), do: {:ok, value}
+  defp coerce_type(%Arbiter.FEEL.Time{} = value, "time", _model), do: {:ok, value}
+  defp coerce_type(%Arbiter.FEEL.DateTime{} = value, "date and time", _model), do: {:ok, value}
+  defp coerce_type(%Arbiter.FEEL.DateTime{} = value, "dateTime", _model), do: {:ok, value}
+  defp coerce_type(%Arbiter.FEEL.Duration{} = value, "duration", _model), do: {:ok, value}
+
+  defp coerce_type(
+         %Arbiter.FEEL.Duration{kind: :day_time} = value,
+         "days and time duration",
+         _model
+       ),
+       do: {:ok, value}
+
+  defp coerce_type(
+         %Arbiter.FEEL.Duration{kind: :year_month} = value,
+         "years and months duration",
+         _model
+       ),
+       do: {:ok, value}
+
+  defp coerce_type(value, "Any", _model), do: {:ok, value}
+
+  defp coerce_type(value, type, model) do
+    case Enum.find_value(model.item_definitions, fn {_id, definition} ->
+           definition.name == type && definition
+         end) do
+      nil -> {:error, {:type_error, type}}
+      definition -> coerce_item_definition(value, definition, model)
+    end
+  end
+
+  defp coerce_item_definition(value, %{is_collection: true} = definition, model) do
+    values = if is_list(value), do: value, else: [value]
+
+    values
+    |> Enum.reduce_while({:ok, []}, fn item, {:ok, result} ->
+      case coerce_type(item, definition.type_ref || "Any", model) do
+        {:ok, coerced} -> {:cont, {:ok, result ++ [coerced]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp coerce_item_definition(value, %{components: components} = definition, model)
+       when components != [] do
+    if is_map(value) and not is_struct(value) do
+      Enum.reduce_while(components, {:ok, value}, fn component, {:ok, result} ->
+        case Map.fetch(value, component.name) do
+          {:ok, item} ->
+            case coerce_type(item, component.type_ref, model) do
+              {:ok, coerced} -> {:cont, {:ok, Map.put(result, component.name, coerced)}}
+              {:error, _reason} = error -> {:halt, error}
+            end
+
+          :error ->
+            if definition.id,
+              do: {:halt, {:ok, nil}},
+              else: {:halt, {:error, {:missing_context_component, component.name}}}
+        end
+      end)
+    else
+      {:error, {:type_error, :context}}
+    end
+  end
+
+  defp coerce_item_definition(value, definition, model),
+    do: coerce_item_base(value, definition.type_ref, model)
+
+  defp coerce_item_base(%Arbiter.FEEL.Function{} = value, "function:" <> _output_type, _model),
+    do: {:ok, value}
+
+  defp coerce_item_base({:external_function, _} = value, "function:" <> _output_type, _model),
+    do: {:ok, value}
+
+  defp coerce_item_base({:builtin, _} = value, "function:" <> _output_type, _model),
+    do: {:ok, value}
+
+  defp coerce_item_base(value, "function:" <> output_type, model),
+    do: coerce_type(value, output_type, model)
+
+  defp coerce_item_base(value, type, model), do: coerce_type(value, type, model)
 
   defp service_inputs(model, references) do
     Enum.reduce_while(references, {:ok, []}, fn id, {:ok, inputs} ->
@@ -1018,24 +1162,6 @@ defmodule Arbiter.DMN do
         else: {:halt, {:error, {:unresolved_service_input, id}}}
     end)
   end
-
-  defp validate_service_types(inputs, values) do
-    Enum.zip(inputs, values)
-    |> Enum.reduce_while(:ok, fn {input, value}, :ok ->
-      type_ref = input.variable && input.variable.type_ref
-
-      if service_type?(type_ref, value),
-        do: {:cont, :ok},
-        else: {:halt, {:error, {:decision_service_type_error, input.name, type_ref}}}
-    end)
-  end
-
-  defp service_type?(nil, _value), do: true
-  defp service_type?(_type, nil), do: true
-  defp service_type?("string", value), do: is_binary(value)
-  defp service_type?("number", value), do: match?(%Decimal{}, value)
-  defp service_type?("boolean", value), do: is_boolean(value)
-  defp service_type?(_type, _value), do: true
 
   defp normalize_service_args(args, names) do
     if Enum.all?(args, &match?({:named_arg, _, _}, &1)) do

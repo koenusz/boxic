@@ -34,6 +34,8 @@ defmodule Arbiter.FEEL do
           | {:for, String.t(), ast(), ast()}
           | {:for, [{String.t(), ast()}], ast()}
           | {:quantifier, :some | :every, String.t(), ast(), ast()}
+          | {:between, ast(), ast(), ast()}
+          | {:instance_of, ast(), String.t()}
           | {:function, [String.t()], ast()}
           | {:call, ast(), [ast()]}
   @type context :: %{optional(String.t()) => term()}
@@ -108,6 +110,20 @@ defmodule Arbiter.FEEL do
 
   defp tokenize(<<>>, acc), do: {:ok, Enum.reverse(acc)}
 
+  defp tokenize(<<"/*", rest::binary>>, acc) do
+    case :binary.split(rest, "*/") do
+      [_comment, remaining] -> tokenize(remaining, acc)
+      _ -> {:error, error(:invalid_syntax, "unterminated block comment")}
+    end
+  end
+
+  defp tokenize(<<"//", rest::binary>>, acc) do
+    case :binary.split(rest, "\n") do
+      [_comment, remaining] -> tokenize(remaining, acc)
+      [_comment] -> tokenize("", acc)
+    end
+  end
+
   defp tokenize(<<char::utf8, rest::binary>>, acc) when char in [?\n, ?\s, ?\t, ?\r] do
     tokenize(rest, acc)
   end
@@ -143,6 +159,18 @@ defmodule Arbiter.FEEL do
 
   defp tokenize(<<"string join", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "string_join"} | acc])
+
+  defp tokenize(<<"get value", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "get_value"} | acc])
+
+  defp tokenize(<<"get entries", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "get_entries"} | acc])
+
+  defp tokenize(<<"context put", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "context_put"} | acc])
+
+  defp tokenize(<<"context merge", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "context_merge"} | acc])
 
   defp tokenize(<<"ends with", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "ends_with"} | acc])
@@ -251,6 +279,9 @@ defmodule Arbiter.FEEL do
         "not" -> :not
         "for" -> :for
         "in" -> :in
+        "between" -> :between
+        "instance" -> :instance
+        "of" -> :of
         "return" -> :return
         "some" -> :some
         "every" -> :every
@@ -286,11 +317,11 @@ defmodule Arbiter.FEEL do
 
   defp parse_at_literal(value) do
     cond do
-      String.contains?(value, "T") ->
-        FeelDateTime.parse(value)
-
       String.starts_with?(value, "P") or String.starts_with?(value, "-P") ->
         Duration.parse_iso8601(value)
+
+      Regex.match?(~r/^-?\d{4,9}-\d{2}-\d{2}T/, value) ->
+        FeelDateTime.parse(value)
 
       String.contains?(value, ":") ->
         FeelTime.parse(value)
@@ -471,18 +502,22 @@ defmodule Arbiter.FEEL do
 
   defp parse_param_list([:rparen | _] = rest), do: {:ok, [], rest}
 
-  defp parse_param_list([{:identifier, param} | rest]),
-    do: parse_param_list_tail([param], discard_parameter_type(rest))
+  defp parse_param_list([{:identifier, param} | rest]) do
+    {type, rest} = take_parameter_type(rest)
+    parse_param_list_tail([{param, type}], rest)
+  end
 
   defp parse_param_list(_tokens), do: {:error, error(:invalid_syntax, "invalid parameter list")}
 
-  defp parse_param_list_tail(params, [:comma, {:identifier, param} | rest]),
-    do: parse_param_list_tail(params ++ [param], discard_parameter_type(rest))
+  defp parse_param_list_tail(params, [:comma, {:identifier, param} | rest]) do
+    {type, rest} = take_parameter_type(rest)
+    parse_param_list_tail(params ++ [{param, type}], rest)
+  end
 
   defp parse_param_list_tail(params, rest), do: {:ok, params, rest}
 
-  defp discard_parameter_type([:colon, {:identifier, _type} | rest]), do: rest
-  defp discard_parameter_type(rest), do: rest
+  defp take_parameter_type([:colon, {:identifier, type} | rest]), do: {type, rest}
+  defp take_parameter_type(rest), do: {nil, rest}
 
   defp parse_or(tokens) do
     with {:ok, left, rest} <- parse_and(tokens) do
@@ -588,7 +623,40 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp parse_comparison_tail(left, [:between | rest]) do
+    with {:ok, lower, [:and | rest2]} <- parse_addition(rest),
+         {:ok, upper, rest3} <- parse_addition(rest2) do
+      {:ok, {:between, left, lower, upper}, rest3}
+    else
+      _ -> {:error, error(:invalid_syntax, "invalid between expression")}
+    end
+  end
+
+  defp parse_comparison_tail(left, [:instance, :of | rest]) when rest != [] do
+    {:ok, {:instance_of, left, type_tokens_to_string(rest)}, []}
+  end
+
   defp parse_comparison_tail(left, rest), do: {:ok, left, rest}
+
+  defp type_tokens_to_string(tokens) do
+    tokens
+    |> Enum.map(fn
+      {:identifier, value} -> value
+      :lt -> "<"
+      :gt -> ">"
+      :comma -> ","
+      :colon -> ":"
+      :minus -> "-"
+      :and -> "and"
+      token -> Atom.to_string(token)
+    end)
+    |> Enum.join(" ")
+    |> String.replace(~r/\s*<\s*/, "<")
+    |> String.replace(~r/\s*>\s*/, ">")
+    |> String.replace(~r/\s*,\s*/, ",")
+    |> String.replace(~r/\s*:\s*/, ":")
+    |> String.replace(~r/\s*-\s*>/, "->")
+  end
 
   defp parse_addition(tokens) do
     with {:ok, left, rest} <- parse_multiplication(tokens) do
@@ -965,6 +1033,22 @@ defmodule Arbiter.FEEL do
     end
   end
 
+  defp eval({:between, value_ast, lower_ast, upper_ast}, context) do
+    with {:ok, value} <- eval(value_ast, context),
+         {:ok, lower} <- eval(lower_ast, context),
+         {:ok, upper} <- eval(upper_ast, context),
+         {:ok, above} <- eval_binary(:gte, value, lower),
+         {:ok, below} <- eval_binary(:lte, value, upper) do
+      {:ok, feel_and(above, below)}
+    end
+  end
+
+  defp eval({:instance_of, value_ast, type}, context) do
+    with {:ok, value} <- eval(value_ast, context) do
+      {:ok, instance_of?(value, type, context)}
+    end
+  end
+
   defp eval({:unary_test, operator, operand_ast}, context) do
     with {:ok, operand} <- eval(operand_ast, context) do
       {:ok, {:unary_test_value, operator, operand}}
@@ -1299,12 +1383,17 @@ defmodule Arbiter.FEEL do
 
   defp apply_function(%Function{params: params, body: body, closure: closure}, args)
        when length(params) == length(args) do
-    call_context =
-      params
-      |> Enum.zip(args)
-      |> Enum.reduce(closure, fn {name, value}, acc -> Map.put(acc, name, value) end)
+    if Enum.zip(params, args)
+       |> Enum.all?(fn {{_name, type}, value} -> parameter_type?(value, type) end) do
+      call_context =
+        params
+        |> Enum.zip(args)
+        |> Enum.reduce(closure, fn {{name, _type}, value}, acc -> Map.put(acc, name, value) end)
 
-    eval(body, call_context)
+      eval(body, call_context)
+    else
+      {:error, error(:type_error, "function argument does not conform to parameter type")}
+    end
   end
 
   defp apply_function({:builtin, "sort"}, [values, comparator]) when is_list(values) do
@@ -1331,6 +1420,12 @@ defmodule Arbiter.FEEL do
 
   defp apply_function(_callee, _args),
     do: {:error, error(:type_error, "attempted to call a non-function value")}
+
+  defp parameter_type?(_value, nil), do: true
+  defp parameter_type?(%Decimal{}, "number"), do: true
+  defp parameter_type?(value, "string"), do: is_binary(value)
+  defp parameter_type?(value, "boolean"), do: is_boolean(value)
+  defp parameter_type?(_value, _type), do: false
 
   defp sort_with_comparator(values, comparator) do
     values
@@ -1427,6 +1522,99 @@ defmodule Arbiter.FEEL do
 
   defp eval_binary(:and, left, right), do: {:ok, feel_and(left, right)}
   defp eval_binary(:or, left, right), do: {:ok, feel_or(left, right)}
+
+  defp instance_of?(value, "Any", _context), do: not is_nil(value)
+  defp instance_of?(value, "number", _context), do: match?(%Decimal{}, value)
+  defp instance_of?(value, "string", _context), do: is_binary(value)
+  defp instance_of?(value, "boolean", _context), do: is_boolean(value)
+  defp instance_of?(value, "date", _context), do: match?(%Date{}, value)
+
+  defp instance_of?(value, "time", _context),
+    do: match?(%FeelTime{}, value) or match?(%Time{}, value)
+
+  defp instance_of?(value, "date_time", _context),
+    do:
+      match?(%FeelDateTime{}, value) or match?(%DateTime{}, value) or
+        match?(%NaiveDateTime{}, value)
+
+  defp instance_of?(%Duration{kind: :year_month}, "years and months duration", _context),
+    do: true
+
+  defp instance_of?(%Duration{kind: :day_time}, "days and time duration", _context), do: true
+
+  defp instance_of?(value, "context<>", _context),
+    do: is_map(value) and not is_struct(value)
+
+  defp instance_of?(value, "list<" <> rest, context) when is_list(value) do
+    subtype = String.trim_trailing(rest, ">")
+    Enum.all?(value, &instance_of?(&1, subtype, context))
+  end
+
+  defp instance_of?(value, "context<" <> rest, context)
+       when is_map(value) and not is_struct(value) do
+    rest
+    |> String.trim_trailing(">")
+    |> split_type_fields()
+    |> Enum.all?(fn {key, subtype} ->
+      Map.has_key?(value, key) and
+        (is_nil(Map.get(value, key)) or instance_of?(Map.get(value, key), subtype, context))
+    end)
+  end
+
+  defp instance_of?(value, "function<" <> _signature, _context),
+    do: match?(%Function{}, value) or match?({:external_function, _}, value)
+
+  defp instance_of?(value, type, context) do
+    types = Map.get(context, "__feel_types__", %{})
+
+    case Enum.find_value(types, fn {_id, definition} ->
+           Map.get(definition, :name) == type && definition
+         end) do
+      nil -> false
+      definition -> instance_of_definition?(value, definition, context)
+    end
+  end
+
+  defp instance_of_definition?(value, definition, context) do
+    collection? = Map.get(definition, :is_collection) in [true, "true"]
+
+    cond do
+      collection? and is_list(value) ->
+        Enum.all?(value, &instance_of?(&1, Map.get(definition, :type_ref) || "Any", context))
+
+      collection? ->
+        false
+
+      Map.get(definition, :components, []) != [] and is_map(value) and not is_struct(value) ->
+        Enum.all?(Map.get(definition, :components), fn component ->
+          key = Map.get(component, :name)
+
+          Map.has_key?(value, key) and
+            (is_nil(Map.get(value, key)) or
+               instance_of?(Map.get(value, key), Map.get(component, :type_ref), context))
+        end)
+
+      String.contains?(Map.get(definition, :name, ""), "Function") ->
+        match?(%Function{}, value) or match?({:external_function, _}, value)
+
+      is_binary(Map.get(definition, :type_ref)) ->
+        instance_of?(value, Map.get(definition, :type_ref), context)
+
+      true ->
+        false
+    end
+  end
+
+  defp split_type_fields(value) do
+    value
+    |> String.split(~r/,(?![^<]*>)/, trim: true)
+    |> Enum.map(fn field ->
+      case String.split(field, ":", parts: 2) do
+        [key, type] -> {String.trim(key), String.trim(type)}
+        _ -> {"", "Any"}
+      end
+    end)
+  end
 
   defp plus(left, right) do
     case {left, right} do

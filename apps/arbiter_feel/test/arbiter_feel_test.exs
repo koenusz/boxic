@@ -174,6 +174,16 @@ defmodule Arbiter.FEELTest do
              Arbiter.FEEL.evaluate(~S|string({a: "foo", b: [1, "bar"]})|)
   end
 
+  test "type predicates, between, comments, and context functions" do
+    assert {:ok, true} = Arbiter.FEEL.evaluate("5 between 1 and 10")
+    assert {:ok, true} = Arbiter.FEEL.evaluate("[1, 2] instance of list<number>")
+    assert {:ok, two} = Arbiter.FEEL.evaluate("1 + /* ignored */ 1")
+    assert Decimal.equal?(two, Decimal.new("2"))
+
+    assert {:ok, %{"a" => updated}} = Arbiter.FEEL.evaluate(~S|context put({a: 1}, "a", 2)|)
+    assert Decimal.equal?(updated, Decimal.new("2"))
+  end
+
   test "temporal constructors and arithmetic" do
     assert {:ok, %Date{year: 2026, month: 7, day: 16}} =
              Arbiter.FEEL.evaluate("date(\"2026-07-15\") + duration(\"P1D\")", %{})

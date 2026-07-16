@@ -129,7 +129,7 @@ end
 
 defmodule Arbiter.DMN.Model.Invocation do
   @moduledoc "Normalized DMN invocation and named parameter bindings."
-  defstruct [:id, :function, bindings: []]
+  defstruct [:id, :function, :type_ref, bindings: []]
   @type t :: %__MODULE__{}
 end
 

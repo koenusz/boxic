@@ -30,12 +30,18 @@ defmodule Arbiter.DMN.TCK do
     0067-feel-split-function
     0068-feel-equality
     0069-feel-list
+    0070-feel-instance-of
+    0071-feel-between
     0072-feel-in
+    0073-feel-comments
     0074-feel-properties
     0075-feel-exponent
     0077-feel-nan
     0078-feel-infinity
     0079-feel-string-function
+    0080-feel-getvalue-function
+    0081-feel-getentries-function
+    0082-feel-coercion
     0083-feel-unicode
     0084-feel-for-loops
     0090-feel-paths
@@ -44,6 +50,7 @@ defmodule Arbiter.DMN.TCK do
     0100-feel-constants
     0101-feel-constants
     0102-feel-constants
+    0103-feel-is-function
     0105-feel-math
     0106-feel-ternary-logic
     0107-feel-ternary-logic-not
@@ -69,6 +76,9 @@ defmodule Arbiter.DMN.TCK do
     1142-feel-round-down-function
     1143-feel-round-half-up-function
     1144-feel-round-half-down-function
+    1145-feel-context-function
+    1146-feel-context-put-function
+    1147-feel-context-merge-function
   )
 
   @feel_additional_groups ~w(0001-filter 0032-conditionals)

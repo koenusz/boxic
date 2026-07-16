@@ -8,9 +8,25 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-16T15:11:21.829369Z",
+    "execution_date": "2026-07-16T15:35:38.183692Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
+  },
+  "summary": {
+    "error": 0,
+    "disabled": 153,
+    "total": 1907,
+    "unsupported": 0,
+    "supported": 1907,
+    "missing": 0,
+    "failed": 0,
+    "corpus_total": 3545,
+    "suite_total": 2060,
+    "excluded_by_suite": 1485,
+    "passed": 1907,
+    "compatibility_percent": 100.0,
+    "suite_coverage_percent": 92.57,
+    "coverage_percent": 53.79
   },
   "results": [
     {
@@ -227,8 +243,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for abs",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -525,8 +541,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for sqrt",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -769,8 +785,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for exp",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -1001,8 +1017,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for log",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -1245,8 +1261,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for even",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -1489,8 +1505,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for odd",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -1779,8 +1795,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for modulo",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -2893,8 +2909,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for all",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "019",
@@ -3113,8 +3129,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for any",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "019",
@@ -3347,8 +3363,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for median",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "013",
@@ -3603,8 +3619,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for mode",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "013",
@@ -3801,8 +3817,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for stddev",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "013",
@@ -4437,8 +4453,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for split",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "007",
@@ -6591,6 +6607,2166 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0069-feel-list/0069-feel-list-test-01.xml",
       "decision": "decision034",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "boolean_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_013",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_014",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_014",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_015",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_015",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_016",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_016",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_018",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_018",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_019",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_019",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_020",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_020",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_021",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_021",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_022",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_022",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_023",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_023",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "context_024",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "context_024",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "date_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "dt_duration_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "function_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "function_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_013",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_014",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_014",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_014_a",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_014_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_015",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_015",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_016",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_016",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_017",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_017",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_018",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_018",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_019",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_019",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "list_020",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "list_020",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "null_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_013",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "number_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_013",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "string_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "time_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_001",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_002",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_003",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_004",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_005",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_006",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_007",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_008",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_009",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_010",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_012",
+      "status": "passed",
+      "group": "0070-feel-instance-of",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0070-feel-instance-of/0070-feel-instance-of-test-01.xml",
+      "decision": "ym_duration_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "date_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "date_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "date_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "date_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "date_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "datetime_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "datetime_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "datetime_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "datetime_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "datetime_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "dt_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "dt_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "dt_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "dt_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "dt_duration_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "null_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "null_001",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "null_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "null_002",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "null_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "null_003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "number_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "number_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "number_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "number_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "number_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "number_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "string_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "string_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "string_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "string_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "string_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "time_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "time_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "time_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "time_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "time_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_001",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "ym_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_002",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "ym_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_003",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "ym_duration_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_004",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "ym_duration_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_005",
+      "status": "passed",
+      "group": "0071-feel-between",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0071-feel-between/0071-feel-between-test-01.xml",
+      "decision": "ym_duration_005",
       "expected_error": false
     },
     {
@@ -10519,6 +12695,60 @@
     },
     {
       "error": null,
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0073-feel-comments",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0073-feel-comments/0073-feel-comments-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0073-feel-comments",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0073-feel-comments/0073-feel-comments-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0073-feel-comments",
+      "actual": {
+        "type": "number",
+        "value": "2"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0073-feel-comments/0073-feel-comments-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "context_001",
       "status": "passed",
       "group": "0074-feel-properties",
@@ -12232,6 +14462,1062 @@
       "expected_error": false
     },
     {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/0",
+        "type": "feel_error"
+      },
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/1",
+        "type": "feel_error"
+      },
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/3",
+        "type": "feel_error"
+      },
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_004",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/2",
+        "type": "feel_error"
+      },
+      "id": "decision_005",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/2",
+        "type": "feel_error"
+      },
+      "id": "decision_006",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_006",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_007",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_007",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
+        "type": "feel_error"
+      },
+      "id": "decision_008",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/2",
+        "type": "feel_error"
+      },
+      "id": "decision_009",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/2",
+        "type": "feel_error"
+      },
+      "id": "decision_010",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/2",
+        "type": "feel_error"
+      },
+      "id": "decision_011",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_011",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_012",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_013",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_013",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_value/2",
+        "type": "feel_error"
+      },
+      "id": "decision_014",
+      "status": "passed",
+      "group": "0080-feel-getvalue-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0080-feel-getvalue-function/0080-feel-getvalue-function-test-01.xml",
+      "decision": "decision_013",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_entries/0",
+        "type": "feel_error"
+      },
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_entries/2",
+        "type": "feel_error"
+      },
+      "id": "decision_002",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_entries/1",
+        "type": "feel_error"
+      },
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_004",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": [
+        {
+          "key": "a",
+          "value": "foo"
+        },
+        {
+          "key": "b",
+          "value": "bar"
+        }
+      ],
+      "expected": [
+        {
+          "key": "a",
+          "value": "foo"
+        },
+        {
+          "key": "b",
+          "value": "bar"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_005",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": [
+        {
+          "key": "a",
+          "value": "foo"
+        },
+        {
+          "key": "b",
+          "value": "bar"
+        }
+      ],
+      "expected": [
+        {
+          "key": "a",
+          "value": "foo"
+        },
+        {
+          "key": "b",
+          "value": "bar"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_005",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
+        "type": "feel_error"
+      },
+      "id": "decision_006",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_entries/1",
+        "type": "feel_error"
+      },
+      "id": "decision_007",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: get_entries/1",
+        "type": "feel_error"
+      },
+      "id": "decision_008",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_008",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_009",
+      "status": "passed",
+      "group": "0081-feel-getentries-function",
+      "actual": [],
+      "expected": [],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0081-feel-getentries-function/0081-feel-getentries-function-test-01.xml",
+      "decision": "decision_009",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "string"
+        ],
+        "type": "tuple"
+      },
+      "id": "decisionService_001",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_ds_001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "string"
+        ],
+        "type": "tuple"
+      },
+      "id": "decisionService_002",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_ds_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:type_error, \"string\"}",
+        "type": "feel_error"
+      },
+      "id": "decisionService_002_a",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "ds_invoke_002_with_number",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decisionService_002_b",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_ds_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decisionService_002_c",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "ds_invoke_002_with_singleton_list",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "string"
+        ],
+        "type": "tuple"
+      },
+      "id": "decision_001",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "decision_003",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_004",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "age": {
+          "type": "number",
+          "value": "10"
+        },
+        "name": "foo",
+        "surname": "bar"
+      },
+      "expected": {
+        "age": {
+          "type": "number",
+          "value": "10"
+        },
+        "name": "foo",
+        "surname": "bar"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "missing_context_component"
+          },
+          "age"
+        ],
+        "type": "tuple"
+      },
+      "id": "decision_005",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "decision_006_a",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_006_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_007",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": "foo",
+      "expected": "foo",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_007",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "string"
+        ],
+        "type": "tuple"
+      },
+      "id": "decision_007_a",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_007_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_008",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_bkm_001",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_001",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:missing_context_component, \"age\"}",
+        "type": "feel_error"
+      },
+      "id": "decision_bkm_002",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:missing_context_component, \"age\"}",
+        "type": "feel_error"
+      },
+      "id": "decision_bkm_003",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_003",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:type_error, \"number\"}",
+        "type": "feel_error"
+      },
+      "id": "decision_bkm_004_a",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_004_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_bkm_004_b",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_004_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_bkm_005",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_005",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "{:type_error, \"number\"}",
+        "type": "feel_error"
+      },
+      "id": "decision_bkm_005_a",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_bkm_005_a",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "decision_context_01",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_context_01",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_context_02",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_context_02",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "decision_context_03",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "decision_context_03",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "fd_001",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "fd_001",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "function argument does not conform to parameter type",
+        "type": "feel_error"
+      },
+      "id": "fd_002",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "fd_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "missing_context_component"
+          },
+          "age"
+        ],
+        "type": "tuple"
+      },
+      "id": "invoke_001",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "invoke_001",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "string"
+        ],
+        "type": "tuple"
+      },
+      "id": "invoke_002",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "invoke_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "invoke_004",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "invoke_004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "invocation_type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "invoke_005",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "invoke_005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "invocation_type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "invoke_006",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "invoke_006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "bkm_argument_mismatch"
+          },
+          "bkm_005",
+          [
+            "arg"
+          ],
+          [
+            "arg1"
+          ]
+        ],
+        "type": "tuple"
+      },
+      "id": "invoke_007",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "invoke_007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "literal_001",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "literal_001",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "literal_002",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "literal_002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "literal_004",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "literal_004",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "literal_005",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": {
+        "type": "number",
+        "value": "10"
+      },
+      "expected": {
+        "type": "number",
+        "value": "10"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "literal_005",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          "number"
+        ],
+        "type": "tuple"
+      },
+      "id": "literal_006",
+      "status": "passed",
+      "group": "0082-feel-coercion",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0082-feel-coercion/0082-feel-coercion-test-01.xml",
+      "decision": "literal_006",
+      "expected_error": true
+    },
+    {
       "error": null,
       "id": "decision_001",
       "status": "passed",
@@ -13729,8 +17015,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for product",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "013",
@@ -13921,6 +17207,610 @@
       "compliance_level": "compliance-level-2",
       "case_file": "TestCases/compliance-level-2/0102-feel-constants/0102-feel-constants-test-01.xml",
       "decision": "Decision4",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "boolean_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "boolean_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "boolean_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "date_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "date_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_003",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "date_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_004",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "date_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "date_005",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "date_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_003",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_004",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_005",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_006",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_007",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_008",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_009",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_010",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_011",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_012",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_013",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_014",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_014",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_015",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_015",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_016",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_016",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "datetime_017",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "datetime_017",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "dt_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "dt_duration_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "dt_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "named_params_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "named_params_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "named_params_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "named_params_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "named_params_003",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "named_params_003",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
+        "type": "feel_error"
+      },
+      "id": "named_params_004",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "named_params_004",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "number_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "number_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "number_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "number_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "string_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "string_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "string_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_003",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_004",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_005",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_005",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_006",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_007",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_008",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_009",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_010",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_011",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_012",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "time_013",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "time_013",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "ym_duration_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "ym_duration_002",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "ym_duration_002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "zero_duration_001",
+      "status": "passed",
+      "group": "0103-feel-is-function",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0103-feel-is-function/0103-feel-is-function-test-01.xml",
+      "decision": "zero_duration_001",
       "expected_error": false
     },
     {
@@ -15083,8 +18973,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for floor",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "012",
@@ -15099,8 +18989,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for floor",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "013",
@@ -15365,8 +19255,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for ceiling",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "012",
@@ -15381,8 +19271,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for ceiling",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "013",
@@ -22149,8 +26039,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for string_join",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "011_a",
@@ -22165,8 +26055,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for string_join",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "011_b",
@@ -22439,8 +26329,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for round_up",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "012",
@@ -22699,8 +26589,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for round_down",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "012",
@@ -22959,8 +26849,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for round_half_up",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "012",
@@ -23219,8 +27109,8 @@
     },
     {
       "error": {
-        "code": "arity_error",
-        "message": "invalid named arguments for round_half_down",
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
         "type": "feel_error"
       },
       "id": "012",
@@ -23306,22 +27196,1374 @@
       "case_file": "TestCases/compliance-level-3/1144-feel-round-half-down-function/1144-feel-round-half-down-function-test-01.xml",
       "decision": "decision017_b",
       "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "duplicate context key",
+        "type": "feel_error"
+      },
+      "id": "003",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "invalid context entry",
+        "type": "feel_error"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "invalid context entry",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "invalid context entry",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "009",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": null
+      },
+      "expected": {
+        "a": null
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context/1",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context/0",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context/0",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "014_a",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision014_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "014_b",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision014_b",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context/1",
+        "type": "feel_error"
+      },
+      "id": "016",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision016",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "017",
+      "status": "passed",
+      "group": "1145-feel-context-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1145-feel-context-function/1145-feel-context-function-test-01.xml",
+      "decision": "decision017",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": [
+        {
+          "key": "a",
+          "value": {
+            "type": "number",
+            "value": "1"
+          }
+        },
+        {
+          "key": "b",
+          "value": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "key": "a",
+          "value": {
+            "type": "number",
+            "value": "1"
+          }
+        },
+        {
+          "key": "b",
+          "value": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_a",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "3"
+        },
+        "c": {
+          "type": "number",
+          "value": "3"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "3"
+        },
+        "c": {
+          "type": "number",
+          "value": "3"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision003_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_put/3",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_put/3",
+        "type": "feel_error"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "007",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": null
+      },
+      "expected": {
+        "a": null
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_put/2",
+        "type": "feel_error"
+      },
+      "id": "008",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_put/4",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_put/3",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_put/3",
+        "type": "feel_error"
+      },
+      "id": "013",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "014",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "015",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "context01": {
+          "a": {
+            "type": "number",
+            "value": "1"
+          }
+        },
+        "copied": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "expected": {
+        "context01": {
+          "a": {
+            "type": "number",
+            "value": "1"
+          }
+        },
+        "copied": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "016",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "copied": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        },
+        "original": {
+          "a": {
+            "type": "number",
+            "value": "1"
+          }
+        }
+      },
+      "expected": {
+        "copied": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        },
+        "original": {
+          "a": {
+            "type": "number",
+            "value": "1"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "decision016",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested001",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "expected": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested001_a",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "type": "number",
+            "value": "0"
+          },
+          "b": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "expected": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "type": "number",
+            "value": "0"
+          },
+          "b": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested001_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "context path expects non-empty string keys",
+        "type": "feel_error"
+      },
+      "id": "nested002",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested002",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "context path expects non-empty string keys",
+        "type": "feel_error"
+      },
+      "id": "nested003",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested003",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "context path expects non-empty string keys",
+        "type": "feel_error"
+      },
+      "id": "nested004",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "context path cannot be empty",
+        "type": "feel_error"
+      },
+      "id": "nested005",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "nested006",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "b": {
+              "c": {
+                "type": "number",
+                "value": "2"
+              }
+            }
+          }
+        }
+      },
+      "expected": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "b": {
+              "c": {
+                "type": "number",
+                "value": "2"
+              }
+            }
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested007",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "expected": {
+        "x": {
+          "type": "number",
+          "value": "1"
+        },
+        "y": {
+          "a": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested007",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for context_put",
+        "type": "feel_error"
+      },
+      "id": "nested008",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested008",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "context path does not exist",
+        "type": "feel_error"
+      },
+      "id": "nested009",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested009",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "nested010",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "a": {
+          "b": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "expected": {
+        "a": {
+          "b": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested010",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested011",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "copied": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "2"
+            }
+          }
+        },
+        "nestedContext01": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "1"
+            }
+          }
+        }
+      },
+      "expected": {
+        "copied": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "2"
+            }
+          }
+        },
+        "nestedContext01": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "1"
+            }
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "nested012",
+      "status": "passed",
+      "group": "1146-feel-context-put-function",
+      "actual": {
+        "copied": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "2"
+            }
+          }
+        },
+        "original": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "1"
+            }
+          }
+        }
+      },
+      "expected": {
+        "copied": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "2"
+            }
+          }
+        },
+        "original": {
+          "a": {
+            "b": {
+              "type": "number",
+              "value": "1"
+            }
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1146-feel-context-put-function/1146-feel-context-put-function-test-01.xml",
+      "decision": "nested012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_a",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        },
+        "b": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "2"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "bb": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "expected": {
+        "a": {
+          "bb": {
+            "type": "number",
+            "value": "2"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_merge/1",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_merge/0",
+        "type": "feel_error"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: context_merge/2",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "built-in invocation failed",
+        "type": "feel_error"
+      },
+      "id": "009",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "context merge expects contexts",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "context merge expects contexts",
+        "type": "feel_error"
+      },
+      "id": "011",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "012",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "013",
+      "status": "passed",
+      "group": "1147-feel-context-merge-function",
+      "actual": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "expected": {
+        "a": {
+          "type": "number",
+          "value": "1"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1147-feel-context-merge-function/1147-feel-context-merge-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": false
     }
-  ],
-  "summary": {
-    "error": 0,
-    "disabled": 507,
-    "total": 1553,
-    "unsupported": 0,
-    "supported": 1553,
-    "missing": 0,
-    "failed": 0,
-    "corpus_total": 3545,
-    "suite_total": 2060,
-    "excluded_by_suite": 1485,
-    "passed": 1553,
-    "compatibility_percent": 100.0,
-    "suite_coverage_percent": 75.39,
-    "coverage_percent": 43.81
-  }
+  ]
 }

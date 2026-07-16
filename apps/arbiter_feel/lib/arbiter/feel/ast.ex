@@ -61,6 +61,11 @@ defmodule Arbiter.FEEL.AST do
 
   defp validate_node({:in, value, tests}), do: validate_children([value, tests])
 
+  defp validate_node({:between, value, lower, upper}),
+    do: validate_children([value, lower, upper])
+
+  defp validate_node({:instance_of, value, type}) when is_binary(type), do: validate_node(value)
+
   defp validate_node({:unary_test, operator, operand})
        when operator in [:eq, :neq, :lt, :lte, :gt, :gte],
        do: validate_node(operand)
@@ -89,8 +94,10 @@ defmodule Arbiter.FEEL.AST do
        do: validate_children([source, predicate])
 
   defp validate_node({:function, parameters, body}) when is_list(parameters) do
-    if Enum.all?(parameters, &(is_binary(&1) and &1 != "")) and
-         length(parameters) == length(Enum.uniq(parameters)) do
+    names = Enum.map(parameters, fn {name, _type} -> name end)
+
+    if Enum.all?(names, &(is_binary(&1) and &1 != "")) and
+         length(names) == length(Enum.uniq(names)) do
       validate_node(body)
     else
       {:error, "function parameters must be unique, non-empty names"}
