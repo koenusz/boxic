@@ -105,9 +105,7 @@ defmodule Boxic.FEEL.Time do
 
       _ when left.zone == right.zone ->
         {:ok,
-         Boxic.FEEL.Duration.from_seconds(
-           Decimal.sub(local_seconds(left), local_seconds(right))
-         )}
+         Boxic.FEEL.Duration.from_seconds(Decimal.sub(local_seconds(left), local_seconds(right)))}
 
       _ ->
         :error
