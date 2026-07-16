@@ -238,6 +238,9 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<"list contains", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "list_contains"} | acc])
 
+  defp tokenize(<<"list replace", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "list_replace"} | acc])
+
   defp tokenize(<<"insert before", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "insert_before"} | acc])
 
@@ -1157,7 +1160,10 @@ defmodule Arbiter.FEEL do
   defp eval({:call, callee_ast, args_ast}, context) do
     with {:ok, callee} <- eval(callee_ast, context),
          {:ok, arg_values} <- eval_call_args(args_ast, context, []) do
-      apply_function(callee, arg_values)
+      case callee do
+        {:builtin, "range"} -> apply_range_function(arg_values, context)
+        _ -> apply_function(callee, arg_values)
+      end
     end
   end
 
@@ -1447,6 +1453,44 @@ defmodule Arbiter.FEEL do
     sort_with_comparator(values, comparator)
   end
 
+  defp apply_function({:builtin, "list_replace"}, [list, matcher, new_item])
+       when is_list(list) and is_struct(matcher, Function) do
+    Enum.reduce_while(list, {:ok, []}, fn item, {:ok, result} ->
+      case apply_function(matcher, [item, new_item]) do
+        {:ok, true} ->
+          {:cont, {:ok, result ++ [new_item]}}
+
+        {:ok, false} ->
+          {:cont, {:ok, result ++ [item]}}
+
+        {:ok, _value} ->
+          {:halt, {:error, error(:type_error, "list replace match must return boolean")}}
+
+        {:error, %Error{} = error} ->
+          {:halt, {:error, error}}
+      end
+    end)
+  end
+
+  defp apply_function({:builtin, "list_replace"} = builtin, args) do
+    if Enum.all?(args, &match?({:named_arg, _, _}, &1)) do
+      values = Map.new(args, fn {:named_arg, name, value} -> {name, value} end)
+
+      cond do
+        Map.keys(values) |> Enum.sort() == ["list", "match", "newItem"] |> Enum.sort() ->
+          apply_function(builtin, [values["list"], values["match"], values["newItem"]])
+
+        Map.keys(values) |> Enum.sort() == ["list", "newItem", "position"] |> Enum.sort() ->
+          apply_function(builtin, [values["list"], values["position"], values["newItem"]])
+
+        true ->
+          {:error, error(:arity_error, "invalid named arguments for list replace")}
+      end
+    else
+      Builtins.invoke("list_replace", args)
+    end
+  end
+
   defp apply_function({:builtin, name}, args) do
     Builtins.invoke(name, args)
   end
@@ -1491,6 +1535,36 @@ defmodule Arbiter.FEEL do
       _ -> :error
     end
   end
+
+  defp apply_range_function([{:named_arg, "from", value}], context),
+    do: apply_range_function([value], context)
+
+  defp apply_range_function([source], context) when is_binary(source) do
+    with {:ok, ast} <- parse(String.trim(source)),
+         true <- valid_range_ast?(ast),
+         {:ok, %Range{} = range} <- evaluate_ast(ast, context),
+         {:ok, true} <- eval_binary(:lte, range.start, range.end) do
+      {:ok, range}
+    else
+      _ -> {:error, error(:evaluation_error, "invalid range string")}
+    end
+  end
+
+  defp apply_range_function(_args, _context),
+    do: {:error, error(:type_error, "range expects one string argument")}
+
+  defp valid_range_ast?({:range, _start_inclusive, _end_inclusive, start_ast, end_ast}),
+    do: valid_range_endpoint_ast?(start_ast) and valid_range_endpoint_ast?(end_ast)
+
+  defp valid_range_ast?(_ast), do: false
+
+  defp valid_range_endpoint_ast?({:literal, value}), do: not is_nil(value)
+
+  defp valid_range_endpoint_ast?({:call, {:identifier, name}, [{:literal, value}]})
+       when name in ["date", "date_time", "time", "duration"],
+       do: is_binary(value)
+
+  defp valid_range_endpoint_ast?(_ast), do: false
 
   defp parameter_type?(_value, nil), do: true
   defp parameter_type?(%Decimal{}, "number"), do: true
@@ -1653,6 +1727,11 @@ defmodule Arbiter.FEEL do
       Map.has_key?(value, key) and
         (is_nil(Map.get(value, key)) or instance_of?(Map.get(value, key), subtype, context))
     end)
+  end
+
+  defp instance_of?(%Range{} = range, "range<" <> rest, context) do
+    subtype = String.trim_trailing(rest, ">")
+    instance_of?(range.start, subtype, context) and instance_of?(range.end, subtype, context)
   end
 
   defp instance_of?(value, "function<" <> _signature, _context),

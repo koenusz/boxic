@@ -49,6 +49,7 @@ defmodule Arbiter.FEEL.Builtins do
     coincides
     overlaps
     list_contains
+    list_replace
     count
     all
     any
@@ -92,6 +93,7 @@ defmodule Arbiter.FEEL.Builtins do
     time
     date_time
     duration
+    range
   )
 
   @spec resolve(String.t()) :: {:ok, {:builtin, String.t()}} | {:ok, nil}
@@ -336,6 +338,12 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"remove", [list, %Decimal{} = position]} when is_list(list) ->
         remove_at(list, position)
+
+      {"list_replace", [list, %Decimal{} = position, value]} when is_list(list) ->
+        list_replace_at(list, position, value)
+
+      {"list_replace", [value, %Decimal{} = position, new_value]} when not is_nil(value) ->
+        list_replace_at([value], position, new_value)
 
       {"reverse", [list]} when is_list(list) ->
         {:ok, Enum.reverse(list)}
@@ -611,6 +619,7 @@ defmodule Arbiter.FEEL.Builtins do
     "week_of_year" => ["date"],
     "years_and_months_duration" => ["from", "to"],
     "list_contains" => ["list", "element"],
+    "list_replace" => [["list", "position", "newItem"], ["list", "match", "newItem"]],
     "all" => ["list"],
     "any" => ["list"],
     "append" => ["list", "item"],
@@ -642,6 +651,7 @@ defmodule Arbiter.FEEL.Builtins do
     "string" => ["from"],
     "number" => ["from", "grouping_separator", "decimal_separator"],
     "duration" => ["from"],
+    "range" => ["from"],
     "date" => [["from"], ["year", "month", "day"]],
     "time" => [["from"], ["hour", "minute", "second", "offset"]],
     "date_time" => [["from"], ["date", "time"]]
@@ -1048,6 +1058,24 @@ defmodule Arbiter.FEEL.Builtins do
       {:ok, List.delete_at(list, index)}
     else
       _ -> {:error, err(:evaluation_error, "remove position is outside the list")}
+    end
+  end
+
+  defp list_replace_at(list, position, value) do
+    index = position |> Decimal.round(0, :down) |> Decimal.to_integer()
+
+    cond do
+      index == 0 ->
+        {:error, err(:evaluation_error, "list replace position cannot be zero")}
+
+      abs(index) > length(list) ->
+        {:error, err(:evaluation_error, "list replace position out of bounds")}
+
+      index > 0 ->
+        {:ok, List.replace_at(list, index - 1, value)}
+
+      true ->
+        {:ok, List.replace_at(list, index, value)}
     end
   end
 

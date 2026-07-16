@@ -135,6 +135,22 @@ defmodule Arbiter.FEELTest do
     assert Decimal.equal?(value, Decimal.new("7"))
   end
 
+  test "range and list replace functions support their standard forms" do
+    assert {:ok, %Arbiter.FEEL.Range{} = range} = Arbiter.FEEL.evaluate(~s|range("[1..3]")|)
+    assert Decimal.equal?(range.start, Decimal.new("1"))
+    assert Decimal.equal?(range.end, Decimal.new("3"))
+
+    assert {:ok, values} = Arbiter.FEEL.evaluate("list replace([1, 2, 3], 2, 4)")
+    assert Enum.map(values, &Decimal.to_integer/1) == [1, 4, 3]
+
+    assert {:ok, values} =
+             Arbiter.FEEL.evaluate(
+               "list replace([1, 2, 3], function(item, newItem) item < newItem, 3)"
+             )
+
+    assert Enum.map(values, &Decimal.to_integer/1) == [3, 3, 3]
+  end
+
   test "string and numeric built-ins" do
     assert {:ok, %Decimal{} = len} = Arbiter.FEEL.evaluate("string_length(\"hello\")", %{})
     assert Decimal.equal?(len, Decimal.new("5"))

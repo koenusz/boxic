@@ -8,25 +8,25 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-16T17:33:32.440197Z",
+    "execution_date": "2026-07-16T20:16:32.229460Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
   "summary": {
     "error": 0,
-    "disabled": 99,
-    "total": 1386,
+    "disabled": 0,
+    "total": 1485,
     "unsupported": 0,
-    "supported": 1386,
+    "supported": 1485,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 1485,
     "excluded_by_suite": 2060,
-    "passed": 1386,
+    "passed": 1485,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 93.33,
-    "coverage_percent": 39.1
+    "suite_coverage_percent": 100.0,
+    "coverage_percent": 41.89
   },
   "results": [
     {
@@ -26184,6 +26184,1780 @@
       "compliance_level": "compliance-level-2",
       "case_file": "TestCases/compliance-level-2/0119-multi-collect-hitpolicy/0119-multi-collect-hitpolicy-test-01.xml",
       "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1150-boxed-conditional",
+      "actual": "then",
+      "expected": "then",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1150-boxed-conditional/1150-boxed-conditional-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1150-boxed-conditional",
+      "actual": "else",
+      "expected": "else",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1150-boxed-conditional/1150-boxed-conditional-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "boolean"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "003",
+      "status": "passed",
+      "group": "1150-boxed-conditional",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1150-boxed-conditional/1150-boxed-conditional-test-01.xml",
+      "decision": "decision003",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1151-boxed-filter",
+      "actual": [
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "3"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1151-boxed-filter/1151-boxed-filter-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1151-boxed-filter",
+      "actual": [],
+      "expected": [],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1151-boxed-filter/1151-boxed-filter-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "boolean"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "1151-boxed-filter",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1151-boxed-filter/1151-boxed-filter-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "boolean"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1151-boxed-filter",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1151-boxed-filter/1151-boxed-filter-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1152-boxed-for",
+      "actual": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "8"
+        },
+        {
+          "type": "number",
+          "value": "10"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "6"
+        },
+        {
+          "type": "number",
+          "value": "8"
+        },
+        {
+          "type": "number",
+          "value": "10"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1152-boxed-for/1152-boxed-for-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1152-boxed-for",
+      "actual": [],
+      "expected": [],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1152-boxed-for/1152-boxed-for-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1153-boxed-some",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1153-boxed-some/1153-boxed-some-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1153-boxed-some",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1153-boxed-some/1153-boxed-some-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "list"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1153-boxed-some",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1153-boxed-some/1153-boxed-some-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "boolean"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1153-boxed-some",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1153-boxed-some/1153-boxed-some-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "007",
+      "status": "passed",
+      "group": "1153-boxed-some",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1153-boxed-some/1153-boxed-some-test-01.xml",
+      "decision": "decision007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1154-boxed-every",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1154-boxed-every/1154-boxed-every-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1154-boxed-every",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1154-boxed-every/1154-boxed-every-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "list"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1154-boxed-every",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1154-boxed-every/1154-boxed-every-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "items": [
+          {
+            "type": "atom",
+            "value": "type_error"
+          },
+          {
+            "type": "atom",
+            "value": "boolean"
+          }
+        ],
+        "type": "tuple"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1154-boxed-every",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1154-boxed-every/1154-boxed-every-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "007",
+      "status": "passed",
+      "group": "1154-boxed-every",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1154-boxed-every/1154-boxed-every-test-01.xml",
+      "decision": "decision007",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "list replace position cannot be zero",
+        "type": "feel_error"
+      },
+      "id": "003",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision003",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "list replace position out of bounds",
+        "type": "feel_error"
+      },
+      "id": "004",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision004",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "list replace position out of bounds",
+        "type": "feel_error"
+      },
+      "id": "005",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision005",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: list_replace/3",
+        "type": "feel_error"
+      },
+      "id": "006",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: list_replace/3",
+        "type": "feel_error"
+      },
+      "id": "007",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision007",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        null
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        null
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision008",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "009",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "7"
+        },
+        {
+          "type": "number",
+          "value": "8"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "7"
+        },
+        {
+          "type": "number",
+          "value": "8"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision009",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: list_replace/3",
+        "type": "feel_error"
+      },
+      "id": "010",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision010",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "011",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "011_a",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "2"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision011_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "012",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "013",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "type": "number",
+          "value": "4"
+        },
+        {
+          "type": "number",
+          "value": "3"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision013",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: list_replace/4",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid built-in invocation: list_replace/2",
+        "type": "feel_error"
+      },
+      "id": "015",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision015",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "invalid named arguments for list replace",
+        "type": "feel_error"
+      },
+      "id": "016",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision016",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "function called with invalid arguments",
+        "type": "feel_error"
+      },
+      "id": "017",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision017",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "arity_error",
+        "message": "function called with invalid arguments",
+        "type": "feel_error"
+      },
+      "id": "018",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision018",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "list replace match must return boolean",
+        "type": "feel_error"
+      },
+      "id": "019",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision019",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "020",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        },
+        {
+          "type": "number",
+          "value": "5"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision020",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "021",
+      "status": "passed",
+      "group": "1155-list-replace-function",
+      "actual": [
+        {
+          "type": "number",
+          "value": "5"
+        }
+      ],
+      "expected": [
+        {
+          "type": "number",
+          "value": "5"
+        }
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1155-list-replace-function/1155-list-replace-function-test-01.xml",
+      "decision": "decision021",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_d",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_d",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_e",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_e",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_g",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_g",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_h",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_h",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001_i",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision001_i",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision002",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision003_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision003_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision003_c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_d",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision003_d",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003_e",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision003_e",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "004_e",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision004_e",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "004_f",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision004_f",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "005_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision005_a",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision005_b",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision005_c",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_d",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision005_d",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_e",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision005_e",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "005_f",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision005_f",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "006",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision006",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "007_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision007_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "007_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision007_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "007_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision007_c",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "008_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision008_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "008_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision008_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "008_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision008_c",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "009_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision009_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "009_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision009_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "009_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision009_c",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "010_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision010_a",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "010_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision010_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "010_c",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision010_c",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "011",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision011",
+      "expected_error": false
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "range expects one string argument",
+        "type": "feel_error"
+      },
+      "id": "012",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision012",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "range expects one string argument",
+        "type": "feel_error"
+      },
+      "id": "013_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision013_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "range expects one string argument",
+        "type": "feel_error"
+      },
+      "id": "013_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision013_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "type_error",
+        "message": "range expects one string argument",
+        "type": "feel_error"
+      },
+      "id": "014",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision014",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "015_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision015_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "015_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision015_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "016",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision016",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "017",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision017",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "018",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision018",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "019_a",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision019_a",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "019_b",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision019_b",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "020",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision020",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "021",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision021",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "022",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision022",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "023",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision023",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "024",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision024",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "025",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision025",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "026",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision026",
+      "expected_error": true
+    },
+    {
+      "error": {
+        "code": "evaluation_error",
+        "message": "invalid range string",
+        "type": "feel_error"
+      },
+      "id": "027",
+      "status": "passed",
+      "group": "1156-range-function",
+      "actual": null,
+      "expected": null,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1156-range-function/1156-range-function-test-01.xml",
+      "decision": "decision027",
+      "expected_error": true
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "1161-boxed-list-expression",
+      "actual": [
+        "123",
+        "true",
+        "abc"
+      ],
+      "expected": [
+        "123",
+        "true",
+        "abc"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1161-boxed-list-expression/1161-boxed-list-expression-test-01.xml",
+      "decision": "BList",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "1161-boxed-list-expression",
+      "actual": [
+        null,
+        null,
+        null
+      ],
+      "expected": [
+        null,
+        null,
+        null
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/1161-boxed-list-expression/1161-boxed-list-expression-test-01.xml",
+      "decision": "BList",
       "expected_error": false
     }
   ]

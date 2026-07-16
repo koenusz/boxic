@@ -142,6 +142,14 @@ defmodule Arbiter.DMN.TCK do
     0091-local-hrefs
     0099-arithmetic-negation
     0100-arithmetic
+    1150-boxed-conditional
+    1151-boxed-filter
+    1152-boxed-for
+    1153-boxed-some
+    1154-boxed-every
+    1155-list-replace-function
+    1156-range-function
+    1161-boxed-list-expression
     0108-first-hitpolicy
     0109-ruleOrder-hitpolicy
     0110-outputOrder-hitpolicy

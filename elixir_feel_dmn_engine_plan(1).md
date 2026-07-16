@@ -1163,7 +1163,7 @@ Status date: **2026-07-16**
 | Phase 6 — Decision Tables                           | `done` | Normalized input/output clauses and rules, table validation, multi-column unary-test conjunction, UNIQUE matching, single/multiple outputs, and defaults are implemented. Official `0004-simpletable-U` and `0010-multi-output-U` pass 6/6 in the first strict DMN profile. | None for the WP-10 table-engine scope; additional hit policies belong to WP-11. |
 | Phase 7 — Hit Policies                              | `done` | FIRST, ANY, PRIORITY, RULE ORDER, OUTPUT ORDER, and COLLECT reducers are implemented, including unaggregated collection and COUNT/SUM/MIN/MAX aggregation. Twelve official policy groups pass 36/36; together with WP-10 the strict DMN profile passes 42/42. | None for the targeted hit-policy scope. |
 | Phase 8 — Full DMN Graph Features                   | `done` | DRG dependencies, boxed contexts and relations, item definitions, BKMs, invocations, boxed functions, and decision services are normalized, validated, and executable. The strict profiles publish all applicable mapped groups at 100%: 71 newly enabled FEEL-suite entries and 35 newly enabled DMN-suite entries. | None for the current Phase 8 scope. |
-| Phase 9 — Compliance Phase                          | `in_progress` | The phase began from 1,177 published entries across 52 groups. WP-14–WP-23 are complete, bringing the strict profiles to 3,428 supported entries across 141 passing groups (96.70% total-corpus coverage), plus 18 explicitly unsupported Java-interoperability entries in one platform-specific group; 8 groups and 99 entries remain assigned to WP-24. | Complete the final compliance work package and publish every passing group. |
+| Phase 9 — Compliance Phase                          | `done` | The phase began from 1,177 published entries across 52 groups. WP-14–WP-24 are complete: the strict profiles pass all 3,527 applicable entries across 149 groups (99.49% total-corpus coverage), and explicitly classify the remaining 18 Java-interoperability entries in one platform-specific group as unsupported. The DMN suite passes 1,485/1,485. | None. |
 
 ### 23.3 Work-package roll-up
 
@@ -1193,7 +1193,7 @@ Status date: **2026-07-16**
 | WP-21        | `done` | Negated and list-valued unary tests, typed temporal inputs, recursively normalized nested FEEL names, recursive BKMs, and legacy untyped numeric result components are implemented. All 9 mapped groups pass 60/60 and the strict DMN profile passes 1,350/1,350. | None. |
 | WP-22        | `done` | Named arguments for FEEL closures, quote-safe DMN name normalization, recursive item-definition collections, recursive BKMs, invocations, and nested/DRG scopes are implemented. All 8 mapped groups pass 31/31 and the strict DMN profile passes 1,381/1,381. | None. |
 | WP-23        | `done` | Namespace imports, transitive sibling-model discovery, imported item definitions and callable aliases, nested imported input dependencies, qualified local hrefs, and no-decision-logic handling are implemented. All 4 mapped groups pass 5/5 and the strict DMN profile passes 1,386/1,386. | None. |
-| WP-24        | `not_started` | Inventory assigns 8 boxed-expression/collection groups (99 entries). | Complete boxed conditional/filter/for/quantifier/list forms plus list replacement and range construction; pass and publish 99/99. |
+| WP-24        | `done` | Boxed conditional, filter, for, some, every, and list expressions plus list replacement and validated range construction are implemented. All 8 mapped groups pass 99/99 and the strict DMN profile passes the complete suite at 1,485/1,485. | None. |
 
 ### 23.4 Detailed active task register
 
@@ -1234,7 +1234,7 @@ Task IDs are stable references for commits, reports, and weekly updates. A task 
 | CI-04   | WP-13        | `done` | `RELEASE_CHECKLIST.md` requires pinned reports, compatibility deltas, known gaps, dependency ranges, and breaking-change disclosure; `scripts/tck_compatibility_delta.exs` produces the release-note metric table. |
 | COMP-01 | WP-14–WP-24  | `done` | Reconciled all 150 groups and 3,545 entries against the implemented profiles: 52 groups/1,177 entries published, 98 groups/2,368 entries assigned exactly once below, with no unassigned group. |
 | COMP-02 | WP-14–WP-19  | `done` | WP-14–WP-18 contribute 942/942 newly passing FEEL entries; WP-19 explicitly selects and reports all 18 Java-interoperability entries as unsupported on the Elixir runtime. |
-| COMP-03 | WP-20–WP-24  | `in_progress` | WP-20–WP-23 contribute 42 groups/1,309 passing entries to the strict DMN profile. Complete the remaining 8 groups/99 entries in WP-24. |
+| COMP-03 | WP-20–WP-24  | `done` | WP-20–WP-24 contribute all 50 assigned groups/1,408 passing entries. The strict DMN profile passes the complete 1,485-entry suite. |
 | COMP-04 | WP-14        | `done` | All 15 numeric-completion groups pass 209/209 and remain enabled in the strict FEEL profile. |
 
 ### 23.5 Official TCK feature exit matrix
@@ -1275,7 +1275,7 @@ Counts above are result-entry counts from the vendored TestCases corpus at `0dbc
 
 ### 23.6 Compliance inventory
 
-This phase-baseline inventory is derived from the pinned loader output, not directory estimates. At Phase 9 entry, the eleven work packages contained all 98 groups and all 2,368 entries then outside the implemented profiles. WP-14–WP-18 promoted 47 groups/942 entries, WP-19 selected one group/18 entries with an explicit platform-unsupported disposition, and WP-20–WP-23 promoted 42 groups/1,309 entries. This leaves 8 groups/99 entries. Group counts in parentheses are result-entry counts. A group may enter a strict profile only when every assigned entry passes or every entry has a single documented platform disposition.
+This phase-baseline inventory is derived from the pinned loader output, not directory estimates. At Phase 9 entry, the eleven work packages contained all 98 groups and all 2,368 entries then outside the implemented profiles. WP-14–WP-18 promoted 47 groups/942 entries, WP-19 selected one group/18 entries with an explicit platform-unsupported disposition, and WP-20–WP-24 promoted 50 groups/1,408 entries. No assigned groups or entries remain. Group counts in parentheses are result-entry counts. A group enters a strict profile only when every assigned entry passes or every entry has a single documented platform disposition.
 
 | Work package | Logical feature set | Assigned official groups | Total |
 | ------------ | ------------------- | ------------------------ | ----: |

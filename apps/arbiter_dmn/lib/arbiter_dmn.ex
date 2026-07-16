@@ -12,16 +12,19 @@ defmodule Arbiter.DMN do
   alias Arbiter.DMN.Model.BusinessKnowledgeModel
   alias Arbiter.DMN.Model.ContextEntry
   alias Arbiter.DMN.Model.ContextExpression
+  alias Arbiter.DMN.Model.ConditionalExpression
   alias Arbiter.DMN.Model.Decision
   alias Arbiter.DMN.Model.DecisionRule
   alias Arbiter.DMN.Model.DecisionService
   alias Arbiter.DMN.Model.DecisionTable
   alias Arbiter.DMN.Model.Definitions
   alias Arbiter.DMN.Model.FunctionDefinition
+  alias Arbiter.DMN.Model.FilterExpression
   alias Arbiter.DMN.Model.InformationRequirement
   alias Arbiter.DMN.Model.InputData
   alias Arbiter.DMN.Model.InputClause
   alias Arbiter.DMN.Model.Invocation
+  alias Arbiter.DMN.Model.IteratorExpression
   alias Arbiter.DMN.Model.ItemComponent
   alias Arbiter.DMN.Model.ItemDefinition
   alias Arbiter.DMN.Model.LiteralExpression
@@ -492,9 +495,42 @@ defmodule Arbiter.DMN do
             )
         }
 
+      "conditional" ->
+        %ConditionalExpression{
+          id: attr(expression, "id"),
+          condition: parse_boxed_child(expression, "if"),
+          then_branch: parse_boxed_child(expression, "then"),
+          else_branch: parse_boxed_child(expression, "else")
+        }
+
+      "filter" ->
+        %FilterExpression{
+          id: attr(expression, "id"),
+          source: parse_boxed_child(expression, "in"),
+          match: parse_boxed_child(expression, "match")
+        }
+
+      kind when kind in ["for", "some", "every"] ->
+        body_name = if kind == "for", do: "return", else: "satisfies"
+
+        %IteratorExpression{
+          id: attr(expression, "id"),
+          kind: String.to_atom(kind),
+          variable: attr(expression, "iteratorVariable"),
+          source: parse_boxed_child(expression, "in"),
+          body: parse_boxed_child(expression, body_name)
+        }
+
       kind ->
         {:unsupported, kind}
     end
+  end
+
+  defp parse_boxed_child(expression, name) do
+    expression
+    |> nodes("./*[local-name()='#{name}']/*[1]")
+    |> List.first()
+    |> then(&(&1 && parse_expression_node(&1)))
   end
 
   defp parse_invocation(node) do
@@ -703,6 +739,21 @@ defmodule Arbiter.DMN do
 
   defp validate_expression(%ListExpression{items: items}, id) do
     Enum.flat_map(items, &validate_expression(&1, id))
+  end
+
+  defp validate_expression(%ConditionalExpression{} = expression, id) do
+    validate_expression(expression.condition, id) ++
+      validate_expression(expression.then_branch, id) ++
+      validate_expression(expression.else_branch, id)
+  end
+
+  defp validate_expression(%FilterExpression{} = expression, id) do
+    validate_expression(expression.source, id) ++ validate_expression(expression.match, id)
+  end
+
+  defp validate_expression(%IteratorExpression{} = expression, id) do
+    required(expression, [:variable], {:iterator, id}) ++
+      validate_expression(expression.source, id) ++ validate_expression(expression.body, id)
   end
 
   defp validate_expression({:unsupported, kind}, id), do: [{:unsupported_expression, id, kind}]
@@ -928,10 +979,95 @@ defmodule Arbiter.DMN do
     end)
   end
 
+  defp evaluate_expression(%ConditionalExpression{} = expression, context, model) do
+    with {:ok, condition} <- evaluate_expression(expression.condition, context, model) do
+      case condition do
+        true -> evaluate_expression(expression.then_branch, context, model)
+        false -> evaluate_expression(expression.else_branch, context, model)
+        nil -> evaluate_expression(expression.else_branch, context, model)
+        _ -> {:error, {:type_error, :boolean}}
+      end
+    end
+  end
+
+  defp evaluate_expression(%FilterExpression{} = expression, context, model) do
+    with {:ok, source} <- evaluate_expression(expression.source, context, model),
+         true <- is_list(source) do
+      Enum.reduce_while(source, {:ok, []}, fn item, {:ok, result} ->
+        case evaluate_expression(expression.match, bind_boxed_item(context, item), model) do
+          {:ok, true} -> {:cont, {:ok, result ++ [item]}}
+          {:ok, false} -> {:cont, {:ok, result}}
+          {:ok, _value} -> {:halt, {:error, {:type_error, :boolean}}}
+          {:error, _reason} = error -> {:halt, error}
+        end
+      end)
+    else
+      false -> {:error, {:type_error, :list}}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp evaluate_expression(%IteratorExpression{kind: :for} = expression, context, model) do
+    with {:ok, source} <- evaluate_expression(expression.source, context, model),
+         true <- is_list(source) do
+      Enum.reduce_while(source, {:ok, []}, fn item, {:ok, result} ->
+        case evaluate_expression(
+               expression.body,
+               Map.put(context, expression.variable, item),
+               model
+             ) do
+          {:ok, value} -> {:cont, {:ok, result ++ [value]}}
+          {:error, _reason} = error -> {:halt, error}
+        end
+      end)
+    else
+      false -> {:error, {:type_error, :list}}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp evaluate_expression(%IteratorExpression{} = expression, context, model) do
+    with {:ok, source} <- evaluate_expression(expression.source, context, model),
+         true <- is_list(source) do
+      evaluate_boxed_quantifier(expression.kind, source, expression, context, model)
+    else
+      false -> {:error, {:type_error, :list}}
+      {:error, _reason} = error -> error
+    end
+  end
+
   defp evaluate_expression(nil, _context, _model), do: {:error, :missing_expression}
 
   defp evaluate_expression({:unsupported, kind}, _context, _model),
     do: {:error, {:unsupported_expression, kind}}
+
+  defp evaluate_boxed_quantifier(kind, source, expression, context, model) do
+    initial = if kind == :every, do: true, else: false
+
+    Enum.reduce_while(source, {:ok, initial}, fn item, {:ok, _result} ->
+      case evaluate_expression(
+             expression.body,
+             Map.put(context, expression.variable, item),
+             model
+           ) do
+        {:ok, value} when is_boolean(value) ->
+          if (kind == :some and value) or (kind == :every and not value),
+            do: {:halt, {:ok, value}},
+            else: {:cont, {:ok, value}}
+
+        {:ok, _value} ->
+          {:halt, {:error, {:type_error, :boolean}}}
+
+        {:error, _reason} = error ->
+          {:halt, error}
+      end
+    end)
+  end
+
+  defp bind_boxed_item(context, item) when is_map(item) and not is_struct(item),
+    do: Map.merge(context, Map.put(item, "item", item))
+
+  defp bind_boxed_item(context, item), do: Map.put(context, "item", item)
 
   defp evaluate_context(%ContextExpression{entries: entries}, outer_context, model) do
     entries

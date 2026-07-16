@@ -117,6 +117,24 @@ defmodule Arbiter.DMN.Model.ListExpression do
   @type t :: %__MODULE__{}
 end
 
+defmodule Arbiter.DMN.Model.ConditionalExpression do
+  @moduledoc "Boxed conditional expression."
+  defstruct [:id, :condition, :then_branch, :else_branch]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.FilterExpression do
+  @moduledoc "Boxed filter expression."
+  defstruct [:id, :source, :match]
+  @type t :: %__MODULE__{}
+end
+
+defmodule Arbiter.DMN.Model.IteratorExpression do
+  @moduledoc "Boxed for, some, or every expression."
+  defstruct [:id, :kind, :variable, :source, :body]
+  @type t :: %__MODULE__{}
+end
+
 defmodule Arbiter.DMN.Model.RelationColumn do
   @moduledoc "One named column in a boxed relation."
   defstruct [:id, :name, :type_ref]

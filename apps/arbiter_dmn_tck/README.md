@@ -17,7 +17,7 @@ mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 The umbrella `mix test` command follows ExUnit with the strict, targeted FEEL
 `implemented` profile. The tracked strict baselines currently pass 2,042 FEEL
 entries, explicitly report all 18 Java-external-function entries as unsupported
-on the Elixir runtime, and pass 1,386 DMN entries against the pinned corpus.
+on the Elixir runtime, and pass all 1,485 DMN entries against the pinned corpus.
 
 FEEL and DMN are selected independently:
 

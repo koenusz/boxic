@@ -328,4 +328,22 @@ defmodule Arbiter.DMNTest do
     assert {:ok, "Hello Ada"} =
              Arbiter.DMN.evaluate(model, "Message", %{"Person Input" => %{"name" => "Ada"}})
   end
+
+  test "evaluates boxed conditional expressions" do
+    xml = """
+    <definitions id="defs" name="boxed" namespace="urn:boxed">
+      <decision id="choice" name="Choice">
+        <conditional>
+          <if><literalExpression><text>true</text></literalExpression></if>
+          <then><literalExpression><text>"selected"</text></literalExpression></then>
+          <else><literalExpression><text>"skipped"</text></literalExpression></else>
+        </conditional>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert :ok = Arbiter.DMN.validate(model)
+    assert {:ok, "selected"} = Arbiter.DMN.evaluate(model, "Choice")
+  end
 end
