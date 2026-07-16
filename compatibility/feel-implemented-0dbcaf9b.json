@@ -17080,7 +17080,7 @@
     {
       "error": {
         "code": "evaluation_error",
-        "message": "%Arbiter.FEEL.Error{code: :arity_error, message: \"invalid built-in invocation: sqrt/2\"}",
+        "message": "%Boxic.FEEL.Error{code: :arity_error, message: \"invalid built-in invocation: sqrt/2\"}",
         "type": "feel_error"
       },
       "id": "016",

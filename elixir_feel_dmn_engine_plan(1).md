@@ -1,8 +1,8 @@
-# Arbiter FEEL and DMN Engine Plan
+# Boxic FEEL and DMN Engine Plan
 
-> **Working project name:** Arbiter
+> **Working project name:** Boxic
 >
-> Arbiter is envisioned as a family of standards-oriented workflow and decision libraries. The initial focus is a standalone FEEL engine and a DMN engine, with the possibility of adding BPMN or other OMG standards in the future under the same namespace.
+> Boxic is envisioned as a family of standards-oriented workflow and decision libraries. The initial focus is a standalone FEEL engine and a DMN engine, with the possibility of adding BPMN or other OMG standards in the future under the same namespace.
 
 ## 1. Objective
 
@@ -14,7 +14,7 @@ Build a standards-oriented DMN implementation in Elixir, structured as an umbrel
 
 The implementation should use the upstream DMN Technology Compatibility Kit directly and report compatibility against a pinned upstream revision.
 
-`arbiter_feel` is an independent implementation. Standards behavior and progress are validated against explicit groups from the pinned official DMN TCK rather than inherited implementation history or third-party test baselines.
+`boxic_feel` is an independent implementation. Standards behavior and progress are validated against explicit groups from the pinned official DMN TCK rather than inherited implementation history or third-party test baselines.
 
 ---
 
@@ -48,19 +48,19 @@ OTP should be used around the evaluator, not inside each expression evaluation. 
 ## 3. Umbrella Structure
 
 ```text
-arbiter/
+boxic/
 ├── apps/
-│   ├── arbiter_feel/
+│   ├── boxic_feel/
 │   │   ├── lib/
 │   │   ├── test/
 │   │   └── mix.exs
 │   │
-│   ├── arbiter/
+│   ├── boxic/
 │   │   ├── lib/
 │   │   ├── test/
 │   │   └── mix.exs
 │   │
-│   └── arbiter_dmn_tck/
+│   └── boxic_dmn_tck/
 │       ├── lib/
 │       ├── test/
 │       └── mix.exs
@@ -81,20 +81,20 @@ arbiter/
 Dependency direction:
 
 ```text
-arbiter_dmn_tck
+boxic_dmn_tck
         ↓
-   arbiter_dmn
+   boxic_dmn
         ↓
-  arbiter_feel
+  boxic_feel
 ```
 
-The TCK application may also invoke `arbiter_feel` directly for focused diagnostics, but formal DMN TCK compatibility should be measured through the DMN execution path.
+The TCK application may also invoke `boxic_feel` directly for focused diagnostics, but formal DMN TCK compatibility should be measured through the DMN execution path.
 
 ---
 
 ## 4. Package Boundaries
 
-## 4.1 `arbiter_feel`
+## 4.1 `boxic_feel`
 
 The FEEL package is independently publishable and reusable outside the DMN engine.
 
@@ -118,11 +118,11 @@ Responsibilities:
 Public API:
 
 ```elixir
-Arbiter.FEEL.parse(expression)
+Boxic.FEEL.parse(expression)
 
-Arbiter.FEEL.evaluate(expression, context)
+Boxic.FEEL.evaluate(expression, context)
 
-Arbiter.FEEL.evaluate_ast(ast, context)
+Boxic.FEEL.evaluate_ast(ast, context)
 ```
 
 The public API should remain small and stable.
@@ -131,9 +131,9 @@ The FEEL package owns its parser, AST, evaluator, built-ins, and value semantics
 
 ---
 
-## 4.2 `arbiter_dmn`
+## 4.2 `boxic_dmn`
 
-The DMN package depends on `arbiter_feel`.
+The DMN package depends on `boxic_feel`.
 
 Responsibilities:
 
@@ -155,24 +155,24 @@ Responsibilities:
 Public API:
 
 ```elixir
-Arbiter.DMN.load(xml)
+Boxic.DMN.load(xml)
 
-Arbiter.DMN.validate(model)
+Boxic.DMN.validate(model)
 
-Arbiter.DMN.evaluate(model, decision_name, context)
+Boxic.DMN.evaluate(model, decision_name, context)
 ```
 
 Development dependency:
 
 ```elixir
-{:arbiter_feel, "~> 0.1", path: "../arbiter_feel"}
+{:boxic_feel, "~> 0.1", path: "../boxic_feel"}
 ```
 
 The version requirement documents package compatibility, while the path dependency allows local umbrella development.
 
 ---
 
-## 4.3 `arbiter_dmn_tck`
+## 4.3 `boxic_dmn_tck`
 
 The TCK package is internal development infrastructure and should not be published to Hex.
 
@@ -229,7 +229,7 @@ Evaluation contract:
 ```elixir
 @callback evaluate(ast(), context()) ::
   {:ok, feel_value()}
-  | {:error, Arbiter.FEEL.Error.t()}
+  | {:error, Boxic.FEEL.Error.t()}
 ```
 
 ---
@@ -249,11 +249,11 @@ Suggested internal type:
   | Date.t()
   | Time.t()
   | DateTime.t()
-  | Arbiter.FEEL.Duration.t()
-  | Arbiter.FEEL.Range.t()
+  | Boxic.FEEL.Duration.t()
+  | Boxic.FEEL.Range.t()
   | [feel_value()]
   | %{String.t() => feel_value()}
-  | Arbiter.FEEL.Function.t()
+  | Boxic.FEEL.Function.t()
 ```
 
 Native Elixir values may be used internally where their semantics align with FEEL, but all operations must go through FEEL-specific modules.
@@ -324,7 +324,7 @@ The normalized model should be independent of the XML parsing library.
 Suggested model boundary:
 
 ```elixir
-defmodule Arbiter.DMN.Model do
+defmodule Boxic.DMN.Model do
   defstruct [
     :namespace,
     :name,
@@ -387,7 +387,7 @@ Use the unmodified upstream DMN TCK corpus.
 
 Do not rewrite the upstream test suite into a custom Elixir-only suite.
 
-The upstream repository includes Java-based reference tooling, but Arbiter does not depend on Java runners. The test corpus itself is language-neutral.
+The upstream repository includes Java-based reference tooling, but Boxic does not depend on Java runners. The test corpus itself is language-neutral.
 
 The Elixir project will implement its own vendor runner over the original upstream files.
 
@@ -443,9 +443,9 @@ TCK loader
         ↓
 Normalized test case
         ↓
-Arbiter.DMN.load/1
+Boxic.DMN.load/1
         ↓
-Arbiter.DMN.evaluate/3
+Boxic.DMN.evaluate/3
         ↓
 Actual result normalization
         ↓
@@ -506,7 +506,7 @@ Coverage of total corpus: 36.6%
 The loader should produce a stable internal test-case structure:
 
 ```elixir
-defmodule Arbiter.DMN.TCK.Case do
+defmodule Boxic.DMN.TCK.Case do
   defstruct [
     :group,
     :id,
@@ -599,7 +599,7 @@ Rationale:
 Allowed upstream interaction:
 
 - consume upstream DMN and test-case artifacts directly from the vendored repository;
-- document any interpretation differences in Arbiter reports.
+- document any interpretation differences in Boxic reports.
 
 Primary and only compatibility execution path is native Elixir over the upstream corpus.
 
@@ -614,12 +614,12 @@ The TCK application should execute upstream cases through the dedicated runner w
 Example:
 
 ```elixir
-for test_case <- Arbiter.DMN.TCK.Loader.load_all() do
+for test_case <- Boxic.DMN.TCK.Loader.load_all() do
   @test_case test_case
 
   test "#{test_case.group}/#{test_case.id}" do
     assert :passed ==
-             Arbiter.DMN.TCK.Runner.execute(@test_case)
+             Boxic.DMN.TCK.Runner.execute(@test_case)
   end
 end
 ```
@@ -706,7 +706,7 @@ otp:
 ## Phase 0 — Repository and Foundation Setup
 
 - create umbrella;
-- establish `arbiter_feel` as an independent implementation;
+- establish `boxic_feel` as an independent implementation;
 - establish package naming and module namespaces;
 - add pinned vendored TCK snapshot;
 - add baseline CI.
@@ -899,16 +899,16 @@ Deliverable:
 
 ## 14. Versioning and Publication
 
-Publish `arbiter_feel` and `arbiter_dmn` independently.
+Publish `boxic_feel` and `boxic_dmn` independently.
 
 Example:
 
 ```text
-arbiter_feel 0.1.x
-arbiter_dmn  0.1.x
+boxic_feel 0.1.x
+boxic_dmn  0.1.x
 ```
 
-`arbiter_dmn` should declare an explicit compatible FEEL version range.
+`boxic_dmn` should declare an explicit compatible FEEL version range.
 
 The TCK package remains private to the repository.
 
@@ -928,23 +928,23 @@ Release notes should include:
 Suggested namespaces:
 
 ```elixir
-Arbiter.FEEL
-Arbiter.FEEL.Parser
-Arbiter.FEEL.Evaluator
-Arbiter.FEEL.Builtins
+Boxic.FEEL
+Boxic.FEEL.Parser
+Boxic.FEEL.Evaluator
+Boxic.FEEL.Builtins
 
-Arbiter.DMN
-Arbiter.DMN.Model
-Arbiter.DMN.Parser
-Arbiter.DMN.DecisionTable
-Arbiter.DMN.HitPolicy
-Arbiter.DMN.Executor
+Boxic.DMN
+Boxic.DMN.Model
+Boxic.DMN.Parser
+Boxic.DMN.DecisionTable
+Boxic.DMN.HitPolicy
+Boxic.DMN.Executor
 
-Arbiter.DMN.TCK
-Arbiter.DMN.TCK.Loader
-Arbiter.DMN.TCK.Runner
-Arbiter.DMN.TCK.Comparator
-Arbiter.DMN.TCK.Reporter
+Boxic.DMN.TCK
+Boxic.DMN.TCK.Loader
+Boxic.DMN.TCK.Runner
+Boxic.DMN.TCK.Comparator
+Boxic.DMN.TCK.Reporter
 ```
 
 Package names may differ from application names if required by Hex availability, but module names should remain stable.
@@ -974,7 +974,7 @@ Package names may differ from application names if required by Hex availability,
 
 The first meaningful milestone is:
 
-> Load a pinned upstream TCK case, parse its DMN model and test metadata, execute a literal expression through `arbiter_dmn` and `arbiter_feel`, compare the canonical result, and emit a TCK-compatible report entry.
+> Load a pinned upstream TCK case, parse its DMN model and test metadata, execute a literal expression through `boxic_dmn` and `boxic_feel`, compare the canonical result, and emit a TCK-compatible report entry.
 
 This proves the complete architecture before investing heavily in language implementation.
 
@@ -1007,8 +1007,8 @@ Each requirement must be testable and map to one or more implementation work pac
 
 | Requirement ID | Requirement                                                                                                  | Verification                                             |
 | -------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| RQ-ARCH-001    | Project is an umbrella with `arbiter_feel`, `arbiter_dmn`, and `arbiter_dmn_tck` apps.                       | `mix compile`; app discovery in umbrella; CI build job.  |
-| RQ-ARCH-002    | Dependency direction is `arbiter_dmn -> arbiter_feel`; TCK is non-production.                                | Compile-time deps and boundary checks in tests.          |
+| RQ-ARCH-001    | Project is an umbrella with `boxic_feel`, `boxic_dmn`, and `boxic_dmn_tck` apps.                       | `mix compile`; app discovery in umbrella; CI build job.  |
+| RQ-ARCH-002    | Dependency direction is `boxic_dmn -> boxic_feel`; TCK is non-production.                                | Compile-time deps and boundary checks in tests.          |
 | RQ-FEEL-001    | FEEL parser returns AST without evaluation side effects.                                                     | Parser unit tests and purity checks.                     |
 | RQ-FEEL-002    | FEEL evaluation returns `{:ok, value}` or structured `{:error, error}` tuples.                               | Evaluator contract tests.                                |
 | RQ-FEEL-003    | FEEL numbers use `Decimal` semantics end-to-end.                                                             | Mapped numeric TCK groups.                               |
@@ -1154,7 +1154,7 @@ Status date: **2026-07-16**
 
 | Phase                                               | Status        | Current assessment                                                                                                                                                                                                                                 | Completion condition                                                                                                 |
 | --------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Phase 0 — Repository and Foundation Setup           | `done`        | The umbrella, independent `arbiter_feel` implementation boundary, namespaces, dependency-direction checks, baseline CI, reproducible TCK update scripts, and verified official corpus at `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13` are present. | None for the current Phase 0 scope. |
+| Phase 0 — Repository and Foundation Setup           | `done`        | The umbrella, independent `boxic_feel` implementation boundary, namespaces, dependency-direction checks, baseline CI, reproducible TCK update scripts, and verified official corpus at `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13` are present. | None for the current Phase 0 scope. |
 | Phase 1 — TCK Harness Foundation                    | `done`        | All 3,545 pinned result entries are discovered and explicitly classifiable; expected errors and canonical nested values are normalized; semantic comparison, safe CLI selection, and versioned CSV/JSON reporting are verified. The pinned strict report is published under `compatibility/feel-implemented-0dbcaf9b.{csv,json}`. | None for the current Phase 1 scope. |
 | Phase 2 — FEEL Core Compliance                      | `done`        | The 162 core cases remain included in the passing strict profile across conditionals, constants, arithmetic, contexts, lists, scalar equality, and boolean/null logic. Cross-type range/unary-test and temporal equality cases from `0068` are explicitly assigned to later work. | None for the current Phase 2 scope. |
 | Phase 3 — FEEL Structural Features                  | `done`        | Paths, filters, projections, function invocation, `in`/unary tests, alternative ranges, numeric sequences, multi-binding iteration, partial results, quantifiers, closures, and scoping are implemented. Official `0001-filter`, `0090-feel-paths`, and `1131-feel-function-invocation` pass 13/13 and are enabled; cross-temporal and DMN-dependent cases are explicitly reassigned. | None for the current Phase 3 scope. |
@@ -1292,7 +1292,7 @@ This phase-baseline inventory is derived from the pinned loader output, not dire
 | WP-24 | Boxed expressions and remaining collection functions | `1150-boxed-conditional` (3), `1151-boxed-filter` (4), `1152-boxed-for` (2), `1153-boxed-some` (5), `1154-boxed-every` (5), `1155-list-replace-function` (22), `1156-range-function` (56), `1161-boxed-list-expression` (2) | 8 groups / 99 entries |
 | **Total** | **Complete remaining inventory** | **Every group outside the implemented profiles, assigned once** | **98 groups / 2,368 entries** |
 
-`0076-feel-external-java` is isolated because an Elixir engine cannot honestly claim Java interoperation by accident. Arbiter reports all 18 cases as intentionally unsupported on the Elixir runtime. They remain visible in the strict FEEL profile without counting as passing or weakening supported-scope compatibility.
+`0076-feel-external-java` is isolated because an Elixir engine cannot honestly claim Java interoperation by accident. Boxic reports all 18 cases as intentionally unsupported on the Elixir runtime. They remain visible in the strict FEEL profile without counting as passing or weakening supported-scope compatibility.
 
 ### 23.7 Next execution sequence
 

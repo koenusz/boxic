@@ -24,7 +24,7 @@ erl_crash.dump
 /artifacts/*.csv
 /artifacts/*.json
 
-# Arbiter vendors the official TCK input corpus, not the upstream website,
+# Boxic vendors the official TCK input corpus, not the upstream website,
 # historical vendor results, Java runners, examples, or repository tooling.
 # Keep vendor/dmn-tck/TestCases, its schemas, license, README, PINNED_COMMIT,
 # and UPSTREAM_REPO trackable.

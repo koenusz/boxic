@@ -1,0 +1,12 @@
+<definitions id="main" name="main" namespace="urn:boxic:test:main">
+  <import namespace="urn:boxic:test:library" name="lib"
+    importType="https://www.omg.org/spec/DMN/20230324/MODEL/"/>
+  <inputData id="person" name="Person Input">
+    <variable name="Person Input" typeRef="lib.Person"/>
+  </inputData>
+  <decision id="message" name="Message">
+    <informationRequirement><requiredInput href="urn:boxic:test:main#person"/></informationRequirement>
+    <knowledgeRequirement><requiredKnowledge href="urn:boxic:test:library#greet"/></knowledgeRequirement>
+    <literalExpression><text>lib.greet(Person Input)</text></literalExpression>
+  </decision>
+</definitions>

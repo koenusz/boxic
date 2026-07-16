@@ -1,4 +1,4 @@
-defmodule Arbiter.MixProject do
+defmodule Boxic.MixProject do
   use Mix.Project
 
   def project do

@@ -1,13 +1,13 @@
-# Arbiter
+# Boxic
 
-Arbiter is an Elixir umbrella project for FEEL and DMN engines with an internal
+Boxic is an Elixir umbrella project for FEEL and DMN engines with an internal
 DMN TCK harness.
 
 ## Apps
 
-- `arbiter_feel`: FEEL parsing and evaluation API.
-- `arbiter_dmn`: DMN model loading and decision evaluation using FEEL.
-- `arbiter_dmn_tck`: Internal TCK discovery, execution, and reporting.
+- `boxic_feel`: FEEL parsing and evaluation API.
+- `boxic_dmn`: DMN model loading and decision evaluation using FEEL.
+- `boxic_dmn_tck`: Internal TCK discovery, execution, and reporting.
 
 ## Current status
 
@@ -21,7 +21,7 @@ DMN TCK harness.
 - strict compatibility regression gates and retained nightly full-corpus reports.
 
 Engine compatibility with the official corpus is still in progress. A loaded
-test is not treated as passing unless it executes through Arbiter and its
+test is not treated as passing unless it executes through Boxic and its
 result matches the upstream expected value.
 
 ## Commands
@@ -34,13 +34,13 @@ mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 
 ## Elixir interaction from FEEL and DMN
 
-Arbiter provides an allowlisted Elixir external-function registry as the
+Boxic provides an allowlisted Elixir external-function registry as the
 BEAM-native replacement for Java external functions. Applications can register
 trusted Elixir functions, define FEEL/Elixir value conversions, and inject the
 registry into FEEL or DMN evaluation without permitting model text to resolve
 arbitrary modules or functions.
 
-See the [external-function guide](apps/arbiter_feel/README.md#elixir-external-functions)
+See the [external-function guide](apps/boxic_feel/README.md#elixir-external-functions)
 for registry definitions, supported types, variadic functions, FEEL calls, DMN
 integration, and security guidance. The Java-specific TCK group remains
 explicitly unsupported because this extension provides Elixir integration, not

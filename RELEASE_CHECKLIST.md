@@ -1,6 +1,6 @@
 # Release checklist
 
-Use this checklist independently for `arbiter_feel` and `arbiter_dmn` releases.
+Use this checklist independently for `boxic_feel` and `boxic_dmn` releases.
 
 - [ ] `mix format --check-formatted`, `mix compile --warnings-as-errors`, and `mix test` pass.
 - [ ] `bash scripts/verify_tck_pin.sh` confirms the vendored corpus and pinned commit.
@@ -14,5 +14,5 @@ Use this checklist independently for `arbiter_feel` and `arbiter_dmn` releases.
       mix run scripts/tck_compatibility_delta.exs previous-feel.json current-feel.json --output feel-delta.md
       mix run scripts/tck_compatibility_delta.exs previous-dmn.json current-dmn.json --output dmn-delta.md
 
-- [ ] Package versions and `arbiter_dmn`'s compatible `arbiter_feel` dependency range are correct.
+- [ ] Package versions and `boxic_dmn`'s compatible `boxic_feel` dependency range are correct.
 - [ ] Any semantic breaking changes are called out explicitly.
