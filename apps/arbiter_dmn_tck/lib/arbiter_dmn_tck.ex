@@ -100,6 +100,7 @@ defmodule Arbiter.DMN.TCK do
     0003-iteration
     0004-lending
     0004-simpletable-U
+    0005-literal-invocation
     0005-simpletable-A
     0006-join
     0006-simpletable-P1
@@ -107,6 +108,7 @@ defmodule Arbiter.DMN.TCK do
     0007-simpletable-P2
     0008-LX-arithmetic
     0008-listGen
+    0009-invocation-arithmetic
     0009-append-flatten
     0010-concatenate
     0010-multi-output-U
@@ -120,14 +122,20 @@ defmodule Arbiter.DMN.TCK do
     0019-flight-rebooking
     0020-vacation-days
     0021-singleton-list
+    0030-user-defined-functions
+    0031-user-defined-functions
     0033-for-loops
+    0034-drg-scopes
     0035-test-structure-output
     0036-dt-variable-input
     0037-dt-on-bkm-implicit-params
     0038-dt-on-bkm-explicit-params
     0039-dt-list-semantics
+    0040-singlenestedcontext
+    0041-multiple-nestedcontext
     0085-decision-services
     0087-chapter-11-example
+    0088-recursion
     0099-arithmetic-negation
     0100-arithmetic
     0108-first-hitpolicy

@@ -249,6 +249,10 @@ defmodule Arbiter.DMNTest do
         <informationRequirement><requiredInput href="#flight"/></informationRequirement>
         <literalExpression><text>Flight.Flight Number</text></literalExpression>
       </decision>
+      <decision id="label" name="Label">
+        <informationRequirement><requiredInput href="#flight"/></informationRequirement>
+        <literalExpression><text>"Flight Number"</text></literalExpression>
+      </decision>
     </definitions>
     """
 
@@ -258,6 +262,39 @@ defmodule Arbiter.DMNTest do
              Arbiter.DMN.evaluate(model, "Flight Number", %{
                "Flight" => %{"Flight Number" => "UA456"}
              })
+
+    assert {:ok, "Flight Number"} =
+             Arbiter.DMN.evaluate(model, "Label", %{
+               "Flight" => %{"Flight Number" => "UA456"}
+             })
+  end
+
+  test "coerces recursively typed collection components" do
+    xml = """
+    <definitions id="defs" name="recursive item" namespace="urn:recursive-item">
+      <itemDefinition name="Node">
+        <itemComponent name="children" isCollection="true"><typeRef>Node</typeRef></itemComponent>
+        <itemComponent name="value"><typeRef>number</typeRef></itemComponent>
+      </itemDefinition>
+      <inputData id="tree" name="Tree"><variable name="Tree" typeRef="Node"/></inputData>
+      <decision id="child_value" name="Child Value">
+        <informationRequirement><requiredInput href="#tree"/></informationRequirement>
+        <literalExpression><text>Tree.children[1].value</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+
+    context = %{
+      "Tree" => %{
+        "value" => "1",
+        "children" => [%{"value" => "2", "children" => []}]
+      }
+    }
+
+    assert {:ok, value} = Arbiter.DMN.evaluate(model, "Child Value", context)
+    assert Decimal.equal?(value, Decimal.new("2"))
   end
 
   test "business knowledge models can call themselves recursively" do

@@ -1263,7 +1263,7 @@ defmodule Arbiter.DMN do
       Enum.reduce_while(components, {:ok, value}, fn component, {:ok, result} ->
         case Map.fetch(value, component.name) do
           {:ok, item} ->
-            case coerce_type(item, component.type_ref, model) do
+            case coerce_item_component(item, component, model) do
               {:ok, coerced} -> {:cont, {:ok, Map.put(result, component.name, coerced)}}
               {:error, _reason} = error -> {:halt, error}
             end
@@ -1281,6 +1281,20 @@ defmodule Arbiter.DMN do
 
   defp coerce_item_definition(value, definition, model),
     do: coerce_item_base(value, definition.type_ref, model)
+
+  defp coerce_item_component(value, %{is_collection: true} = component, model) do
+    values = if is_list(value), do: value, else: [value]
+
+    Enum.reduce_while(values, {:ok, []}, fn item, {:ok, result} ->
+      case coerce_type(item, component.type_ref || "Any", model) do
+        {:ok, coerced} -> {:cont, {:ok, result ++ [coerced]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp coerce_item_component(value, component, model),
+    do: coerce_type(value, component.type_ref || "Any", model)
 
   defp coerce_item_base(%Arbiter.FEEL.Function{} = value, "function:" <> _output_type, _model),
     do: {:ok, value}
@@ -1568,9 +1582,22 @@ defmodule Arbiter.DMN do
         Regex.compile!("(?<![\\p{L}\\p{N}_])#{Regex.escape(name)}(?![\\p{L}\\p{N}_])", "u")
 
       if Regex.match?(pattern, source) do
-        {Regex.replace(pattern, source, alias_name), alias_feel_name(bindings, name, alias_name)}
+        {replace_outside_strings(source, pattern, alias_name),
+         alias_feel_name(bindings, name, alias_name)}
       else
         {source, bindings}
+      end
+    end)
+  end
+
+  defp replace_outside_strings(source, pattern, replacement) do
+    ~r/("(?:\\.|[^"\\])*")/u
+    |> Regex.split(source, include_captures: true)
+    |> Enum.map_join(fn segment ->
+      if String.starts_with?(segment, "\"") do
+        segment
+      else
+        Regex.replace(pattern, segment, replacement)
       end
     end)
   end

@@ -8,25 +8,25 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-16T17:03:03.370875Z",
+    "execution_date": "2026-07-16T17:18:29.527690Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
   },
   "summary": {
     "error": 0,
-    "disabled": 135,
-    "total": 1350,
+    "disabled": 104,
+    "total": 1381,
     "unsupported": 0,
-    "supported": 1350,
+    "supported": 1381,
     "missing": 0,
     "failed": 0,
     "corpus_total": 3545,
     "suite_total": 1485,
     "excluded_by_suite": 2060,
-    "passed": 1350,
+    "passed": 1381,
     "compatibility_percent": 100.0,
-    "suite_coverage_percent": 90.91,
-    "coverage_percent": 38.08
+    "suite_coverage_percent": 93.0,
+    "coverage_percent": 38.96
   },
   "results": [
     {
@@ -367,6 +367,60 @@
       "compliance_level": "compliance-level-2",
       "case_file": "TestCases/compliance-level-2/0004-simpletable-U/0004-simpletable-U-test-01.xml",
       "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0005-literal-invocation",
+      "actual": {
+        "type": "number",
+        "value": "2878.693549432766768088520375"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2878.69354943277"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0005-literal-invocation/0005-literal-invocation-test-01.xml",
+      "decision": "MonthlyPayment",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0005-literal-invocation",
+      "actual": {
+        "type": "number",
+        "value": "662.7073593732659271562143668"
+      },
+      "expected": {
+        "type": "number",
+        "value": "662.707359373292"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0005-literal-invocation/0005-literal-invocation-test-01.xml",
+      "decision": "MonthlyPayment",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0005-literal-invocation",
+      "actual": {
+        "type": "number",
+        "value": "2961.033777003901636716262772"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2961.03377700389"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0005-literal-invocation/0005-literal-invocation-test-01.xml",
+      "decision": "MonthlyPayment",
       "expected_error": false
     },
     {
@@ -1481,6 +1535,60 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0009-append-flatten/0009-append-flatten-test-01.xml",
       "decision": "literalSimpleList",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0009-invocation-arithmetic",
+      "actual": {
+        "type": "number",
+        "value": "2878.693549432766768088520375"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2878.69354943277"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0009-invocation-arithmetic/0009-invocation-arithmetic-test-01.xml",
+      "decision": "MonthlyPayment",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0009-invocation-arithmetic",
+      "actual": {
+        "type": "number",
+        "value": "662.7073593732659271562143668"
+      },
+      "expected": {
+        "type": "number",
+        "value": "662.707359373292"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0009-invocation-arithmetic/0009-invocation-arithmetic-test-01.xml",
+      "decision": "MonthlyPayment",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0009-invocation-arithmetic",
+      "actual": {
+        "type": "number",
+        "value": "2961.033777003901636716262772"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2961.03377700389"
+      },
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0009-invocation-arithmetic/0009-invocation-arithmetic-test-01.xml",
+      "decision": "MonthlyPayment",
       "expected_error": false
     },
     {
@@ -5914,6 +6022,152 @@
     },
     {
       "error": null,
+      "id": "001/named function invocation",
+      "status": "passed",
+      "group": "0030-user-defined-functions",
+      "actual": "#feel#feel",
+      "expected": "#feel#feel",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0030-user-defined-functions/0030-user-defined-functions-test-01.xml",
+      "decision": "named function invocation",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/simple function invocation",
+      "status": "passed",
+      "group": "0030-user-defined-functions",
+      "actual": "feel#feel#",
+      "expected": "feel#feel#",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0030-user-defined-functions/0030-user-defined-functions-test-01.xml",
+      "decision": "simple function invocation",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0031-user-defined-functions",
+      "actual": {
+        "divisionResultPositional": {
+          "type": "number",
+          "value": "2"
+        },
+        "multiplicationResultPositional": {
+          "type": "number",
+          "value": "50"
+        },
+        "sumResult": {
+          "type": "number",
+          "value": "15"
+        }
+      },
+      "expected": {
+        "divisionResultPositional": {
+          "type": "number",
+          "value": "2"
+        },
+        "multiplicationResultPositional": {
+          "type": "number",
+          "value": "50"
+        },
+        "sumResult": {
+          "type": "number",
+          "value": "15"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0031-user-defined-functions/0031-user-defined-functions-test-01.xml",
+      "decision": "fn invocation positional parameters",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0031-user-defined-functions",
+      "actual": {
+        "divisionResultNamed": {
+          "type": "number",
+          "value": "2"
+        },
+        "multiplicationResultNamed": {
+          "type": "number",
+          "value": "50"
+        },
+        "subResult": {
+          "type": "number",
+          "value": "5"
+        },
+        "subResultMixed": {
+          "type": "number",
+          "value": "-5"
+        }
+      },
+      "expected": {
+        "divisionResultNamed": {
+          "type": "number",
+          "value": "2"
+        },
+        "multiplicationResultNamed": {
+          "type": "number",
+          "value": "50"
+        },
+        "subResult": {
+          "type": "number",
+          "value": "5"
+        },
+        "subResultMixed": {
+          "type": "number",
+          "value": "-5"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0031-user-defined-functions/0031-user-defined-functions-test-01.xml",
+      "decision": "fn invocation named parameters",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0031-user-defined-functions",
+      "actual": {
+        "circumference": {
+          "type": "number",
+          "value": "94.247760"
+        },
+        "functionInvocationInParameter": {
+          "type": "number",
+          "value": "200"
+        },
+        "functionInvocationLiteralExpressionInParameter": {
+          "type": "number",
+          "value": "500"
+        }
+      },
+      "expected": {
+        "circumference": {
+          "type": "number",
+          "value": "94.247760"
+        },
+        "functionInvocationInParameter": {
+          "type": "number",
+          "value": "200"
+        },
+        "functionInvocationLiteralExpressionInParameter": {
+          "type": "number",
+          "value": "500"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0031-user-defined-functions/0031-user-defined-functions-test-01.xml",
+      "decision": "fn invocation complex parameters",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "001",
       "status": "passed",
       "group": "0033-for-loops",
@@ -6080,6 +6334,352 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0033-for-loops/0033-for-loops-test-01.xml",
       "decision": "multiples",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision A 1",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A": "A"
+      },
+      "expected": {
+        "resolve A": "A"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision A 1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision A 2.1",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A 1": {
+          "resolve A": "A"
+        }
+      },
+      "expected": {
+        "resolve A 1": {
+          "resolve A": "A"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision A 2.1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision A 2.2",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A 1": {
+          "resolve A": "A"
+        }
+      },
+      "expected": {
+        "resolve A 1": {
+          "resolve A": "A"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision A 2.2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision A 3",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A 2.1": {
+          "resolve A 1": {
+            "resolve A": "A"
+          }
+        },
+        "resolve A 2.2": {
+          "resolve A 1": {
+            "resolve A": "A"
+          }
+        }
+      },
+      "expected": {
+        "resolve A 2.1": {
+          "resolve A 1": {
+            "resolve A": "A"
+          }
+        },
+        "resolve A 2.2": {
+          "resolve A 1": {
+            "resolve A": "A"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision A 3",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision B 1",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A": "A",
+        "resolve B": "B"
+      },
+      "expected": {
+        "resolve A": "A",
+        "resolve B": "B"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision B 1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision B 2.1",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve B 1": {
+          "resolve A": "A",
+          "resolve B": "B"
+        }
+      },
+      "expected": {
+        "resolve B 1": {
+          "resolve A": "A",
+          "resolve B": "B"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision B 2.1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision B 2.2",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve B 1": {
+          "resolve A": "A",
+          "resolve B": "B"
+        }
+      },
+      "expected": {
+        "resolve B 1": {
+          "resolve A": "A",
+          "resolve B": "B"
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision B 2.2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision B 3",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A 3": {
+          "resolve A 2.1": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          },
+          "resolve A 2.2": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          }
+        },
+        "resolve B 2.1": {
+          "resolve B 1": {
+            "resolve A": "A",
+            "resolve B": "B"
+          }
+        },
+        "resolve B 2.2": {
+          "resolve B 1": {
+            "resolve A": "A",
+            "resolve B": "B"
+          }
+        }
+      },
+      "expected": {
+        "resolve A 3": {
+          "resolve A 2.1": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          },
+          "resolve A 2.2": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          }
+        },
+        "resolve B 2.1": {
+          "resolve B 1": {
+            "resolve A": "A",
+            "resolve B": "B"
+          }
+        },
+        "resolve B 2.2": {
+          "resolve B 1": {
+            "resolve A": "A",
+            "resolve B": "B"
+          }
+        }
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision B 3",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision C 1",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve A 3": {
+          "resolve A 2.1": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          },
+          "resolve A 2.2": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          }
+        },
+        "resolve B 3": {
+          "resolve A 3": {
+            "resolve A 2.1": {
+              "resolve A 1": {
+                "resolve A": "A"
+              }
+            },
+            "resolve A 2.2": {
+              "resolve A 1": {
+                "resolve A": "A"
+              }
+            }
+          },
+          "resolve B 2.1": {
+            "resolve B 1": {
+              "resolve A": "A",
+              "resolve B": "B"
+            }
+          },
+          "resolve B 2.2": {
+            "resolve B 1": {
+              "resolve A": "A",
+              "resolve B": "B"
+            }
+          }
+        },
+        "resolve C": "C"
+      },
+      "expected": {
+        "resolve A 3": {
+          "resolve A 2.1": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          },
+          "resolve A 2.2": {
+            "resolve A 1": {
+              "resolve A": "A"
+            }
+          }
+        },
+        "resolve B 3": {
+          "resolve A 3": {
+            "resolve A 2.1": {
+              "resolve A 1": {
+                "resolve A": "A"
+              }
+            },
+            "resolve A 2.2": {
+              "resolve A 1": {
+                "resolve A": "A"
+              }
+            }
+          },
+          "resolve B 2.1": {
+            "resolve B 1": {
+              "resolve A": "A",
+              "resolve B": "B"
+            }
+          },
+          "resolve B 2.2": {
+            "resolve B 1": {
+              "resolve A": "A",
+              "resolve B": "B"
+            }
+          }
+        },
+        "resolve C": "C"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision C 1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision C 2",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": "BKM I # BKM II # BKM III # decision C 2 # BKM IV # BKM III # decision C 2",
+      "expected": "BKM I # BKM II # BKM III # decision C 2 # BKM IV # BKM III # decision C 2",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision C 2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision C 3",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": "BKM II # BKM III # decision C 3 # BKM IV # BKM III # decision C 3",
+      "expected": "BKM II # BKM III # decision C 3 # BKM IV # BKM III # decision C 3",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision C 3",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/decision C 4",
+      "status": "passed",
+      "group": "0034-drg-scopes",
+      "actual": {
+        "resolve C 3": "BKM II # BKM III # decision C 3 # BKM IV # BKM III # decision C 3"
+      },
+      "expected": {
+        "resolve C 3": "BKM II # BKM III # decision C 3 # BKM IV # BKM III # decision C 3"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0034-drg-scopes/0034-drg-scopes-test-01.xml",
+      "decision": "decision C 4",
       "expected_error": false
     },
     {
@@ -6696,6 +7296,114 @@
       "error": null,
       "id": "001",
       "status": "passed",
+      "group": "0040-singlenestedcontext",
+      "actual": {
+        "type": "number",
+        "value": "2878.693549432766768088520375"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2878.6935494327668"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0040-singlenestedcontext/0040-singlenestedcontext-test-01.xml",
+      "decision": "Boxed Context",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0040-singlenestedcontext",
+      "actual": {
+        "type": "number",
+        "value": "649.1175498364002934927000134"
+      },
+      "expected": {
+        "type": "number",
+        "value": "649.1175498364003"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0040-singlenestedcontext/0040-singlenestedcontext-test-01.xml",
+      "decision": "Boxed Context",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0040-singlenestedcontext",
+      "actual": {
+        "type": "number",
+        "value": "2858.116099896591400871418886"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2858.1160998965915"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0040-singlenestedcontext/0040-singlenestedcontext-test-01.xml",
+      "decision": "Boxed Context",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0041-multiple-nestedcontext",
+      "actual": {
+        "type": "number",
+        "value": "2778.693549432766768088520375"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2778.6935494327668"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0041-multiple-nestedcontext/0041-multiple-nestedcontext-test-01.xml",
+      "decision": "Boxed Context",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0041-multiple-nestedcontext",
+      "actual": {
+        "type": "number",
+        "value": "549.1175498364002934927000134"
+      },
+      "expected": {
+        "type": "number",
+        "value": "549.1175498364003"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0041-multiple-nestedcontext/0041-multiple-nestedcontext-test-01.xml",
+      "decision": "Boxed Context",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0041-multiple-nestedcontext",
+      "actual": {
+        "type": "number",
+        "value": "2758.116099896591400871418886"
+      },
+      "expected": {
+        "type": "number",
+        "value": "2758.1160998965915"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0041-multiple-nestedcontext/0041-multiple-nestedcontext-test-01.xml",
+      "decision": "Boxed Context",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
       "group": "0085-decision-services",
       "actual": "foo",
       "expected": "foo",
@@ -7080,6 +7788,42 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
       "decision": "Strategy",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0088-recursion",
+      "actual": {
+        "type": "number",
+        "value": "55"
+      },
+      "expected": {
+        "type": "number",
+        "value": "55"
+      },
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0088-recursion/0088-recursion-test-01.xml",
+      "decision": "fibonacci_001",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0088-recursion",
+      "actual": {
+        "type": "number",
+        "value": "28"
+      },
+      "expected": {
+        "type": "number",
+        "value": "28"
+      },
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0088-recursion/0088-recursion-test-01.xml",
+      "decision": "tree_001",
       "expected_error": false
     },
     {

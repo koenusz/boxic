@@ -1424,18 +1424,22 @@ defmodule Arbiter.FEEL do
     end
   end
 
-  defp apply_function(%Function{params: params, body: body, closure: closure}, args)
-       when length(params) == length(args) do
-    if Enum.zip(params, args)
-       |> Enum.all?(fn {{_name, type}, value} -> parameter_type?(value, type) end) do
-      call_context =
-        params
-        |> Enum.zip(args)
-        |> Enum.reduce(closure, fn {{name, _type}, value}, acc -> Map.put(acc, name, value) end)
+  defp apply_function(%Function{params: params, body: body, closure: closure}, args) do
+    with {:ok, args} <- order_function_args(params, args),
+         true <- length(params) == length(args) do
+      if Enum.zip(params, args)
+         |> Enum.all?(fn {{_name, type}, value} -> parameter_type?(value, type) end) do
+        call_context =
+          params
+          |> Enum.zip(args)
+          |> Enum.reduce(closure, fn {{name, _type}, value}, acc -> Map.put(acc, name, value) end)
 
-      eval(body, call_context)
+        eval(body, call_context)
+      else
+        {:error, error(:type_error, "function argument does not conform to parameter type")}
+      end
     else
-      {:error, error(:type_error, "function argument does not conform to parameter type")}
+      _ -> {:error, error(:arity_error, "function called with invalid arguments")}
     end
   end
 
@@ -1464,6 +1468,29 @@ defmodule Arbiter.FEEL do
 
   defp apply_function(_callee, _args),
     do: {:error, error(:type_error, "attempted to call a non-function value")}
+
+  defp order_function_args(params, args) do
+    names = Enum.map(params, &elem(&1, 0))
+
+    Enum.reduce_while(args, {:ok, %{}, names}, fn
+      {:named_arg, name, value}, {:ok, bound, remaining} ->
+        if name in remaining do
+          {:cont, {:ok, Map.put(bound, name, value), List.delete(remaining, name)}}
+        else
+          {:halt, :error}
+        end
+
+      value, {:ok, bound, [name | remaining]} ->
+        {:cont, {:ok, Map.put(bound, name, value), remaining}}
+
+      _value, {:ok, _bound, []} ->
+        {:halt, :error}
+    end)
+    |> case do
+      {:ok, bound, []} -> {:ok, Enum.map(names, &Map.fetch!(bound, &1))}
+      _ -> :error
+    end
+  end
 
   defp parameter_type?(_value, nil), do: true
   defp parameter_type?(%Decimal{}, "number"), do: true

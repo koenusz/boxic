@@ -128,6 +128,13 @@ defmodule Arbiter.FEELTest do
     assert Decimal.equal?(value, Decimal.new("3"))
   end
 
+  test "user-defined functions accept named arguments in declaration order" do
+    assert {:ok, %Decimal{} = value} =
+             Arbiter.FEEL.evaluate("(function(a, b) a - b)(b: 3, a: 10)")
+
+    assert Decimal.equal?(value, Decimal.new("7"))
+  end
+
   test "string and numeric built-ins" do
     assert {:ok, %Decimal{} = len} = Arbiter.FEEL.evaluate("string_length(\"hello\")", %{})
     assert Decimal.equal?(len, Decimal.new("5"))
