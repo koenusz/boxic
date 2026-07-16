@@ -26,6 +26,27 @@ defmodule Arbiter.FEEL.Builtins do
     context_put
     context_merge
     is
+    day_of_year
+    day_of_week
+    month_of_year
+    week_of_year
+    years_and_months_duration
+    now
+    today
+    before
+    after
+    meets
+    met_by
+    overlaps_before
+    overlaps_after
+    finishes
+    finished_by
+    includes
+    during
+    starts
+    started_by
+    coincides
+    overlaps
     list_contains
     count
     all
@@ -189,6 +210,63 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"is", args} when length(args) != 2 ->
         {:ok, false}
+
+      {"day_of_year", [value]} ->
+        with {:ok, date} <- calendar_date(value), do: {:ok, Decimal.new(Date.day_of_year(date))}
+
+      {"day_of_week", [value]} ->
+        with {:ok, date} <- calendar_date(value),
+             do:
+               {:ok,
+                Enum.at(
+                  ~w(Monday Tuesday Wednesday Thursday Friday Saturday Sunday),
+                  Date.day_of_week(date) - 1
+                )}
+
+      {"month_of_year", [value]} ->
+        with {:ok, date} <- calendar_date(value),
+             do:
+               {:ok,
+                Enum.at(
+                  ~w(January February March April May June July August September October November December),
+                  date.month - 1
+                )}
+
+      {"week_of_year", [value]} ->
+        with {:ok, date} <- calendar_date(value) do
+          {_year, week} = :calendar.iso_week_number({date.year, date.month, date.day})
+          {:ok, Decimal.new(week)}
+        end
+
+      {"years_and_months_duration", [from, to]} ->
+        years_and_months_duration(from, to)
+
+      {"now", []} ->
+        now = DateTime.utc_now()
+        {:ok, time} = FeelTime.new(now.hour, now.minute, Decimal.new(now.second), {:offset, 0})
+        {:ok, FeelDateTime.new(DateTime.to_date(now), time)}
+
+      {"today", []} ->
+        {:ok, Date.utc_today()}
+
+      {relation, [left, right]}
+      when relation in [
+             "before",
+             "after",
+             "meets",
+             "met_by",
+             "overlaps_before",
+             "overlaps_after",
+             "finishes",
+             "finished_by",
+             "includes",
+             "during",
+             "starts",
+             "started_by",
+             "coincides",
+             "overlaps"
+           ] ->
+        interval_relation(relation, left, right)
 
       {"count", [list]} when is_list(list) ->
         {:ok, Decimal.new(length(list))}
@@ -498,6 +576,11 @@ defmodule Arbiter.FEEL.Builtins do
     "context_put" => [["context", "key", "value"], ["context", "keys", "value"]],
     "context_merge" => ["contexts"],
     "is" => ["value1", "value2"],
+    "day_of_year" => ["date"],
+    "day_of_week" => ["date"],
+    "month_of_year" => ["date"],
+    "week_of_year" => ["date"],
+    "years_and_months_duration" => ["from", "to"],
     "list_contains" => ["list", "element"],
     "all" => ["list"],
     "any" => ["list"],
@@ -1044,6 +1127,152 @@ defmodule Arbiter.FEEL.Builtins do
     do: Duration.compare(left, right) == :eq
 
   defp identical?(left, right), do: left == right
+
+  defp calendar_date(%Date{} = date), do: {:ok, date}
+  defp calendar_date(%FeelDateTime{date: date}), do: {:ok, date}
+  defp calendar_date(_value), do: {:error, err(:type_error, "calendar function expects a date")}
+
+  defp years_and_months_duration(from, to) do
+    with {:ok, from_date} <- calendar_date(from),
+         {:ok, to_date} <- calendar_date(to) do
+      months = (to_date.year - from_date.year) * 12 + to_date.month - from_date.month
+
+      months =
+        cond do
+          months > 0 and to_date.day < from_date.day -> months - 1
+          months < 0 and to_date.day > from_date.day -> months + 1
+          true -> months
+        end
+
+      {:ok, %Duration{kind: :year_month, months: months, seconds: 0}}
+    end
+  end
+
+  defp interval_relation("before", left, right), do: {:ok, before?(left, right)}
+  defp interval_relation("after", left, right), do: {:ok, before?(right, left)}
+
+  defp interval_relation("meets", %Arbiter.FEEL.Range{} = left, %Arbiter.FEEL.Range{} = right),
+    do:
+      {:ok,
+       endpoint_equal?(left.end, right.start) and left.end_inclusive and right.start_inclusive}
+
+  defp interval_relation("met_by", left, right), do: interval_relation("meets", right, left)
+
+  defp interval_relation(
+         "overlaps_before",
+         %Arbiter.FEEL.Range{} = left,
+         %Arbiter.FEEL.Range{} = right
+       ),
+       do: {:ok, overlaps_before?(left, right)}
+
+  defp interval_relation("overlaps_after", left, right),
+    do: interval_relation("overlaps_before", right, left)
+
+  defp interval_relation("includes", %Arbiter.FEEL.Range{} = range, value),
+    do: {:ok, includes?(range, value)}
+
+  defp interval_relation("during", value, %Arbiter.FEEL.Range{} = range),
+    do: {:ok, includes?(range, value)}
+
+  defp interval_relation("starts", value, %Arbiter.FEEL.Range{} = range),
+    do: {:ok, starts?(value, range)}
+
+  defp interval_relation("started_by", range, value),
+    do: interval_relation("starts", value, range)
+
+  defp interval_relation("finishes", value, %Arbiter.FEEL.Range{} = range),
+    do: {:ok, finishes?(value, range)}
+
+  defp interval_relation("finished_by", range, value),
+    do: interval_relation("finishes", value, range)
+
+  defp interval_relation("coincides", left, right), do: {:ok, coincides?(left, right)}
+
+  defp interval_relation("overlaps", %Arbiter.FEEL.Range{} = left, %Arbiter.FEEL.Range{} = right),
+    do: {:ok, intervals_intersect?(left, right) and not coincides?(left, right)}
+
+  defp interval_relation(_relation, _left, _right),
+    do: {:error, err(:type_error, "invalid interval relation operands")}
+
+  defp before?(%Arbiter.FEEL.Range{} = left, %Arbiter.FEEL.Range{} = right),
+    do: endpoint_before?(left.end, left.end_inclusive, right.start, right.start_inclusive)
+
+  defp before?(%Arbiter.FEEL.Range{} = left, right),
+    do: endpoint_before?(left.end, left.end_inclusive, right, true)
+
+  defp before?(left, %Arbiter.FEEL.Range{} = right),
+    do: endpoint_before?(left, true, right.start, right.start_inclusive)
+
+  defp before?(left, right), do: endpoint_compare(left, right) == :lt
+
+  defp endpoint_before?(left, left_inclusive, right, right_inclusive) do
+    case endpoint_compare(left, right) do
+      :lt -> true
+      :eq -> not (left_inclusive and right_inclusive)
+      :gt -> false
+    end
+  end
+
+  defp overlaps_before?(left, right) do
+    starts_before =
+      endpoint_compare(left.start, right.start) == :lt or
+        (endpoint_equal?(left.start, right.start) and left.start_inclusive and
+           not right.start_inclusive)
+
+    ends_no_later = endpoint_compare(left.end, right.end) != :gt
+    starts_before and ends_no_later and intervals_intersect?(left, right)
+  end
+
+  defp intervals_intersect?(left, right) do
+    not before?(left, right) and not before?(right, left)
+  end
+
+  defp includes?(range, %Arbiter.FEEL.Range{} = inner) do
+    lower_ok =
+      endpoint_compare(range.start, inner.start) == :lt or
+        (endpoint_equal?(range.start, inner.start) and
+           (range.start_inclusive or not inner.start_inclusive))
+
+    upper_ok =
+      endpoint_compare(range.end, inner.end) == :gt or
+        (endpoint_equal?(range.end, inner.end) and
+           (range.end_inclusive or not inner.end_inclusive))
+
+    lower_ok and upper_ok
+  end
+
+  defp includes?(range, value) do
+    lower = endpoint_compare(value, range.start)
+    upper = endpoint_compare(value, range.end)
+    lower_ok = lower == :gt or (lower == :eq and range.start_inclusive)
+    upper_ok = upper == :lt or (upper == :eq and range.end_inclusive)
+    lower_ok and upper_ok
+  end
+
+  defp starts?(%Arbiter.FEEL.Range{} = value, range),
+    do:
+      endpoint_equal?(value.start, range.start) and value.start_inclusive == range.start_inclusive
+
+  defp starts?(value, range), do: endpoint_equal?(value, range.start) and range.start_inclusive
+
+  defp finishes?(%Arbiter.FEEL.Range{} = value, range),
+    do: endpoint_equal?(value.end, range.end) and value.end_inclusive == range.end_inclusive
+
+  defp finishes?(value, range), do: endpoint_equal?(value, range.end) and range.end_inclusive
+
+  defp coincides?(%Arbiter.FEEL.Range{} = left, %Arbiter.FEEL.Range{} = right) do
+    endpoint_equal?(left.start, right.start) and endpoint_equal?(left.end, right.end) and
+      left.start_inclusive == right.start_inclusive and left.end_inclusive == right.end_inclusive
+  end
+
+  defp coincides?(left, right), do: feel_equal?(left, right)
+
+  defp endpoint_equal?(left, right), do: endpoint_compare(left, right) == :eq
+  defp endpoint_compare(%Decimal{} = left, %Decimal{} = right), do: Decimal.compare(left, right)
+  defp endpoint_compare(%Date{} = left, %Date{} = right), do: Date.compare(left, right)
+  defp endpoint_compare(left, right) when left < right, do: :lt
+  defp endpoint_compare(left, right) when left > right, do: :gt
+  defp endpoint_compare(_left, _right), do: :eq
 
   defp stringify_value(value) when is_binary(value), do: "\"#{escape_string(value)}\""
   defp stringify_value(%Decimal{} = value), do: Decimal.to_string(value, :normal)

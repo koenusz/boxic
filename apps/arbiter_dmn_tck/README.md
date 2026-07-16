@@ -15,7 +15,7 @@ mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 ```
 
 The umbrella `mix test` command follows ExUnit with the strict, targeted FEEL
-`implemented` profile. The tracked strict baselines currently pass 1,907 FEEL
+`implemented` profile. The tracked strict baselines currently pass 2,042 FEEL
 entries and 77 DMN entries against the pinned corpus.
 
 FEEL and DMN are selected independently:

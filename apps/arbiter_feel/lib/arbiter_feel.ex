@@ -172,6 +172,36 @@ defmodule Arbiter.FEEL do
   defp tokenize(<<"context merge", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "context_merge"} | acc])
 
+  defp tokenize(<<"day of year", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "day_of_year"} | acc])
+
+  defp tokenize(<<"day of week", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "day_of_week"} | acc])
+
+  defp tokenize(<<"month of year", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "month_of_year"} | acc])
+
+  defp tokenize(<<"week of year", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "week_of_year"} | acc])
+
+  defp tokenize(<<"years and months duration", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "years_and_months_duration"} | acc])
+
+  defp tokenize(<<"overlaps before", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "overlaps_before"} | acc])
+
+  defp tokenize(<<"overlaps after", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "overlaps_after"} | acc])
+
+  defp tokenize(<<"finished by", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "finished_by"} | acc])
+
+  defp tokenize(<<"started by", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "started_by"} | acc])
+
+  defp tokenize(<<"met by", rest::binary>>, acc),
+    do: tokenize(rest, [{:identifier, "met_by"} | acc])
+
   defp tokenize(<<"ends with", rest::binary>>, acc),
     do: tokenize(rest, [{:identifier, "ends_with"} | acc])
 
@@ -1538,6 +1568,9 @@ defmodule Arbiter.FEEL do
         match?(%NaiveDateTime{}, value)
 
   defp instance_of?(%Duration{kind: :year_month}, "years and months duration", _context),
+    do: true
+
+  defp instance_of?(%Duration{kind: :year_month}, "years_and_months_duration", _context),
     do: true
 
   defp instance_of?(%Duration{kind: :day_time}, "days and time duration", _context), do: true

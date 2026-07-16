@@ -25,6 +25,7 @@ defmodule Arbiter.DMN do
   alias Arbiter.DMN.Model.ItemComponent
   alias Arbiter.DMN.Model.ItemDefinition
   alias Arbiter.DMN.Model.LiteralExpression
+  alias Arbiter.DMN.Model.ListExpression
   alias Arbiter.DMN.Model.OutputClause
   alias Arbiter.DMN.Model.Relation
   alias Arbiter.DMN.Model.RelationColumn
@@ -353,6 +354,16 @@ defmodule Arbiter.DMN do
             end)
         }
 
+      "list" ->
+        %ListExpression{
+          id: attr(expression, "id"),
+          items:
+            Enum.map(
+              nodes(expression, "./*[local-name()='literalExpression']"),
+              &parse_expression_node/1
+            )
+        }
+
       kind ->
         {:unsupported, kind}
     end
@@ -561,6 +572,10 @@ defmodule Arbiter.DMN do
     do: validate_expression(function.body, "#{id}:function_body")
 
   defp validate_expression(%Relation{} = relation, id), do: validate_relation(relation, id)
+
+  defp validate_expression(%ListExpression{items: items}, id) do
+    Enum.flat_map(items, &validate_expression(&1, id))
+  end
 
   defp validate_expression({:unsupported, kind}, id), do: [{:unsupported_expression, id, kind}]
 
@@ -771,6 +786,15 @@ defmodule Arbiter.DMN do
              end
            end) do
         {:ok, values} -> {:cont, {:ok, results ++ [Map.new(Enum.zip(names, values))]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp evaluate_expression(%ListExpression{items: items}, context, model) do
+    Enum.reduce_while(items, {:ok, []}, fn item, {:ok, values} ->
+      case evaluate_expression(item, context, model) do
+        {:ok, value} -> {:cont, {:ok, values ++ [value]}}
         {:error, _reason} = error -> {:halt, error}
       end
     end)

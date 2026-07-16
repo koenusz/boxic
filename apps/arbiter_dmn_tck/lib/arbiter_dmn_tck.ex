@@ -46,7 +46,12 @@ defmodule Arbiter.DMN.TCK do
     0084-feel-for-loops
     0090-feel-paths
     0092-feel-lambda
+    0093-feel-at-literals
     0094-feel-product-function
+    0095-feel-day-of-year-function
+    0096-feel-day-of-week-function
+    0097-feel-month-of-year-function
+    0098-feel-week-of-year-function
     0100-feel-constants
     0101-feel-constants
     0102-feel-constants
@@ -70,6 +75,8 @@ defmodule Arbiter.DMN.TCK do
     1116-feel-time-function
     1117-feel-date-and-time-function
     1120-feel-duration-function
+    1121-feel-years-and-months-duration-function
+    1130-feel-interval
     1131-feel-function-invocation
     1140-feel-string-join-function
     1141-feel-round-up-function
@@ -79,6 +86,8 @@ defmodule Arbiter.DMN.TCK do
     1145-feel-context-function
     1146-feel-context-put-function
     1147-feel-context-merge-function
+    1148-feel-now-function
+    1149-feel-today-function
   )
 
   @feel_additional_groups ~w(0001-filter 0032-conditionals)

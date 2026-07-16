@@ -109,6 +109,12 @@ defmodule Arbiter.DMN.Model.Relation do
   @type t :: %__MODULE__{}
 end
 
+defmodule Arbiter.DMN.Model.ListExpression do
+  @moduledoc "Normalized boxed list expression."
+  defstruct [:id, items: []]
+  @type t :: %__MODULE__{}
+end
+
 defmodule Arbiter.DMN.Model.RelationColumn do
   @moduledoc "One named column in a boxed relation."
   defstruct [:id, :name, :type_ref]

@@ -184,6 +184,14 @@ defmodule Arbiter.FEELTest do
     assert Decimal.equal?(updated, Decimal.new("2"))
   end
 
+  test "calendar extraction and interval relations" do
+    assert {:ok, day} = Arbiter.FEEL.evaluate(~S|day of year(@"2020-12-31")|)
+    assert Decimal.equal?(day, Decimal.new("366"))
+    assert {:ok, "Tuesday"} = Arbiter.FEEL.evaluate(~S|day of week(@"2019-09-17")|)
+    assert {:ok, true} = Arbiter.FEEL.evaluate("overlaps([1..5], [5..8])")
+    assert {:ok, true} = Arbiter.FEEL.evaluate("includes([1..10], (1..5])")
+  end
+
   test "temporal constructors and arithmetic" do
     assert {:ok, %Date{year: 2026, month: 7, day: 16}} =
              Arbiter.FEEL.evaluate("date(\"2026-07-15\") + duration(\"P1D\")", %{})
