@@ -98,9 +98,13 @@ defmodule Arbiter.DMN.TCK do
     0002-string-functions
     0003-input-data-string-allowed-values
     0003-iteration
+    0004-lending
     0004-simpletable-U
+    0005-simpletable-A
     0006-join
+    0006-simpletable-P1
     0007-date-time
+    0007-simpletable-P2
     0008-LX-arithmetic
     0008-listGen
     0009-append-flatten
@@ -112,13 +116,18 @@ defmodule Arbiter.DMN.TCK do
     0014-loan-comparison
     0015-all-any
     0016-some-every
+    0017-tableTests
+    0019-flight-rebooking
     0020-vacation-days
     0021-singleton-list
     0033-for-loops
     0035-test-structure-output
+    0036-dt-variable-input
     0037-dt-on-bkm-implicit-params
     0038-dt-on-bkm-explicit-params
+    0039-dt-list-semantics
     0085-decision-services
+    0087-chapter-11-example
     0099-arithmetic-negation
     0100-arithmetic
     0108-first-hitpolicy

@@ -240,4 +240,45 @@ defmodule Arbiter.DMNTest do
     assert {:ok, result} = Arbiter.DMN.evaluate(model, "Double", %{"Requested-Amount" => "21"})
     assert Decimal.equal?(result, Decimal.new(42))
   end
+
+  test "normalizes multiword names in nested input contexts" do
+    xml = """
+    <definitions id="defs" name="nested names" namespace="urn:nested-names">
+      <inputData id="flight" name="Flight"><variable name="Flight"/></inputData>
+      <decision id="number" name="Flight Number">
+        <informationRequirement><requiredInput href="#flight"/></informationRequirement>
+        <literalExpression><text>Flight.Flight Number</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+
+    assert {:ok, "UA456"} =
+             Arbiter.DMN.evaluate(model, "Flight Number", %{
+               "Flight" => %{"Flight Number" => "UA456"}
+             })
+  end
+
+  test "business knowledge models can call themselves recursively" do
+    xml = """
+    <definitions id="defs" name="recursive bkm" namespace="urn:recursive-bkm">
+      <businessKnowledgeModel id="count_down" name="count down">
+        <variable name="count down" typeRef="number"/>
+        <encapsulatedLogic>
+          <formalParameter name="n" typeRef="number"/>
+          <literalExpression><text>if n &gt; 0 then count down(n - 1) else n</text></literalExpression>
+        </encapsulatedLogic>
+      </businessKnowledgeModel>
+      <decision id="result" name="Result">
+        <knowledgeRequirement><requiredKnowledge href="#count_down"/></knowledgeRequirement>
+        <literalExpression><text>count down(3)</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Arbiter.DMN.load(xml)
+    assert {:ok, result} = Arbiter.DMN.evaluate(model, "Result")
+    assert Decimal.equal?(result, Decimal.new(0))
+  end
 end

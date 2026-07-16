@@ -1023,6 +1023,10 @@ defmodule Arbiter.DMN do
   defp invoke_bkm_from_feel(model, bkm, outer_context, args) do
     names = Enum.map(bkm.parameters, & &1.name)
 
+    self_callable =
+      {:external_function,
+       fn recursive_args -> invoke_bkm_from_feel(model, bkm, outer_context, recursive_args) end}
+
     with {:ok, values} <- normalize_service_args(args, names),
          {:ok, values} <- coerce_parameter_values(values, bkm.parameters, model),
          {:ok, bkm_context, _memo} <-
@@ -1030,7 +1034,9 @@ defmodule Arbiter.DMN do
          {:ok, result} <-
            evaluate_expression(
              bkm.expression,
-             Map.merge(bkm_context, Map.new(Enum.zip(names, values))),
+             bkm_context
+             |> bind_value(bkm, self_callable)
+             |> Map.merge(Map.new(Enum.zip(names, values))),
              model
            ) do
       coerce_type(result, bkm.variable && bkm.variable.type_ref, model)
@@ -1149,10 +1155,48 @@ defmodule Arbiter.DMN do
   defp coerce_type("true", "boolean", _model), do: {:ok, true}
   defp coerce_type("false", "boolean", _model), do: {:ok, false}
   defp coerce_type(%Date{} = value, "date", _model), do: {:ok, value}
+  defp coerce_type(value, "date", _model) when is_binary(value), do: Date.from_iso8601(value)
   defp coerce_type(%Arbiter.FEEL.Time{} = value, "time", _model), do: {:ok, value}
+  defp coerce_type(%Time{} = value, "time", _model), do: {:ok, value}
+
+  defp coerce_type(value, "time", _model) when is_binary(value) do
+    case Arbiter.FEEL.Time.parse(value) do
+      {:ok, time} -> {:ok, time}
+      :error -> {:error, {:type_error, "time"}}
+    end
+  end
+
   defp coerce_type(%Arbiter.FEEL.DateTime{} = value, "date and time", _model), do: {:ok, value}
   defp coerce_type(%Arbiter.FEEL.DateTime{} = value, "dateTime", _model), do: {:ok, value}
+  defp coerce_type(%DateTime{} = value, "date and time", _model), do: {:ok, value}
+  defp coerce_type(%DateTime{} = value, "dateTime", _model), do: {:ok, value}
+  defp coerce_type(%NaiveDateTime{} = value, "date and time", _model), do: {:ok, value}
+  defp coerce_type(%NaiveDateTime{} = value, "dateTime", _model), do: {:ok, value}
+
+  defp coerce_type(value, type, _model)
+       when is_binary(value) and type in ["date and time", "dateTime"] do
+    case Arbiter.FEEL.DateTime.parse(value) do
+      {:ok, datetime} -> {:ok, datetime}
+      :error -> {:error, {:type_error, type}}
+    end
+  end
+
   defp coerce_type(%Arbiter.FEEL.Duration{} = value, "duration", _model), do: {:ok, value}
+
+  defp coerce_type(value, type, _model)
+       when is_binary(value) and
+              type in [
+                "duration",
+                "dayTimeDuration",
+                "yearMonthDuration",
+                "days and time duration",
+                "years and months duration"
+              ] do
+    case Arbiter.FEEL.Duration.parse_iso8601(value) do
+      {:ok, duration} -> coerce_duration_kind(duration, type)
+      {:error, _reason} -> {:error, {:type_error, type}}
+    end
+  end
 
   defp coerce_type(%Arbiter.FEEL.Duration{kind: :day_time} = value, "dayTimeDuration", _model),
     do: {:ok, value}
@@ -1188,6 +1232,18 @@ defmodule Arbiter.DMN do
       definition -> coerce_item_definition(value, definition, model)
     end
   end
+
+  defp coerce_duration_kind(duration, "duration"), do: {:ok, duration}
+
+  defp coerce_duration_kind(%Arbiter.FEEL.Duration{kind: :day_time} = duration, type)
+       when type in ["dayTimeDuration", "days and time duration"],
+       do: {:ok, duration}
+
+  defp coerce_duration_kind(%Arbiter.FEEL.Duration{kind: :year_month} = duration, type)
+       when type in ["yearMonthDuration", "years and months duration"],
+       do: {:ok, duration}
+
+  defp coerce_duration_kind(_duration, type), do: {:error, {:type_error, type}}
 
   defp coerce_item_definition(value, %{is_collection: true} = definition, model) do
     values = if is_list(value), do: value, else: [value]
@@ -1437,6 +1493,8 @@ defmodule Arbiter.DMN do
   end
 
   defp evaluate_unary_tests(text, value, context) do
+    {text, context} = normalize_feel_names(text, context)
+
     text
     |> split_unary_tests()
     |> Enum.reduce_while({:ok, false}, fn test, {:ok, false} ->
@@ -1496,10 +1554,11 @@ defmodule Arbiter.DMN do
   # bindings before parsing the literal expression.
   defp normalize_feel_names(expression, context) do
     context
-    |> Map.keys()
+    |> feel_names()
     |> Enum.filter(fn name ->
       is_binary(name) and not Regex.match?(~r/^[\p{L}_][\p{L}\p{N}_]*$/u, name)
     end)
+    |> Enum.uniq()
     |> Enum.sort_by(&String.length/1, :desc)
     |> Enum.with_index()
     |> Enum.reduce({expression, context}, fn {name, index}, {source, bindings} ->
@@ -1509,13 +1568,31 @@ defmodule Arbiter.DMN do
         Regex.compile!("(?<![\\p{L}\\p{N}_])#{Regex.escape(name)}(?![\\p{L}\\p{N}_])", "u")
 
       if Regex.match?(pattern, source) do
-        {Regex.replace(pattern, source, alias_name),
-         Map.put(bindings, alias_name, Map.fetch!(bindings, name))}
+        {Regex.replace(pattern, source, alias_name), alias_feel_name(bindings, name, alias_name)}
       else
         {source, bindings}
       end
     end)
   end
+
+  defp feel_names(map) when is_map(map) and not is_struct(map) do
+    Enum.flat_map(map, fn {key, value} -> [key | feel_names(value)] end)
+  end
+
+  defp feel_names(list) when is_list(list), do: Enum.flat_map(list, &feel_names/1)
+  defp feel_names(_value), do: []
+
+  defp alias_feel_name(map, name, alias_name) when is_map(map) and not is_struct(map) do
+    map =
+      Map.new(map, fn {key, value} -> {key, alias_feel_name(value, name, alias_name)} end)
+
+    if Map.has_key?(map, name), do: Map.put(map, alias_name, Map.fetch!(map, name)), else: map
+  end
+
+  defp alias_feel_name(list, name, alias_name) when is_list(list),
+    do: Enum.map(list, &alias_feel_name(&1, name, alias_name))
+
+  defp alias_feel_name(value, _name, _alias_name), do: value
 
   defp validate_unique_names(model) do
     (Map.values(model.input_data) ++ Map.values(model.decisions) ++ Map.values(model.bkms))

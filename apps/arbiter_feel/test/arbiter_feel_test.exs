@@ -106,6 +106,12 @@ defmodule Arbiter.FEELTest do
     assert {:ok, false} == Arbiter.FEEL.evaluate_unary_test("<= 5", Decimal.new("7"), %{})
     assert {:ok, true} == Arbiter.FEEL.evaluate_unary_test("[1..10]", Decimal.new("7"), %{})
     assert {:ok, false} == Arbiter.FEEL.evaluate_unary_test("[1..10)", Decimal.new("10"), %{})
+    assert {:ok, false} == Arbiter.FEEL.evaluate_unary_test("not(2)", Decimal.new("2"), %{})
+
+    assert {:ok, true} ==
+             Arbiter.FEEL.evaluate_unary_test("choices", "silver", %{
+               "choices" => ["gold", "silver"]
+             })
   end
 
   test "context entries scope and shadow outer context" do

@@ -8,9 +8,25 @@
     "dmn_specification_version": "1.4",
     "dmn_tck_commit": "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13",
     "engine_version": "0.1.0",
-    "execution_date": "2026-07-16T16:41:02.489549Z",
+    "execution_date": "2026-07-16T17:03:03.370875Z",
     "feel_package_version": "0.1.0",
     "report_schema_version": "1.0"
+  },
+  "summary": {
+    "error": 0,
+    "disabled": 135,
+    "total": 1350,
+    "unsupported": 0,
+    "supported": 1350,
+    "missing": 0,
+    "failed": 0,
+    "corpus_total": 3545,
+    "suite_total": 1485,
+    "excluded_by_suite": 2060,
+    "passed": 1350,
+    "compatibility_percent": 100.0,
+    "suite_coverage_percent": 90.91,
+    "coverage_percent": 38.08
   },
   "results": [
     {
@@ -175,6 +191,150 @@
     },
     {
       "error": null,
+      "id": "001/Adjudication",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "ACCEPT",
+      "expected": "ACCEPT",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Adjudication",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/ApplicationRiskScore",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": {
+        "type": "number",
+        "value": "130"
+      },
+      "expected": {
+        "type": "number",
+        "value": "130"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "ApplicationRiskScore",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/BureauCallType",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "MINI",
+      "expected": "MINI",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "BureauCallType",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Eligibility",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "ELIGIBLE",
+      "expected": "ELIGIBLE",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Eligibility",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Post-bureauAffordability",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Post-bureauAffordability",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Post-bureauRiskCategory",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "LOW",
+      "expected": "LOW",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Post-bureauRiskCategory",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Pre-bureauAffordability",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Pre-bureauAffordability",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Pre-bureauRiskCategory",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "LOW",
+      "expected": "LOW",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Pre-bureauRiskCategory",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/RequiredMonthlyInstallment",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": {
+        "type": "number",
+        "value": "1680.880325608634796819003610"
+      },
+      "expected": {
+        "type": "number",
+        "value": "1680.880325608555"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "RequiredMonthlyInstallment",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Routing",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "ACCEPT",
+      "expected": "ACCEPT",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Routing",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001/Strategy",
+      "status": "passed",
+      "group": "0004-lending",
+      "actual": "BUREAU",
+      "expected": "BUREAU",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0004-lending/0004-lending-test-01.xml",
+      "decision": "Strategy",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "001",
       "status": "passed",
       "group": "0004-simpletable-U",
@@ -213,12 +373,84 @@
       "error": null,
       "id": "001",
       "status": "passed",
+      "group": "0005-simpletable-A",
+      "actual": "Approved",
+      "expected": "Approved",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0005-simpletable-A/0005-simpletable-A-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0005-simpletable-A",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0005-simpletable-A/0005-simpletable-A-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0005-simpletable-A",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0005-simpletable-A/0005-simpletable-A-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
       "group": "0006-join",
       "actual": "Smith",
       "expected": "Smith",
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0006-join/0006-join-test-01.xml",
       "decision": "Join",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0006-simpletable-P1",
+      "actual": "Approved",
+      "expected": "Approved",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0006-simpletable-P1/0006-simpletable-P1-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0006-simpletable-P1",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0006-simpletable-P1/0006-simpletable-P1-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0006-simpletable-P1",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0006-simpletable-P1/0006-simpletable-P1-test-01.xml",
+      "decision": "Approval Status",
       "expected_error": false
     },
     {
@@ -601,6 +833,42 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0007-date-time/0007-date-time-test-01.xml",
       "decision": "ymDuration2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0007-simpletable-P2",
+      "actual": "Approved",
+      "expected": "Approved",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0007-simpletable-P2/0007-simpletable-P2-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0007-simpletable-P2",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0007-simpletable-P2/0007-simpletable-P2-test-01.xml",
+      "decision": "Approval Status",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0007-simpletable-P2",
+      "actual": "Declined",
+      "expected": "Declined",
+      "compliance_level": "compliance-level-2",
+      "case_file": "TestCases/compliance-level-2/0007-simpletable-P2/0007-simpletable-P2-test-01.xml",
+      "decision": "Approval Status",
       "expected_error": false
     },
     {
@@ -5317,6 +5585,143 @@
       "error": null,
       "id": "001",
       "status": "passed",
+      "group": "0017-tableTests",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0017-tableTests/0017-tableTests-test-01.xml",
+      "decision": "priceGt10",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0017-tableTests",
+      "actual": "Not in range",
+      "expected": "Not in range",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0017-tableTests/0017-tableTests-test-01.xml",
+      "decision": "priceInRange",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003",
+      "status": "passed",
+      "group": "0017-tableTests",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0017-tableTests/0017-tableTests-test-01.xml",
+      "decision": "dateCompare1",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004",
+      "status": "passed",
+      "group": "0017-tableTests",
+      "actual": false,
+      "expected": false,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0017-tableTests/0017-tableTests-test-01.xml",
+      "decision": "dateCompare2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0019-flight-rebooking",
+      "actual": [
+        {
+          "Flight Number": "UA456",
+          "Miles": {
+            "type": "number",
+            "value": "500000"
+          },
+          "Name": "Jenny",
+          "Status": "gold"
+        },
+        {
+          "Flight Number": "UA456",
+          "Miles": {
+            "type": "number",
+            "value": "100000"
+          },
+          "Name": "Harry",
+          "Status": "gold"
+        },
+        {
+          "Flight Number": "UA789",
+          "Miles": {
+            "type": "number",
+            "value": "50000"
+          },
+          "Name": "Igor",
+          "Status": "gold"
+        },
+        {
+          "Flight Number": "UA789",
+          "Miles": {
+            "type": "number",
+            "value": "100"
+          },
+          "Name": "Dick",
+          "Status": "silver"
+        },
+        {
+          "Flight Number": null,
+          "Miles": {
+            "type": "number",
+            "value": "10"
+          },
+          "Name": "Tom",
+          "Status": "bronze"
+        }
+      ],
+      "expected": [
+        {
+          "Flight Number": "UA456",
+          "Miles": "500000",
+          "Name": "Jenny",
+          "Status": "gold"
+        },
+        {
+          "Flight Number": "UA456",
+          "Miles": "100000",
+          "Name": "Harry",
+          "Status": "gold"
+        },
+        {
+          "Flight Number": "UA789",
+          "Miles": "50000",
+          "Name": "Igor",
+          "Status": "gold"
+        },
+        {
+          "Flight Number": "UA789",
+          "Miles": "100",
+          "Name": "Dick",
+          "Status": "silver"
+        },
+        {
+          "Flight Number": null,
+          "Miles": "10",
+          "Name": "Tom",
+          "Status": "bronze"
+        }
+      ],
+      "compliance_level": "non-compliant",
+      "case_file": "TestCases/non-compliant/0019-flight-rebooking/0019-flight-rebooking-test-01.xml",
+      "decision": "Rebooked Passengers",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
       "group": "0020-vacation-days",
       "actual": {
         "type": "number",
@@ -5919,6 +6324,294 @@
     },
     {
       "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Boolean",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Not same boolean",
+      "expected": "Not same boolean",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Boolean",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Date",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Future Date",
+      "expected": "Future Date",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Date",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Date and Time",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Future date time",
+      "expected": "Future date time",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Date and Time",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Days and Time Duration",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Longer duration",
+      "expected": "Longer duration",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Days and Time Duration",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Number",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Bigger",
+      "expected": "Bigger",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Number",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare String",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Different String",
+      "expected": "Different String",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare String",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Time",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Future Time",
+      "expected": "Future Time",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Time",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_20445ee0-744d-4488-a90e-136701510871/Compare Years and Months Duration",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Longer duration",
+      "expected": "Longer duration",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Years and Months Duration",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Boolean",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Not same boolean",
+      "expected": "Not same boolean",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Boolean",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Date",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Past Date",
+      "expected": "Past Date",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Date",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Date and Time",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Past date time",
+      "expected": "Past date time",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Date and Time",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Days and Time Duration",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Shorter duration",
+      "expected": "Shorter duration",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Days and Time Duration",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Number",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Smaller",
+      "expected": "Smaller",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Number",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare String",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Different String",
+      "expected": "Different String",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare String",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Time",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Past Time",
+      "expected": "Past Time",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Time",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_58109f16-2e9b-496e-bfff-5f0adbfa0279/Compare Years and Months Duration",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Shorter duration",
+      "expected": "Shorter duration",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Years and Months Duration",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Boolean",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same boolean",
+      "expected": "Same boolean",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Boolean",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Date",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same Date",
+      "expected": "Same Date",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Date",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Date and Time",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same date time",
+      "expected": "Same date time",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Date and Time",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Days and Time Duration",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same duration",
+      "expected": "Same duration",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Days and Time Duration",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Number",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Equals",
+      "expected": "Equals",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Number",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare String",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same String",
+      "expected": "Same String",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare String",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Time",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same Time",
+      "expected": "Same Time",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Time",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_9d09e1a1-d573-42f0-a026-da811bb73eeb/Compare Years and Months Duration",
+      "status": "passed",
+      "group": "0036-dt-variable-input",
+      "actual": "Same duration",
+      "expected": "Same duration",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0036-dt-variable-input/0036-dt-variable-input-test-01.xml",
+      "decision": "Compare Years and Months Duration",
+      "expected_error": false
+    },
+    {
+      "error": null,
       "id": "_0de87bf9-0269-40b1-b7ac-767ae9a99b89",
       "status": "passed",
       "group": "0037-dt-on-bkm-implicit-params",
@@ -5963,6 +6656,40 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0038-dt-on-bkm-explicit-params/0038-dt-on-bkm-explicit-params-test-01.xml",
       "decision": "Person's description",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_07726176-a1a0-4e9e-9de2-16dba51556e2",
+      "status": "passed",
+      "group": "0039-dt-list-semantics",
+      "actual": [
+        "fever is in the list of Flu symptoms"
+      ],
+      "expected": [
+        "fever is in the list of Flu symptoms"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0039-dt-list-semantics/0039-dt-list-semantics-test-01.xml",
+      "decision": "Symptom Analysis",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "_a217c840-6ead-4cb7-a3e1-ad9df9c0c584",
+      "status": "passed",
+      "group": "0039-dt-list-semantics",
+      "actual": [
+        "cough is in the list of Cold symptoms",
+        "cough is in the list of Flu symptoms"
+      ],
+      "expected": [
+        "cough is in the list of Cold symptoms",
+        "cough is in the list of Flu symptoms"
+      ],
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0039-dt-list-semantics/0039-dt-list-semantics-test-01.xml",
+      "decision": "Symptom Analysis",
       "expected_error": false
     },
     {
@@ -6239,6 +6966,120 @@
       "compliance_level": "compliance-level-3",
       "case_file": "TestCases/compliance-level-3/0085-decision-services/0085-decision-services-test-01.xml",
       "decision": "decision_015_2",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "001",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "THROUGH",
+      "expected": "THROUGH",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Strategy",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "002",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "ACCEPT",
+      "expected": "ACCEPT",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Routing",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003a",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": {
+        "type": "number",
+        "value": "138"
+      },
+      "expected": {
+        "type": "number",
+        "value": "138"
+      },
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Application risk score",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003b",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "VERY LOW",
+      "expected": "VERY LOW",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Pre-bureau risk category",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003c",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "NONE",
+      "expected": "NONE",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Bureau call type",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003d",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "ELIGIBLE",
+      "expected": "ELIGIBLE",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Eligibility",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "003e",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": true,
+      "expected": true,
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Post-bureau affordability",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004/Routing",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "ACCEPT",
+      "expected": "ACCEPT",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Routing",
+      "expected_error": false
+    },
+    {
+      "error": null,
+      "id": "004/Strategy",
+      "status": "passed",
+      "group": "0087-chapter-11-example",
+      "actual": "THROUGH",
+      "expected": "THROUGH",
+      "compliance_level": "compliance-level-3",
+      "case_file": "TestCases/compliance-level-3/0087-chapter-11-example/0087-chapter-11-example-test-01.xml",
+      "decision": "Strategy",
       "expected_error": false
     },
     {
@@ -24541,21 +25382,5 @@
       "decision": "Approval Status",
       "expected_error": false
     }
-  ],
-  "summary": {
-    "error": 0,
-    "disabled": 195,
-    "total": 1290,
-    "unsupported": 0,
-    "supported": 1290,
-    "missing": 0,
-    "failed": 0,
-    "corpus_total": 3545,
-    "suite_total": 1485,
-    "excluded_by_suite": 2060,
-    "passed": 1290,
-    "compatibility_percent": 100.0,
-    "suite_coverage_percent": 86.87,
-    "coverage_percent": 36.39
-  }
+  ]
 }

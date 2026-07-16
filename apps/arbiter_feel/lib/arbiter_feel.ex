@@ -85,6 +85,13 @@ defmodule Arbiter.FEEL do
       trimmed == "-" ->
         {:ok, true}
 
+      String.starts_with?(trimmed, "not(") and String.ends_with?(trimmed, ")") ->
+        inner = trimmed |> String.slice(4, String.length(trimmed) - 5)
+
+        with {:ok, matches?} <- evaluate_unary_test(inner, value, context) do
+          {:ok, not matches?}
+        end
+
       comparator_unary_test?(trimmed) ->
         eval_comparator_unary_test(trimmed, value, context)
 
@@ -99,7 +106,9 @@ defmodule Arbiter.FEEL do
 
       true ->
         with {:ok, expected} <- evaluate(trimmed, context) do
-          {:ok, equal_semantic?(value, expected)}
+          if is_list(expected),
+            do: {:ok, Enum.any?(expected, &equal_semantic?(value, &1))},
+            else: {:ok, equal_semantic?(value, expected)}
         end
     end
   end

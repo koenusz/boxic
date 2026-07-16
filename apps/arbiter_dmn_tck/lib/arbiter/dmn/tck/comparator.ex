@@ -25,6 +25,13 @@ defmodule Arbiter.DMN.TCK.Comparator do
   defp compare(left, %Decimal{} = right, _ordered) when is_integer(left),
     do: Decimal.equal?(Decimal.new(left), right)
 
+  # Some legacy TCK contexts omit xsi:type on numeric component values.
+  defp compare(%Decimal{} = left, right, _ordered) when is_binary(right),
+    do: decimal_string_equal?(left, right)
+
+  defp compare(left, %Decimal{} = right, _ordered) when is_binary(left),
+    do: decimal_string_equal?(right, left)
+
   # Early TCK documents sometimes omit xsi:type for boolean result values even
   # when the referenced DMN decision is explicitly typed as boolean.
   defp compare(value, "true", _ordered) when is_boolean(value), do: value
@@ -91,6 +98,13 @@ defmodule Arbiter.DMN.TCK.Comparator do
         end)
 
       Decimal.compare(difference, Decimal.mult(scale, Decimal.new("1e-12"))) != :gt
+    end
+  end
+
+  defp decimal_string_equal?(decimal, string) do
+    case Decimal.parse(string) do
+      {parsed, ""} -> decimal_equal?(decimal, parsed)
+      _ -> false
     end
   end
 

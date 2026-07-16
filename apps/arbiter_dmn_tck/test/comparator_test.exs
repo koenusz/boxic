@@ -27,6 +27,9 @@ defmodule Arbiter.DMN.TCK.ComparatorTest do
 
     assert Comparator.semantic_equal?(left, right)
     assert Comparator.semantic_equal?(Decimal.new("2.0"), 2)
+    assert Comparator.semantic_equal?(Decimal.new("500000"), "500000")
+    assert Comparator.semantic_equal?("0.25", Decimal.new("0.250"))
+    refute Comparator.semantic_equal?(Decimal.new("1"), "not a number")
 
     assert Comparator.semantic_equal?(
              Decimal.new("966.396742204988"),
