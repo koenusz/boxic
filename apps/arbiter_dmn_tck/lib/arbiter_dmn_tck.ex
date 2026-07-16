@@ -36,6 +36,7 @@ defmodule Arbiter.DMN.TCK do
     0073-feel-comments
     0074-feel-properties
     0075-feel-exponent
+    0076-feel-external-java
     0077-feel-nan
     0078-feel-infinity
     0079-feel-string-function

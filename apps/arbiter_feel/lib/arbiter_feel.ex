@@ -1437,6 +1437,7 @@ defmodule Arbiter.FEEL do
   defp apply_function({:external_function, function}, args) when is_function(function, 1) do
     case function.(args) do
       {:ok, value} -> {:ok, value}
+      {:error, %Error{} = error} -> {:error, error}
       {:error, reason} -> {:error, error(:evaluation_error, inspect(reason))}
     end
   end

@@ -174,18 +174,40 @@ defmodule Arbiter.DMN.TCKTest do
   test "implemented profile is an explicit passing baseline" do
     result = TCK.run(suite: "feel", profile: "implemented")
     expected_passes = 2_042
+    expected_unsupported = 18
 
     assert result.summary.corpus_total == 3_545
     assert result.summary.suite_total > expected_passes
-    assert result.summary.total == expected_passes
-    assert result.summary.disabled == result.summary.suite_total - expected_passes
+    assert result.summary.total == expected_passes + expected_unsupported
+
+    assert result.summary.disabled ==
+             result.summary.suite_total - expected_passes - expected_unsupported
+
     assert result.summary.excluded_by_suite == 3_545 - result.summary.suite_total
     assert result.summary.passed == expected_passes
+    assert result.summary.unsupported == expected_unsupported
     assert result.summary.failed == 0
     assert result.summary.error == 0
 
     assert Enum.sort(Enum.uniq_by(result.selected_cases, & &1.group) |> Enum.map(& &1.group)) ==
              Enum.sort(TCK.profile_groups("feel", "implemented"))
+  end
+
+  test "Java external functions are explicitly reported as a platform limitation" do
+    result = TCK.run(group: "0076-feel-external-java")
+
+    assert result.summary.total == 18
+    assert result.summary.unsupported == 18
+    assert result.summary.supported == 0
+    assert result.summary.failed == 0
+    assert result.summary.error == 0
+
+    assert Enum.all?(result.results, fn result ->
+             result.error == %Arbiter.FEEL.Error{
+               code: :unsupported_expression,
+               message: "Java external functions are not available on the Elixir runtime"
+             }
+           end)
   end
 
   test "DMN implemented profile is an explicit passing decision-table baseline" do

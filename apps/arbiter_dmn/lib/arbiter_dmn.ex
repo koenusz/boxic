@@ -30,6 +30,7 @@ defmodule Arbiter.DMN do
   alias Arbiter.DMN.Model.Relation
   alias Arbiter.DMN.Model.RelationColumn
   alias Arbiter.DMN.Model.Variable
+  alias Arbiter.FEEL.ExternalFunctions
 
   @spec load(String.t()) :: {:ok, Model.t()} | {:error, term()}
   def load(path_or_xml) when is_binary(path_or_xml) do
@@ -66,6 +67,18 @@ defmodule Arbiter.DMN do
          {:ok, value, _memo} <- evaluate_decision(model, decision, context, %{}, MapSet.new()) do
       {:ok, value}
     end
+  end
+
+  @spec evaluate(Model.t(), String.t(), map(), keyword()) :: {:ok, term()} | {:error, term()}
+  def evaluate(%Model{} = model, decision_name, context, opts)
+      when is_binary(decision_name) and is_map(context) and is_list(opts) do
+    external_context =
+      case Keyword.get(opts, :external_functions) do
+        nil -> %{}
+        registry -> ExternalFunctions.to_context(registry)
+      end
+
+    evaluate(model, decision_name, Map.merge(context, external_context))
   end
 
   @spec evaluate_service(Model.t(), String.t(), map() | list()) ::

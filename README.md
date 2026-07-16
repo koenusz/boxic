@@ -32,6 +32,20 @@ mix test
 mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 ```
 
+## Elixir interaction from FEEL and DMN
+
+Arbiter provides an allowlisted Elixir external-function registry as the
+BEAM-native replacement for Java external functions. Applications can register
+trusted Elixir functions, define FEEL/Elixir value conversions, and inject the
+registry into FEEL or DMN evaluation without permitting model text to resolve
+arbitrary modules or functions.
+
+See the [external-function guide](apps/arbiter_feel/README.md#elixir-external-functions)
+for registry definitions, supported types, variadic functions, FEEL calls, DMN
+integration, and security guidance. The Java-specific TCK group remains
+explicitly unsupported because this extension provides Elixir integration, not
+JVM reflection.
+
 `mix test` runs ExUnit and the strict, targeted FEEL `implemented` profile.
 FEEL and DMN selections are distinct: use `--suite feel` for FEEL-focused
 groups and `--suite dmn` for DMN-focused groups. Cases outside an implemented

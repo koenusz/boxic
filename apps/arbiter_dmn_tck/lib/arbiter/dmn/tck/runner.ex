@@ -9,6 +9,15 @@ defmodule Arbiter.DMN.TCK.Runner do
   @type result :: %{case: Case.t(), status: atom(), actual: term(), error: term()}
 
   @spec execute(Case.t()) :: result()
+  def execute(%Case{group: "0076-feel-external-java"} = test_case) do
+    reason = %Arbiter.FEEL.Error{
+      code: :unsupported_expression,
+      message: "Java external functions are not available on the Elixir runtime"
+    }
+
+    %{case: test_case, status: :unsupported, actual: nil, error: reason}
+  end
+
   def execute(%Case{} = test_case) do
     case run_case(test_case) do
       {:passed, actual} ->

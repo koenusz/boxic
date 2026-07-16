@@ -1163,7 +1163,7 @@ Status date: **2026-07-16**
 | Phase 6 — Decision Tables                           | `done` | Normalized input/output clauses and rules, table validation, multi-column unary-test conjunction, UNIQUE matching, single/multiple outputs, and defaults are implemented. Official `0004-simpletable-U` and `0010-multi-output-U` pass 6/6 in the first strict DMN profile. | None for the WP-10 table-engine scope; additional hit policies belong to WP-11. |
 | Phase 7 — Hit Policies                              | `done` | FIRST, ANY, PRIORITY, RULE ORDER, OUTPUT ORDER, and COLLECT reducers are implemented, including unaggregated collection and COUNT/SUM/MIN/MAX aggregation. Twelve official policy groups pass 36/36; together with WP-10 the strict DMN profile passes 42/42. | None for the targeted hit-policy scope. |
 | Phase 8 — Full DMN Graph Features                   | `done` | DRG dependencies, boxed contexts and relations, item definitions, BKMs, invocations, boxed functions, and decision services are normalized, validated, and executable. The strict profiles publish all applicable mapped groups at 100%: 71 newly enabled FEEL-suite entries and 35 newly enabled DMN-suite entries. | None for the current Phase 8 scope. |
-| Phase 9 — Compliance Phase                          | `in_progress` | The phase began from 1,177 published entries across 52 groups. WP-14–WP-18 are complete, bringing the strict profiles to 2,119/3,545 entries across 99 groups (59.77% total-corpus coverage); 51 groups and 1,426 entries remain assigned to WP-19–WP-24. | Complete the remaining six compliance work packages; publish every passing group and explicitly disposition platform-specific cases. |
+| Phase 9 — Compliance Phase                          | `in_progress` | The phase began from 1,177 published entries across 52 groups. WP-14–WP-19 are complete, bringing the strict profiles to 2,119 supported entries across 99 passing groups (59.77% total-corpus coverage), plus 18 explicitly unsupported Java-interoperability entries in one platform-specific group; 50 groups and 1,408 entries remain assigned to WP-20–WP-24. | Complete the remaining five compliance work packages and publish every passing group. |
 
 ### 23.3 Work-package roll-up
 
@@ -1188,7 +1188,7 @@ Status date: **2026-07-16**
 | WP-16        | `done` | Unicode escape decoding and identifiers, canonical string conversion, splitting/joining, substring search, XML Schema regex matching/replacement, flags, and invalid-input behavior are implemented. All 8 mapped groups pass 169/169 and are published. | None. |
 | WP-17        | `done` | `instance of`, `between`, comments, identity, map introspection, typed function/DMN coercion, and context construction/update/merge are implemented. All 10 mapped groups pass 354/354 and are published. | None. |
 | WP-18        | `done` | At-literals, ISO calendar extraction, year-month duration differences, clock values, boxed lists, and the complete interval-relation family are implemented. All 9 mapped groups pass 135/135 and are published. | None. |
-| WP-19        | `not_started` | Inventory isolates the platform-specific external-Java group (18 entries). | Establish the Elixir portability disposition and ensure all 18 entries are explicitly reported rather than disabled. |
+| WP-19        | `done` | Java external functions are explicitly classified as unavailable on the Elixir runtime before model evaluation. All 18 upstream entries are selected by the strict FEEL profile and reported as `unsupported`, with zero incidental passes, failures, or errors. A separate allowlisted Elixir registry and compile-time DSL provide native external functions with typed conversion, varargs, structured errors, and DMN evaluation integration, covered by ordinary ExUnit tests. | None. |
 | WP-20        | `not_started` | Inventory assigns 21 DMN core-expression/collection groups (1,213 entries). | Complete literal-model arithmetic and collection behavior; pass and publish 1,213/1,213. |
 | WP-21        | `not_started` | Inventory assigns 9 remaining decision-table groups (60 entries). | Complete ANY/PRIORITY table variants, variable inputs, list semantics, and end-to-end examples; pass and publish 60/60. |
 | WP-22        | `not_started` | Inventory assigns 8 DMN function/scope/recursion groups (31 entries). | Complete invocation, user-function, nested-scope, DRG-scope, and recursion semantics; pass and publish 31/31. |
@@ -1233,7 +1233,7 @@ Task IDs are stable references for commits, reports, and weekly updates. A task 
 | CI-03   | WP-13        | `done` | `scripts/check_tck_regression.exs` rejects a changed pin, reduced pass count, supported compatibility, or suite coverage, and any strict-profile failed/error/missing/unsupported entry. PR/push CI and nightly apply it to both suites. |
 | CI-04   | WP-13        | `done` | `RELEASE_CHECKLIST.md` requires pinned reports, compatibility deltas, known gaps, dependency ranges, and breaking-change disclosure; `scripts/tck_compatibility_delta.exs` produces the release-note metric table. |
 | COMP-01 | WP-14–WP-24  | `done` | Reconciled all 150 groups and 3,545 entries against the implemented profiles: 52 groups/1,177 entries published, 98 groups/2,368 entries assigned exactly once below, with no unassigned group. |
-| COMP-02 | WP-14–WP-19  | `in_progress` | WP-14–WP-18 contribute 942/942 newly published FEEL entries; resolve WP-19 and continue expanding the strict profiles group-by-group. |
+| COMP-02 | WP-14–WP-19  | `done` | WP-14–WP-18 contribute 942/942 newly passing FEEL entries; WP-19 explicitly selects and reports all 18 Java-interoperability entries as unsupported on the Elixir runtime. |
 | COMP-03 | WP-20–WP-24  | `not_started` | Complete the remaining DMN/boxed compliance inventory and expand the DMN strict profile group-by-group. |
 | COMP-04 | WP-14        | `done` | All 15 numeric-completion groups pass 209/209 and remain enabled in the strict FEEL profile. |
 
@@ -1275,7 +1275,7 @@ Counts above are result-entry counts from the vendored TestCases corpus at `0dbc
 
 ### 23.6 Compliance inventory
 
-This phase-baseline inventory is derived from the pinned loader output, not directory estimates. At Phase 9 entry, the eleven work packages contained all 98 groups and all 2,368 entries then outside the implemented profiles. WP-14–WP-18 have since promoted 47 groups/942 entries, leaving 51 groups/1,426 entries. Group counts in parentheses are result-entry counts. A group may enter a strict profile only when every assigned entry passes.
+This phase-baseline inventory is derived from the pinned loader output, not directory estimates. At Phase 9 entry, the eleven work packages contained all 98 groups and all 2,368 entries then outside the implemented profiles. WP-14–WP-18 have since promoted 47 groups/942 entries, and WP-19 has selected one group/18 entries with an explicit platform-unsupported disposition, leaving 50 groups/1,408 entries. Group counts in parentheses are result-entry counts. A group may enter a strict profile only when every assigned entry passes or every entry has a single documented platform disposition.
 
 | Work package | Logical feature set | Assigned official groups | Total |
 | ------------ | ------------------- | ------------------------ | ----: |
@@ -1292,7 +1292,7 @@ This phase-baseline inventory is derived from the pinned loader output, not dire
 | WP-24 | Boxed expressions and remaining collection functions | `1150-boxed-conditional` (3), `1151-boxed-filter` (4), `1152-boxed-for` (2), `1153-boxed-some` (5), `1154-boxed-every` (5), `1155-list-replace-function` (22), `1156-range-function` (56), `1161-boxed-list-expression` (2) | 8 groups / 99 entries |
 | **Total** | **Complete remaining inventory** | **Every group outside the implemented profiles, assigned once** | **98 groups / 2,368 entries** |
 
-`0076-feel-external-java` is isolated because an Elixir engine cannot honestly claim Java interoperation by accident. WP-19 must decide and document whether Arbiter supplies an equivalent external-function adapter or reports these cases as an intentional platform limitation. That decision affects full-corpus coverage but must not weaken supported-scope compatibility.
+`0076-feel-external-java` is isolated because an Elixir engine cannot honestly claim Java interoperation by accident. Arbiter reports all 18 cases as intentionally unsupported on the Elixir runtime. They remain visible in the strict FEEL profile without counting as passing or weakening supported-scope compatibility.
 
 ### 23.7 Next execution sequence
 

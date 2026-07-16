@@ -16,7 +16,8 @@ mix tck --group 0001-input-data-string --report artifacts/tck-results.csv
 
 The umbrella `mix test` command follows ExUnit with the strict, targeted FEEL
 `implemented` profile. The tracked strict baselines currently pass 2,042 FEEL
-entries and 77 DMN entries against the pinned corpus.
+entries, explicitly report all 18 Java-external-function entries as unsupported
+on the Elixir runtime, and pass 77 DMN entries against the pinned corpus.
 
 FEEL and DMN are selected independently:
 
@@ -39,6 +40,43 @@ built; direct `mix tck` runs remain strict by default.
 Results use the explicit statuses `passed`, `failed`, `unsupported`, `missing`,
 and `error`. Unsupported engine behavior must not be counted as passing or
 silently skipped.
+
+## Java external functions and the Elixir replacement
+
+The strict FEEL profile includes all 18 entries in the official
+`0076-feel-external-java` group and reports each one as `unsupported`. These
+cases exercise DMN functions declared with `kind="Java"` or FEEL expressions
+such as `function(...) external {java: {...}}`. They require Java class lookup,
+Java method-signature resolution, JVM primitive conversions, and reflective
+method invocation.
+
+Arbiter runs on the BEAM and does not embed a JVM or provide a Java reflection
+bridge. Arbiter therefore provides an allowlisted Elixir external-function
+registry as the platform-native replacement for this integration capability.
+It serves the same application-level purpose—calling trusted host-language code
+from FEEL and DMN—but it cannot satisfy a test that specifically requires Java
+reflection. Arbiter consequently keeps the conformance result and the useful
+replacement feature separate:
+
+- the 18 entries are selected and visible in strict reports rather than being
+  disabled or skipped;
+- they do not count as passing or supported coverage;
+- they do not reduce compatibility on Arbiter's supported scope; and
+- incidental parser or expected-error behavior cannot be mistaken for partial
+  Java interoperability.
+
+The Elixir replacement supports compile-time registration, typed argument and
+return conversion, variadic calls, built-in shadowing, structured host errors,
+and explicit injection into DMN evaluation. Model text can invoke registered
+names but cannot select arbitrary modules or functions. Usage instructions and
+complete examples are in the
+[Arbiter FEEL README](../arbiter_feel/README.md#elixir-external-functions).
+
+Supporting the Java group itself in the future would still require an explicit
+JVM adapter with a documented trust boundary, class and method allowlisting,
+signature and value conversion rules, and deterministic error behavior. Until
+such an adapter exists, Java external functions remain intentionally outside
+Arbiter's supported platform contract.
 
 CI regenerates both strict reports and compares compatibility, suite coverage,
 pass counts, and the pinned TCK revision with the tracked baselines. The
