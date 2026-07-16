@@ -17,6 +17,8 @@ defmodule Arbiter.FEEL.Builtins do
     contains
     list_contains
     count
+    all
+    any
     sum
     min
     max
@@ -39,6 +41,9 @@ defmodule Arbiter.FEEL.Builtins do
     odd
     modulo
     product
+    median
+    mode
+    stddev
     round
     floor
     ceiling
@@ -101,6 +106,18 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"count", [list]} when is_list(list) ->
         {:ok, Decimal.new(length(list))}
+
+      {"all", [list]} when is_list(list) ->
+        boolean_aggregate(list, :all)
+
+      {"all", values} when values != [] ->
+        boolean_aggregate(values, :all)
+
+      {"any", [list]} when is_list(list) ->
+        boolean_aggregate(list, :any)
+
+      {"any", values} when values != [] ->
+        boolean_aggregate(values, :any)
 
       {"list_contains", [list, element]} when is_list(list) ->
         {:ok, Enum.any?(list, &feel_equal?(&1, element))}
@@ -194,6 +211,24 @@ defmodule Arbiter.FEEL.Builtins do
 
       {"product", values} when values != [] ->
         product_list(values)
+
+      {"median", [list]} when is_list(list) ->
+        median(list)
+
+      {"median", values} when values != [] ->
+        median(values)
+
+      {"mode", [list]} when is_list(list) ->
+        mode(list)
+
+      {"mode", values} when values != [] ->
+        mode(values)
+
+      {"stddev", [list]} when is_list(list) ->
+        stddev(list)
+
+      {"stddev", values} when values != [] ->
+        stddev(values)
 
       {"abs", [%Duration{} = value]} ->
         {:ok, Duration.abs(value)}
@@ -362,6 +397,8 @@ defmodule Arbiter.FEEL.Builtins do
     "substring" => ["string", "start_position", "length"],
     "contains" => ["string", "match"],
     "list_contains" => ["list", "element"],
+    "all" => ["list"],
+    "any" => ["list"],
     "append" => ["list", "item"],
     "insert_before" => ["list", "position", "new_item"],
     "remove" => ["list", "position"],
@@ -380,6 +417,9 @@ defmodule Arbiter.FEEL.Builtins do
     "odd" => ["number"],
     "modulo" => ["dividend", "divisor"],
     "product" => ["list"],
+    "median" => ["list"],
+    "mode" => ["list"],
+    "stddev" => ["list"],
     "round_up" => ["n", "scale"],
     "round_down" => ["n", "scale"],
     "round_half_up" => ["n", "scale"],
@@ -570,6 +610,98 @@ defmodule Arbiter.FEEL.Builtins do
     if Enum.all?(values, &match?(%Decimal{}, &1)),
       do: {:ok, Enum.reduce(values, Decimal.new(1), &Decimal.mult/2)},
       else: {:ok, nil}
+  end
+
+  defp boolean_aggregate(values, operation) do
+    if Enum.all?(values, &(&1 in [true, false, nil])) do
+      result =
+        case operation do
+          :all ->
+            cond do
+              false in values -> false
+              nil in values -> nil
+              true -> true
+            end
+
+          :any ->
+            cond do
+              true in values -> true
+              nil in values -> nil
+              true -> false
+            end
+        end
+
+      {:ok, result}
+    else
+      {:error, err(:type_error, "#{operation} expects boolean values")}
+    end
+  end
+
+  defp median([]), do: {:ok, nil}
+
+  defp median(values) do
+    with :ok <- validate_numeric_values(values) do
+      sorted = Enum.sort(values, &(Decimal.compare(&1, &2) != :gt))
+      middle = div(length(sorted), 2)
+
+      if rem(length(sorted), 2) == 1 do
+        {:ok, Enum.at(sorted, middle)}
+      else
+        {:ok,
+         sorted
+         |> Enum.slice(middle - 1, 2)
+         |> Enum.reduce(&Decimal.add/2)
+         |> Decimal.div(Decimal.new(2))}
+      end
+    end
+  end
+
+  defp mode([]), do: {:ok, []}
+
+  defp mode(values) do
+    with :ok <- validate_numeric_values(values) do
+      frequencies = Enum.frequencies_by(values, &Decimal.normalize/1)
+      highest_frequency = frequencies |> Map.values() |> Enum.max()
+
+      modes =
+        frequencies
+        |> Enum.filter(fn {_value, frequency} -> frequency == highest_frequency end)
+        |> Enum.map(&elem(&1, 0))
+        |> Enum.sort(&(Decimal.compare(&1, &2) != :gt))
+
+      {:ok, modes}
+    end
+  end
+
+  defp stddev(values) when length(values) < 2,
+    do: {:error, err(:evaluation_error, "stddev expects at least two numbers")}
+
+  defp stddev(values) do
+    with :ok <- validate_numeric_values(values) do
+      count = Decimal.new(length(values))
+      mean = values |> Enum.reduce(Decimal.new(0), &Decimal.add/2) |> Decimal.div(count)
+
+      variance =
+        values
+        |> Enum.reduce(Decimal.new(0), fn value, total ->
+          difference = Decimal.sub(value, mean)
+          Decimal.add(total, Decimal.mult(difference, difference))
+        end)
+        |> Decimal.div(Decimal.new(length(values) - 1))
+
+      {:ok,
+       variance
+       |> Decimal.to_float()
+       |> :math.sqrt()
+       |> Decimal.from_float()
+       |> Decimal.round(13, :half_even)}
+    end
+  end
+
+  defp validate_numeric_values(values) do
+    if Enum.all?(values, &match?(%Decimal{}, &1)),
+      do: :ok,
+      else: {:error, err(:type_error, "aggregate expects numeric values")}
   end
 
   defp parse_number(value, grouping_separator, decimal_separator) do

@@ -17,6 +17,11 @@ defmodule Arbiter.DMN.TCK do
     0055-feel-odd-function
     0056-feel-modulo-function
     0058-feel-number-function
+    0059-feel-all-function
+    0060-feel-any-function
+    0061-feel-median-function
+    0062-feel-mode-function
+    0063-feel-stddev-function
     0032-conditionals
     0057-feel-context
     0064-feel-conjunction

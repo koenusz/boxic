@@ -153,6 +153,18 @@ defmodule Arbiter.FEELTest do
     assert {:ok, [two, three]} == Arbiter.FEEL.evaluate("sublist([1, 2, 3], 2)")
   end
 
+  test "boolean aggregate and statistical built-ins" do
+    assert {:ok, false} == Arbiter.FEEL.evaluate("all([true, false, true])")
+    assert {:ok, nil} == Arbiter.FEEL.evaluate("any(false, null)")
+    assert {:ok, Decimal.new("2.5")} == Arbiter.FEEL.evaluate("median([1, 2, 3, 4])")
+
+    assert {:ok, modes} = Arbiter.FEEL.evaluate("mode([3, 1, 3, 1, 2])")
+    assert Enum.map(modes, &Decimal.to_string/1) == ["1", "3"]
+
+    assert {:ok, stddev} = Arbiter.FEEL.evaluate("stddev([2, 4, 7, 5])")
+    assert Decimal.equal?(stddev, Decimal.new("2.0816659994661"))
+  end
+
   test "temporal constructors and arithmetic" do
     assert {:ok, %Date{year: 2026, month: 7, day: 16}} =
              Arbiter.FEEL.evaluate("date(\"2026-07-15\") + duration(\"P1D\")", %{})
