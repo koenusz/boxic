@@ -37,7 +37,7 @@ jobs:
       - name: Run strict DMN profile
         run: mix tck --suite dmn --profile implemented --report artifacts/dmn-implemented --format both
 
-      - name: Enforce FEEL regression gate
+      - name: Enforce FEEL regression gate (18 Java cases expected)
         run: mix run scripts/check_tck_regression.exs compatibility/feel-implemented-0dbcaf9b.json artifacts/feel-implemented.json
 
       - name: Enforce DMN regression gate

@@ -279,10 +279,3 @@ defmodule Boxic.DMN.TCK do
   defp percentage(_part, 0), do: 0.0
   defp percentage(part, whole), do: Float.round(part / whole * 100, 2)
 end
-
-defmodule BoxicDmnTck do
-  @moduledoc false
-
-  @spec hello() :: atom()
-  def hello, do: :world
-end

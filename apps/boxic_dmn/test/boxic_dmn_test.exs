@@ -322,11 +322,37 @@ defmodule Boxic.DMNTest do
   test "loads namespace imports and resolves qualified local and external references" do
     path = Path.expand("fixtures/imports/main.dmn", __DIR__)
 
-    assert {:ok, model} = Boxic.DMN.load(path)
+    assert {:ok, model} = Boxic.DMN.load_file(path)
     assert :ok = Boxic.DMN.validate(model)
 
     assert {:ok, "Hello Ada"} =
              Boxic.DMN.evaluate(model, "Message", %{"Person Input" => %{"name" => "Ada"}})
+  end
+
+  test "explicit loaders distinguish missing files from malformed XML" do
+    missing = Path.join(System.tmp_dir!(), "boxic-missing-#{System.unique_integer()}.dmn")
+
+    assert {:error, {:file_error, ^missing, :enoent}} = Boxic.DMN.load_file(missing)
+    assert {:error, {:file_error, ^missing, :enoent}} = Boxic.DMN.load(missing)
+    assert {:error, :invalid_xml} = Boxic.DMN.load_xml("<definitions>")
+    assert {:error, :invalid_xml} = Boxic.DMN.load("<definitions>")
+  end
+
+  test "file loading preserves malformed sibling import errors" do
+    directory = Path.join(System.tmp_dir!(), "boxic-imports-#{System.unique_integer()}")
+    File.mkdir_p!(directory)
+    main = Path.join(directory, "main.dmn")
+    malformed = Path.join(directory, "malformed.dmn")
+
+    on_exit(fn -> File.rm_rf!(directory) end)
+
+    File.write!(main, "<definitions id=\"main\" namespace=\"urn:main\"/>")
+    File.write!(malformed, "<definitions>")
+
+    assert {:ok, model} = Boxic.DMN.load_file(main)
+    assert {:import_error, malformed, :invalid_xml} in model.issues
+    assert {:error, errors} = Boxic.DMN.validate(model)
+    assert {:import_error, malformed, :invalid_xml} in errors
   end
 
   test "evaluates boxed conditional expressions" do

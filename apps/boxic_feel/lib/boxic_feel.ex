@@ -1,10 +1,9 @@
 defmodule Boxic.FEEL do
   @moduledoc """
-  FEEL entry point.
+  Parses and evaluates FEEL expressions.
 
-  Supports an AST-backed parser and evaluator for core FEEL semantics and
-  WP-06 structural features: ranges, unary tests, path/filter expressions,
-  for-expressions, quantifiers, and user-defined closures.
+  The public facade accepts FEEL source through `parse/1` and `evaluate/2`, or
+  an already parsed syntax tree through `evaluate_ast/2`.
   """
 
   alias Boxic.FEEL.Error
@@ -2331,11 +2330,4 @@ defmodule Boxic.FEEL do
   defp decimal_negate(value), do: apply(Decimal, :negate, [value])
   defp decimal_equal?(left, right), do: apply(Decimal, :equal?, [left, right])
   defp decimal_compare(left, right), do: apply(Decimal, :compare, [left, right])
-end
-
-defmodule BoxicFeel do
-  @moduledoc false
-
-  @spec hello() :: atom()
-  def hello, do: :world
 end

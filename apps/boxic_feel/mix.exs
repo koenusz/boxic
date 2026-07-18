@@ -1,16 +1,23 @@
 defmodule BoxicFeel.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/koenusz/boxic"
+
   def project do
     [
       app: :boxic_feel,
-      version: "0.1.0",
+      version: @version,
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
+      description: description(),
+      package: package(),
+      source_url: @source_url,
+      homepage_url: @source_url,
       deps: deps()
     ]
   end
@@ -27,6 +34,22 @@ defmodule BoxicFeel.MixProject do
     [
       {:decimal, "~> 2.1"},
       {:tzdata, "~> 1.1.4"}
+    ]
+  end
+
+  defp description do
+    "A native Elixir parser and evaluator for the Friendly Enough Expression Language defined by DMN."
+  end
+
+  defp package do
+    [
+      files: ~w(lib mix.exs README.md LICENSE CHANGELOG.md),
+      licenses: ["Apache-2.0"],
+      links: %{
+        "Changelog" => "#{@source_url}/blob/main/apps/boxic_feel/CHANGELOG.md",
+        "GitHub" => @source_url,
+        "HexDocs" => "https://hexdocs.pm/boxic_feel"
+      }
     ]
   end
 end

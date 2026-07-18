@@ -10,6 +10,21 @@ defmodule Boxic.DMN.Model do
 
   alias Boxic.DMN.Model.Definitions
 
+  @typedoc "Any normalized expression supported by the DMN evaluator."
+  @type expression ::
+          Boxic.DMN.Model.LiteralExpression.t()
+          | Boxic.DMN.Model.DecisionTable.t()
+          | Boxic.DMN.Model.ContextExpression.t()
+          | Boxic.DMN.Model.Invocation.t()
+          | Boxic.DMN.Model.FunctionDefinition.t()
+          | Boxic.DMN.Model.Relation.t()
+          | Boxic.DMN.Model.ListExpression.t()
+          | Boxic.DMN.Model.ConditionalExpression.t()
+          | Boxic.DMN.Model.FilterExpression.t()
+          | Boxic.DMN.Model.IteratorExpression.t()
+          | {:unsupported, String.t()}
+          | nil
+
   defstruct [
     :definitions,
     imports: %{},
@@ -21,7 +36,10 @@ defmodule Boxic.DMN.Model do
     issues: []
   ]
 
-  @type issue :: term()
+  @type issue ::
+          {atom(), term()}
+          | {atom(), term(), term()}
+          | {atom(), term(), term(), term()}
   @type t :: %__MODULE__{
           definitions: Definitions.t(),
           imports: %{optional(String.t()) => String.t()},
@@ -108,79 +126,154 @@ end
 defmodule Boxic.DMN.Model.Relation do
   @moduledoc "Normalized boxed relation: named columns and ordered expression rows."
   defstruct [:id, columns: [], rows: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          columns: [Boxic.DMN.Model.RelationColumn.t()],
+          rows: [[Boxic.DMN.Model.expression()]]
+        }
 end
 
 defmodule Boxic.DMN.Model.ListExpression do
   @moduledoc "Normalized boxed list expression."
   defstruct [:id, items: []]
-  @type t :: %__MODULE__{}
+  @type t :: %__MODULE__{id: String.t() | nil, items: [Boxic.DMN.Model.expression()]}
 end
 
 defmodule Boxic.DMN.Model.ConditionalExpression do
   @moduledoc "Boxed conditional expression."
   defstruct [:id, :condition, :then_branch, :else_branch]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          condition: Boxic.DMN.Model.expression(),
+          then_branch: Boxic.DMN.Model.expression(),
+          else_branch: Boxic.DMN.Model.expression()
+        }
 end
 
 defmodule Boxic.DMN.Model.FilterExpression do
   @moduledoc "Boxed filter expression."
   defstruct [:id, :source, :match]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          source: Boxic.DMN.Model.expression(),
+          match: Boxic.DMN.Model.expression()
+        }
 end
 
 defmodule Boxic.DMN.Model.IteratorExpression do
   @moduledoc "Boxed for, some, or every expression."
   defstruct [:id, :kind, :variable, :source, :body]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          kind: :for | :some | :every | nil,
+          variable: Boxic.DMN.Model.Variable.t() | nil,
+          source: Boxic.DMN.Model.expression(),
+          body: Boxic.DMN.Model.expression()
+        }
 end
 
 defmodule Boxic.DMN.Model.RelationColumn do
   @moduledoc "One named column in a boxed relation."
   defstruct [:id, :name, :type_ref]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t() | nil,
+          type_ref: String.t() | nil
+        }
 end
 
 defmodule Boxic.DMN.Model.FunctionDefinition do
   @moduledoc "Normalized boxed function definition."
   defstruct [:id, :body, parameters: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          body: Boxic.DMN.Model.expression(),
+          parameters: [Boxic.DMN.Model.Variable.t()]
+        }
 end
 
 defmodule Boxic.DMN.Model.BusinessKnowledgeModel do
   @moduledoc "Normalized callable business knowledge model."
   defstruct [:id, :name, :variable, :expression, parameters: [], requirements: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t() | nil,
+          variable: Boxic.DMN.Model.Variable.t() | nil,
+          expression: Boxic.DMN.Model.expression(),
+          parameters: [Boxic.DMN.Model.Variable.t()],
+          requirements: [Boxic.DMN.Model.InformationRequirement.t()]
+        }
 end
 
 defmodule Boxic.DMN.Model.Invocation do
   @moduledoc "Normalized DMN invocation and named parameter bindings."
   defstruct [:id, :function, :type_ref, bindings: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          function: Boxic.DMN.Model.expression(),
+          type_ref: String.t() | nil,
+          bindings: [Boxic.DMN.Model.Binding.t()]
+        }
 end
 
 defmodule Boxic.DMN.Model.Binding do
   @moduledoc "Named invocation argument expression."
   defstruct [:parameter, :expression]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          parameter: String.t() | nil,
+          expression: Boxic.DMN.Model.expression()
+        }
 end
 
 defmodule Boxic.DMN.Model.DecisionService do
   @moduledoc "Normalized callable decision service."
   defstruct [:id, :name, :variable, output_decisions: [], input_decisions: [], input_data: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t() | nil,
+          variable: Boxic.DMN.Model.Variable.t() | nil,
+          output_decisions: [String.t()],
+          input_decisions: [String.t()],
+          input_data: [String.t()]
+        }
 end
 
 defmodule Boxic.DMN.Model.ItemDefinition do
   @moduledoc "Normalized DMN item definition with recursive components."
   defstruct [:id, :name, :type_ref, :allowed_values, :is_collection, components: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t() | nil,
+          type_ref: String.t() | nil,
+          allowed_values: String.t() | nil,
+          is_collection: boolean() | nil,
+          components: [Boxic.DMN.Model.ItemComponent.t()]
+        }
 end
 
 defmodule Boxic.DMN.Model.ItemComponent do
   @moduledoc "Normalized component of a DMN item definition."
   defstruct [:id, :name, :type_ref, :allowed_values, :is_collection, components: []]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t() | nil,
+          type_ref: String.t() | nil,
+          allowed_values: String.t() | nil,
+          is_collection: boolean() | nil,
+          components: [t()]
+        }
 end
 
 defmodule Boxic.DMN.Model.ContextExpression do
@@ -192,7 +285,12 @@ end
 defmodule Boxic.DMN.Model.ContextEntry do
   @moduledoc "One ordered entry in a boxed DMN context; the final entry may be unnamed."
   defstruct [:id, :variable, :expression]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          variable: Boxic.DMN.Model.Variable.t() | nil,
+          expression: Boxic.DMN.Model.expression()
+        }
 end
 
 defmodule Boxic.DMN.Model.DecisionTable do
@@ -213,13 +311,28 @@ end
 defmodule Boxic.DMN.Model.InputClause do
   @moduledoc "Normalized decision-table input clause."
   defstruct [:id, :label, :expression, :type_ref, :allowed_values]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          label: String.t() | nil,
+          expression: String.t() | nil,
+          type_ref: String.t() | nil,
+          allowed_values: String.t() | nil
+        }
 end
 
 defmodule Boxic.DMN.Model.OutputClause do
   @moduledoc "Normalized decision-table output clause."
   defstruct [:id, :name, :label, :type_ref, :allowed_values, :default_output]
-  @type t :: %__MODULE__{}
+
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t() | nil,
+          label: String.t() | nil,
+          type_ref: String.t() | nil,
+          allowed_values: String.t() | nil,
+          default_output: String.t() | nil
+        }
 end
 
 defmodule Boxic.DMN.Model.DecisionRule do

@@ -1,10 +1,10 @@
 defmodule Boxic.DMN do
   @moduledoc """
-  Loads DMN XML into normalized model values and validates the model boundary.
+  Loads, validates, and evaluates DMN models.
 
-  WP-08 deliberately separates XML normalization from execution. Namespace
-  prefixes and `:xmerl` records are removed during loading; later work packages
-  can therefore resolve and execute decisions against stable domain structs.
+  Use `load_file/1` when the input is a path and `load_xml/1` when the input is
+  XML. `load/1` remains available for backwards compatibility and dispatches
+  XML-looking input to `load_xml/1`; all other input is treated as a path.
   """
 
   alias Boxic.DMN.Model
@@ -35,49 +35,82 @@ defmodule Boxic.DMN do
   alias Boxic.DMN.Model.Variable
   alias Boxic.FEEL.ExternalFunctions
 
-  @spec load(String.t()) :: {:ok, Model.t()} | {:error, term()}
+  @typedoc "A structural problem found while validating a normalized model."
+  @type validation_error :: {atom(), term()} | {atom(), term(), term()} | {atom(), term(), term(), term()}
+
+  @typedoc "An error produced while resolving or evaluating a decision."
+  @type evaluation_error ::
+          Boxic.FEEL.Error.t()
+          | {atom(), term()}
+          | {atom(), term(), term()}
+          | {atom(), term(), term(), term()}
+
+  @doc """
+  Loads a DMN document from either an XML string or a file path.
+
+  New code should prefer `load_xml/1` or `load_file/1`, which avoid input
+  ambiguity.
+  """
+  @spec load(String.t()) :: {:ok, Model.t()} | {:error, load_error()}
   def load(path_or_xml) when is_binary(path_or_xml) do
-    if File.regular?(path_or_xml) do
-      load_file(path_or_xml)
-    else
-      load_xml(path_or_xml)
-    end
+    if xml_input?(path_or_xml), do: load_xml(path_or_xml), else: load_file(path_or_xml)
   end
 
-  defp load_file(path) do
-    with {:ok, xml} <- File.read(path),
+  @typedoc "An error returned while reading or decoding a DMN document."
+  @type load_error ::
+          {:file_error, Path.t(), File.posix()}
+          | :invalid_xml
+          | :trailing_xml_content
+          | :invalid_definitions_document
+
+  @doc "Loads a DMN document and its sibling imports from `path`."
+  @spec load_file(Path.t()) :: {:ok, Model.t()} | {:error, load_error()}
+  def load_file(path) when is_binary(path) do
+    with {:ok, xml} <- read_file(path),
          {:ok, model} <- load_xml(xml) do
-      imported_models =
+      {imported_models, import_issues} =
         path
         |> Path.dirname()
         |> Path.join("*.dmn")
         |> Path.wildcard()
         |> Enum.reject(&(&1 == path))
-        |> Enum.flat_map(fn imported_path ->
+        |> Enum.reduce({[], []}, fn imported_path, {models, issues} ->
           case File.read(imported_path) do
             {:ok, imported_xml} ->
               case load_xml(imported_xml) do
-                {:ok, imported} -> [imported]
-                {:error, _reason} -> []
+                {:ok, imported} -> {[imported | models], issues}
+                {:error, reason} -> {models, [{:import_error, imported_path, reason} | issues]}
               end
 
-            {:error, _reason} ->
-              []
+            {:error, reason} ->
+              {models, [{:import_file_error, imported_path, reason} | issues]}
           end
         end)
 
-      {:ok, merge_imported_models(model, imported_closure(model, imported_models))}
+      merged = merge_imported_models(model, imported_closure(model, imported_models))
+      {:ok, %{merged | issues: merged.issues ++ Enum.reverse(import_issues)}}
     end
   end
 
-  defp load_xml(xml) do
+  @doc "Loads a DMN document from an XML string."
+  @spec load_xml(String.t()) :: {:ok, Model.t()} | {:error, load_error()}
+  def load_xml(xml) when is_binary(xml) do
     with {:ok, document} <- parse_xml(xml),
          :ok <- definitions_document?(document) do
       {:ok, build_model(document)}
     end
   end
 
-  @spec validate(Model.t()) :: :ok | {:error, [term()]}
+  defp read_file(path) do
+    case File.read(path) do
+      {:ok, contents} -> {:ok, contents}
+      {:error, reason} -> {:error, {:file_error, path, reason}}
+    end
+  end
+
+  defp xml_input?(input), do: input |> String.trim_leading() |> String.starts_with?("<")
+
+  @spec validate(Model.t()) :: :ok | {:error, [validation_error()]}
   def validate(%Model{} = model) do
     errors =
       model.issues ++
@@ -96,7 +129,7 @@ defmodule Boxic.DMN do
     end
   end
 
-  @spec evaluate(Model.t(), String.t(), map()) :: {:ok, term()} | {:error, term()}
+  @spec evaluate(Model.t(), String.t(), map()) :: {:ok, term()} | {:error, evaluation_error()}
   def evaluate(%Model{} = model, decision_name, context \\ %{})
       when is_binary(decision_name) and is_map(context) do
     with {:ok, context} <- coerce_input_context(model, context),
@@ -106,7 +139,8 @@ defmodule Boxic.DMN do
     end
   end
 
-  @spec evaluate(Model.t(), String.t(), map(), keyword()) :: {:ok, term()} | {:error, term()}
+  @spec evaluate(Model.t(), String.t(), map(), keyword()) ::
+          {:ok, term()} | {:error, evaluation_error()}
   def evaluate(%Model{} = model, decision_name, context, opts)
       when is_binary(decision_name) and is_map(context) and is_list(opts) do
     external_context =
@@ -119,7 +153,7 @@ defmodule Boxic.DMN do
   end
 
   @spec evaluate_service(Model.t(), String.t(), map() | list()) ::
-          {:ok, term()} | {:error, term()}
+          {:ok, term()} | {:error, evaluation_error()}
   def evaluate_service(%Model{} = model, service_name, arguments)
       when is_binary(service_name) and (is_map(arguments) or is_list(arguments)) do
     with {:ok, service} <- find_service(model, service_name) do
