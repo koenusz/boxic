@@ -31,6 +31,8 @@ mix run scripts/build_hex_package.exs boxic_feel /tmp/boxic_feel.tar
 mix run scripts/build_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
 mix run scripts/inspect_hex_package.exs boxic_feel /tmp/boxic_feel.tar
 mix run scripts/inspect_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
+mix run scripts/smoke_test_hex_packages.exs \
+  /tmp/boxic_feel.tar /tmp/boxic_dmn.tar
 ```
 
 Both packages support Elixir 1.20.x. CI tests the lower supported OTP boundary
@@ -45,6 +47,7 @@ OTP 29.0.1.
       mix run scripts/build_hex_package.exs boxic_feel /tmp/boxic_feel.tar
       mix run scripts/build_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
 
+- [ ] Both staged packages pass the clean-consumer smoke test.
 - [ ] `bash scripts/verify_tck_pin.sh` confirms the vendored corpus and pinned commit.
 - [ ] Both implemented profiles pass without failed, errored, or missing entries.
 - [ ] The FEEL profile reports exactly the 18 known unsupported cases from

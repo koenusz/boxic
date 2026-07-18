@@ -3,7 +3,7 @@ defmodule Boxic.InspectHexPackage do
 
   @outer_files ~w(VERSION CHECKSUM metadata.config contents.tar.gz)
   @required_files ~w(mix.exs README.md LICENSE CHANGELOG.md)
-  @forbidden_prefixes ~w(test/ compatibility/ artifacts/ scripts/ tck/)
+  @forbidden_prefixes ~w(test/ compatibility/ artifacts/ scripts/ tck/ vendor/)
 
   def run([app, archive]) when app in ~w(boxic_feel boxic_dmn) do
     archive = Path.expand(archive)

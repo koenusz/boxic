@@ -69,6 +69,11 @@ jobs:
           mix run scripts/inspect_hex_package.exs boxic_feel /tmp/boxic_feel.tar
           mix run scripts/inspect_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
 
+      - name: Test Hex packages as clean consumers
+        run: |
+          mix run scripts/smoke_test_hex_packages.exs \
+            /tmp/boxic_feel.tar /tmp/boxic_dmn.tar
+
       - name: Generate strict compatibility reports
         run: |
           mix tck --suite feel --profile implemented --report artifacts/feel-implemented --format json

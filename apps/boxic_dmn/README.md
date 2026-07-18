@@ -22,7 +22,7 @@ Load XML explicitly, validate its normalized model, and evaluate a decision:
 
 ```elixir
 xml = """
-<definitions id="example" namespace="https://example.com/boxic">
+<definitions id="example" name="Example" namespace="https://example.com/boxic">
   <decision id="greeting" name="Greeting">
     <literalExpression>
       <text>"Hello " + name</text>

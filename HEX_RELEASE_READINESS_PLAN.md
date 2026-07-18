@@ -15,7 +15,7 @@ to Hex. The package-specific release procedure remains in
 - [x] Refactor the main FEEL and DMN modules.
 - [x] Complete public API documentation.
 - [x] Add static quality and package CI gates.
-- [ ] Pass clean-consumer smoke tests.
+- [x] Pass clean-consumer smoke tests.
 - [ ] Publish `boxic_feel` 0.1.0.
 - [ ] Publish `boxic_dmn` 0.1.0.
 
@@ -280,10 +280,10 @@ Candidate modules:
 
 ### `boxic_feel`
 
-- [ ] Create a fresh temporary Mix project.
-- [ ] Install the locally built `boxic_feel` tarball.
-- [ ] Fetch and compile its dependencies.
-- [ ] Evaluate a basic expression successfully.
+- [x] Create a fresh temporary Mix project.
+- [x] Install the locally built `boxic_feel` tarball.
+- [x] Fetch and compile its dependencies.
+- [x] Evaluate a basic expression successfully.
 
 Example assertion:
 
@@ -293,12 +293,12 @@ Example assertion:
 
 ### `boxic_dmn`
 
-- [ ] Create a second fresh temporary Mix project.
-- [ ] Install the locally built `boxic_dmn` tarball.
-- [ ] Confirm `boxic_feel` resolves transitively.
-- [ ] Load, validate, and evaluate a small DMN model.
-- [ ] Confirm no umbrella-relative paths are required.
-- [ ] Confirm no TCK, test, or compatibility files are installed.
+- [x] Create a second fresh temporary Mix project.
+- [x] Install the locally built `boxic_dmn` tarball.
+- [x] Confirm `boxic_feel` resolves transitively.
+- [x] Load, validate, and evaluate a small DMN model.
+- [x] Confirm no umbrella-relative paths are required.
+- [x] Confirm no TCK, test, or compatibility files are installed.
 
 ### Acceptance criteria
 
@@ -328,12 +328,12 @@ Example assertion:
 
 - [x] Apache-2.0 licensing is present in the repository and both packages.
 - [x] Both Hex package builds succeed without warnings.
-- [ ] `boxic_dmn` has a resolvable Hex dependency on `boxic_feel`.
-- [ ] HexDocs builds without warnings.
-- [ ] Package-specific READMEs and changelogs are complete.
-- [ ] No scaffold or internal work-package language remains in public modules.
+- [x] `boxic_dmn` has a resolvable Hex dependency on `boxic_feel`.
+- [x] HexDocs builds without warnings.
+- [x] Package-specific READMEs and changelogs are complete.
+- [x] No scaffold or internal work-package language remains in public modules.
 - [ ] Static analysis and all tests pass.
 - [ ] FEEL reports exactly the 18 known Java cases as unsupported.
 - [ ] DMN reports zero unsupported cases.
-- [ ] Fresh external projects can install and execute both release archives.
+- [x] Fresh external projects can install and execute both release archives.
 - [ ] Package metadata, public links, versions, tags, and release notes agree.
