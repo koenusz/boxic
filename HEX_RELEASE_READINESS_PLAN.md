@@ -15,8 +15,8 @@ to Hex. The package-specific release procedure remains in
 - [x] Complete public API documentation.
 - [x] Add static quality and package CI gates.
 - [x] Pass clean-consumer smoke tests.
-- [ ] Publish `boxic_feel` 0.1.0.
-- [ ] Publish `boxic_dmn` 0.1.0.
+- [x] Publish `boxic_feel` 0.1.0.
+- [x] Publish `boxic_dmn` 0.1.0.
 
 ## Decisions
 
@@ -306,16 +306,16 @@ Example assertion:
 - [x] Confirm the source repository and documentation links are public.
 - [x] Confirm the Hex account, package ownership, two-factor authentication,
       and publication key are ready.
-- [ ] Run every item in `RELEASE_CHECKLIST.md` on the exact release commit.
-- [ ] Inspect both final unpacked tarballs.
-- [ ] Publish `boxic_feel` 0.1.0.
-- [ ] Install `boxic_feel` from Hex in a clean external project.
-- [ ] Verify the `boxic_feel` HexDocs site.
-- [ ] Publish `boxic_dmn` 0.1.0.
-- [ ] Install `boxic_dmn` from Hex in a clean external project.
-- [ ] Verify the `boxic_dmn` HexDocs site.
-- [ ] Create package-specific Git tags.
-- [ ] Create GitHub release notes.
+- [x] Run every item in `RELEASE_CHECKLIST.md` on the exact release commit.
+- [x] Inspect both final unpacked tarballs.
+- [x] Publish `boxic_feel` 0.1.0.
+- [x] Install `boxic_feel` from Hex in a clean external project.
+- [x] Verify the `boxic_feel` HexDocs site.
+- [x] Publish `boxic_dmn` 0.1.0.
+- [x] Install `boxic_dmn` from Hex in a clean external project.
+- [x] Verify the `boxic_dmn` HexDocs site.
+- [x] Create package-specific Git tags.
+- [x] Create GitHub release notes.
 - [x] Record the DMN specification version and TCK commit in both changelogs.
 
 ## Definition of done
@@ -330,4 +330,17 @@ Example assertion:
 - [x] FEEL reports exactly the 18 known Java cases as unsupported.
 - [x] DMN reports zero unsupported cases.
 - [x] Fresh external projects can install and execute both release archives.
-- [ ] Package metadata, public links, versions, tags, and release notes agree.
+- [x] Package metadata, public links, versions, tags, and release notes agree.
+
+## First release record
+
+- Release commit: `e755e905c620a4b4cc53f6c77424716446e62cbb`
+- CI run: `29660578288`
+- `boxic_feel`:
+  [Hex](https://hex.pm/packages/boxic_feel/0.1.0),
+  [HexDocs](https://hexdocs.pm/boxic_feel/0.1.0),
+  [GitHub release](https://github.com/koenusz/boxic/releases/tag/boxic_feel-v0.1.0)
+- `boxic_dmn`:
+  [Hex](https://hex.pm/packages/boxic_dmn/0.1.0),
+  [HexDocs](https://hexdocs.pm/boxic_dmn/0.1.0),
+  [GitHub release](https://github.com/koenusz/boxic/releases/tag/boxic_dmn-v0.1.0)
