@@ -1,6 +1,45 @@
 # Boxic FEEL
 
-FEEL parsing and evaluation for Boxic.
+Boxic FEEL is a native Elixir parser and evaluator for the Friendly Enough
+Expression Language defined by DMN. It can be used independently of
+`boxic_dmn`.
+
+## Installation
+
+Add `boxic_feel` to `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:boxic_feel, "~> 0.1.0"}
+  ]
+end
+```
+
+## Quick start
+
+```elixir
+context = %{
+  "price" => Decimal.new("12.50"),
+  "quantity" => Decimal.new("2")
+}
+
+{:ok, total} = Boxic.FEEL.evaluate("price * quantity", context)
+```
+
+`Boxic.FEEL.parse/1` returns the public AST without evaluating it.
+`Boxic.FEEL.evaluate_ast/2` evaluates a previously parsed AST, and
+`Boxic.FEEL.evaluate_unary_test/3` evaluates a DMN unary test against a value.
+All public entry points return `{:ok, value}` or
+`{:error, %Boxic.FEEL.Error{}}`.
+
+## Compatibility
+
+Against the vendored official DMN Technology Compatibility Kit revision
+`0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13`, Boxic passes 2,042 of the 2,060
+selected FEEL cases. The remaining 18 are Java external-function integration
+cases and are reported explicitly as unsupported. Compatibility on the
+supported scope is 100%.
 
 ## Elixir external functions
 
@@ -121,23 +160,11 @@ Do not construct registry entries from model content or untrusted strings. The
 registry must remain trusted application configuration; this is what prevents
 the feature from becoming arbitrary BEAM code execution.
 
-This replacement is an Boxic Elixir extension, not an implementation of
+This replacement is a Boxic Elixir extension, not an implementation of
 DMN's Java external-function binding. The official Java-specific TCK group is
 therefore still selected and explicitly reported as unsupported.
 
-## Installation
+## License
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `boxic_feel` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:boxic_feel, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/boxic_feel>.
+Boxic FEEL is licensed under Apache-2.0. The official TCK corpus and local
+compatibility artifacts are not included in the Hex package.

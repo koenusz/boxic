@@ -5,6 +5,19 @@ defmodule Boxic.DMNTest do
   alias Boxic.DMN.Model.InputData
   alias Boxic.DMN.Model.LiteralExpression
 
+  defmodule ExternalHost do
+    def max(left, right), do: Kernel.max(left, right)
+  end
+
+  defmodule ExternalRegistry do
+    use Boxic.FEEL.ExternalFunctions
+
+    external("max", {ExternalHost, :max},
+      parameters: [:float, :float],
+      returns: :number
+    )
+  end
+
   test "loads a namespace-qualified literal decision into normalized structs" do
     xml = """
     <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/"
@@ -39,6 +52,23 @@ defmodule Boxic.DMNTest do
     context = %{"Customer" => "Ada"}
     assert {:ok, "hello from dmn"} = Boxic.DMN.evaluate(model, "Greeting", context)
     assert {:ok, "hello from dmn"} = Boxic.DMN.evaluate(model, "greeting", context)
+  end
+
+  test "evaluation accepts an explicit external-function registry" do
+    xml = """
+    <definitions id="defs" name="external" namespace="urn:external">
+      <decision id="decision" name="Decision">
+        <literalExpression><text>max(123, 456)</text></literalExpression>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
+
+    assert {:ok, result} =
+             Boxic.DMN.evaluate(model, "Decision", %{}, external_functions: ExternalRegistry)
+
+    assert Decimal.equal?(result, Decimal.new(456))
   end
 
   test "validator reports missing metadata and unresolved references" do

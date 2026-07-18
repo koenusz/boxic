@@ -154,10 +154,10 @@ their internal responsibilities.
 
 ### FEEL
 
-- [ ] Extract tokenization from `Boxic.FEEL`.
-- [ ] Extract parsing from `Boxic.FEEL`.
-- [ ] Extract evaluation from `Boxic.FEEL`.
-- [ ] Extract semantic comparison and operator helpers where useful.
+- [x] Extract tokenization from `Boxic.FEEL`.
+- [x] Extract parsing from `Boxic.FEEL`.
+- [x] Extract evaluation from `Boxic.FEEL`.
+- [x] Extract semantic comparison and operator helpers where useful.
 - [x] Preserve the existing public FEEL entry points.
 
 Candidate modules:
@@ -213,33 +213,33 @@ Candidate modules:
 
 ### Tooling
 
-- [ ] Add ExDoc as a development-only dependency to `boxic_feel`.
-- [ ] Add ExDoc as a development-only dependency to `boxic_dmn`.
-- [ ] Configure the main page, source URL, version reference, module groups,
+- [x] Add ExDoc as a development-only dependency to `boxic_feel`.
+- [x] Add ExDoc as a development-only dependency to `boxic_dmn`.
+- [x] Configure the main page, source URL, version reference, module groups,
       and guides for each package.
-- [ ] Run documentation builds with warnings treated as errors.
+- [x] Run documentation builds with warnings treated as errors.
 
 ### Public API
 
 - [ ] Add `@doc` documentation and examples to every intended public FEEL
       function.
-- [ ] Add `@doc` documentation and examples to every intended public DMN
+- [x] Add `@doc` documentation and examples to every intended public DMN
       function.
-- [ ] Document result and error contracts.
-- [ ] Document public types and structs.
-- [ ] Remove `WP-06`, `WP-08`, and similar internal planning references from
+- [x] Document result and error contracts.
+- [x] Document public types and structs.
+- [x] Remove `WP-06`, `WP-08`, and similar internal planning references from
       public documentation.
 
 ### Package READMEs and guides
 
-- [ ] Rewrite `apps/boxic_feel/README.md` as a standalone package README.
-- [ ] Rewrite `apps/boxic_dmn/README.md` as a standalone package README.
-- [ ] Remove the DMN README placeholder.
-- [ ] Add installation and quick-start examples.
-- [ ] Document the supported DMN specification version.
-- [ ] Document the TCK compatibility result and its scope.
-- [ ] Document the intentional Java integration limitation.
-- [ ] Document the external-function trust boundary.
+- [x] Rewrite `apps/boxic_feel/README.md` as a standalone package README.
+- [x] Rewrite `apps/boxic_dmn/README.md` as a standalone package README.
+- [x] Remove the DMN README placeholder.
+- [x] Add installation and quick-start examples.
+- [x] Document the supported DMN specification version.
+- [x] Document the TCK compatibility result and its scope.
+- [x] Document the intentional Java integration limitation.
+- [x] Document the external-function trust boundary.
 - [ ] Ensure package documentation links reference only included or public
       resources.
 - [x] Add `CHANGELOG.md` to each package.

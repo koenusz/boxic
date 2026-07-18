@@ -55,21 +55,4 @@ defmodule Boxic.FEEL.ExternalFunctionsTest do
     assert {:error, %{code: :external_function_error, message: "host failure"}} =
              Boxic.FEEL.evaluate("explode(1)", context)
   end
-
-  test "DMN evaluation accepts an explicit external-function registry" do
-    xml = """
-    <definitions id="defs" name="external" namespace="urn:external">
-      <decision id="decision" name="Decision">
-        <literalExpression><text>max(123, 456)</text></literalExpression>
-      </decision>
-    </definitions>
-    """
-
-    assert {:ok, model} = Boxic.DMN.load(xml)
-
-    assert {:ok, result} =
-             Boxic.DMN.evaluate(model, "Decision", %{}, external_functions: Registry)
-
-    assert Decimal.equal?(result, Decimal.new(456))
-  end
 end

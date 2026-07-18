@@ -19,6 +19,7 @@ defmodule BoxicDmn.MixProject do
       package: package(),
       source_url: @source_url,
       homepage_url: @source_url,
+      docs: docs(),
       deps: deps()
     ]
   end
@@ -33,7 +34,8 @@ defmodule BoxicDmn.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:boxic_feel, @boxic_feel_requirement, in_umbrella: true}
+      {:boxic_feel, @boxic_feel_requirement, in_umbrella: true},
+      {:ex_doc, "~> 0.38", only: :dev, runtime: false}
     ]
   end
 
@@ -50,6 +52,18 @@ defmodule BoxicDmn.MixProject do
         "GitHub" => @source_url,
         "HexDocs" => "https://hexdocs.pm/boxic_dmn"
       }
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md", "CHANGELOG.md"],
+      source_ref: "v#{@version}",
+      groups_for_modules: [
+        "Public API": [Boxic.DMN],
+        "Normalized model": ~r/^Boxic\.DMN\.Model/
+      ]
     ]
   end
 end

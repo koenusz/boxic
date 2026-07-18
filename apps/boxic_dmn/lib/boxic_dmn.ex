@@ -1,11 +1,5 @@
-defmodule Boxic.DMN do
-  @moduledoc """
-  Loads, validates, and evaluates DMN models.
-
-  Use `load_file/1` when the input is a path and `load_xml/1` when the input is
-  XML. `load/1` remains available for backwards compatibility and dispatches
-  XML-looking input to `load_xml/1`; all other input is treated as a path.
-  """
+defmodule Boxic.DMN.Engine do
+  @moduledoc false
 
   alias Boxic.DMN.Model
   alias Boxic.DMN.Model.Binding
@@ -36,7 +30,8 @@ defmodule Boxic.DMN do
   alias Boxic.FEEL.ExternalFunctions
 
   @typedoc "A structural problem found while validating a normalized model."
-  @type validation_error :: {atom(), term()} | {atom(), term(), term()} | {atom(), term(), term(), term()}
+  @type validation_error ::
+          {atom(), term()} | {atom(), term(), term()} | {atom(), term(), term(), term()}
 
   @typedoc "An error produced while resolving or evaluating a decision."
   @type evaluation_error ::
