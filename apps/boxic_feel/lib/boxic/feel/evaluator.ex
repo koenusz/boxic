@@ -544,9 +544,6 @@ defmodule Boxic.FEEL.Evaluator do
     end
   end
 
-  defp apply_function(%Function{}, _args),
-    do: {:error, error(:arity_error, "function called with invalid arity")}
-
   defp apply_function(fun, args) when is_function(fun, length(args)) do
     {:ok, apply(fun, args)}
   end
@@ -1294,8 +1291,6 @@ defmodule Boxic.FEEL.Evaluator do
   defp unary_operator(:gt), do: ">"
   defp unary_operator(:gte), do: ">="
 
-  defp range_lower_ok?(%Range{start: nil}, _value), do: true
-
   defp range_lower_ok?(%Range{start: start, start_inclusive: inclusive}, value) do
     case compare_for_bounds(value, start) do
       :gt -> true
@@ -1303,8 +1298,6 @@ defmodule Boxic.FEEL.Evaluator do
       _ -> false
     end
   end
-
-  defp range_upper_ok?(%Range{end: nil}, _value), do: true
 
   defp range_upper_ok?(%Range{end: finish, end_inclusive: inclusive}, value) do
     case compare_for_bounds(value, finish) do

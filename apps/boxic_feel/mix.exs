@@ -12,7 +12,7 @@ defmodule BoxicFeel.MixProject do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.19.0",
+      elixir: "~> 1.20.0",
       start_permanent: Mix.env() == :prod,
       test_coverage: [summary: [threshold: 40]],
       description: description(),

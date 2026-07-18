@@ -33,9 +33,9 @@ mix run scripts/inspect_hex_package.exs boxic_feel /tmp/boxic_feel.tar
 mix run scripts/inspect_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
 ```
 
-Both packages support Elixir 1.19.x. CI tests the lower runtime boundary on
-Elixir 1.19.0 / OTP 26.2 and the current upper boundary on Elixir 1.19.5 /
-OTP 28.5.
+Both packages support Elixir 1.20.x. CI tests the lower supported OTP boundary
+on Elixir 1.20.0 / OTP 27.3 and the project toolchain on Elixir 1.20.0 /
+OTP 29.0.1.
 
 ## Release checks
 
