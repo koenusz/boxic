@@ -7,7 +7,10 @@ defmodule Boxic.MixProject do
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      dialyzer: [
+        plt_add_apps: [:mix, :xmerl]
+      ]
     ]
   end
 
@@ -17,7 +20,10 @@ defmodule Boxic.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    []
+    [
+      {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4.7", only: [:dev, :test], runtime: false}
+    ]
   end
 
   defp aliases do
@@ -25,6 +31,12 @@ defmodule Boxic.MixProject do
       test: [
         "test",
         "tck --suite feel --profile implemented"
+      ],
+      quality: [
+        "format --check-formatted",
+        "compile --warnings-as-errors",
+        "credo --strict",
+        "dialyzer"
       ]
     ]
   end

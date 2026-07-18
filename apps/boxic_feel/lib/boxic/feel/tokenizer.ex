@@ -336,7 +336,7 @@ defmodule Boxic.FEEL.Tokenizer do
   defp take_number(binary) do
     case Regex.run(~r/^(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?/, binary) do
       [number] ->
-        rest = String.slice(binary, String.length(number)..-1//1) || ""
+        rest = String.slice(binary, String.length(number)..-1//1)
         {number, rest}
 
       _ ->

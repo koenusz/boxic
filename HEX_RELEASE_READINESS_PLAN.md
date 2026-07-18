@@ -14,7 +14,7 @@ to Hex. The package-specific release procedure remains in
 - [x] Configure both Hex packages.
 - [x] Refactor the main FEEL and DMN modules.
 - [x] Complete public API documentation.
-- [ ] Add static quality and package CI gates.
+- [x] Add static quality and package CI gates.
 - [ ] Pass clean-consumer smoke tests.
 - [ ] Publish `boxic_feel` 0.1.0.
 - [ ] Publish `boxic_dmn` 0.1.0.
@@ -253,22 +253,23 @@ Candidate modules:
 
 ## WP-05: Static quality and CI gates
 
-- [ ] Add Credo and agree on a checked configuration.
-- [ ] Add Dialyxir and establish a clean baseline.
-- [ ] Add coverage reporting with a realistic initial threshold.
+- [x] Add Credo and agree on a checked configuration.
+- [x] Add Dialyxir and establish a clean baseline.
+- [x] Add coverage reporting with a realistic initial threshold (40% FEEL,
+      50% DMN; measured baselines are 43.43% and 54.47%).
 - [x] Run formatting checks in CI.
 - [x] Compile with warnings as errors in CI.
 - [x] Run unit tests in CI.
 - [x] Run the strict FEEL and DMN profiles in CI.
 - [x] Run compatibility regression gates in CI.
-- [ ] Run Credo in CI.
-- [ ] Run Dialyzer in CI.
-- [ ] Build documentation with warnings as errors in CI.
-- [ ] Run the Hex dependency retirement audit in CI.
+- [x] Run Credo in CI.
+- [x] Run Dialyzer in CI.
+- [x] Build documentation with warnings as errors in CI.
+- [x] Run the Hex dependency retirement audit in CI.
 - [x] Build both Hex packages in CI.
-- [ ] Inspect package metadata and contents in CI.
-- [ ] Test the minimum supported Elixir/OTP combination.
-- [ ] Test the latest supported Elixir/OTP combination.
+- [x] Inspect package metadata and contents in CI.
+- [x] Test the minimum supported Elixir/OTP combination.
+- [x] Test the latest supported Elixir/OTP combination.
 
 ### Acceptance criteria
 

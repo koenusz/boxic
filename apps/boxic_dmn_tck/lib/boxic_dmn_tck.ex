@@ -164,7 +164,12 @@ defmodule Boxic.DMN.TCK do
     0119-multi-collect-hitpolicy
   )
 
-  @spec run(keyword()) :: %{cases: list(), results: list(), summary: map()}
+  @spec run(keyword()) :: %{
+          cases: list(),
+          selected_cases: list(),
+          results: list(),
+          summary: map()
+        }
   def run(opts \\ []) do
     cases = Loader.load_all(opts)
 

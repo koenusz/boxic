@@ -4,6 +4,41 @@ Use this checklist independently for `boxic_feel` and `boxic_dmn` releases.
 Track the broader publication-readiness work in
 [`HEX_RELEASE_READINESS_PLAN.md`](HEX_RELEASE_READINESS_PLAN.md).
 
+## Quality gates
+
+Run the static checks from the umbrella root:
+
+```bash
+mix quality
+mix hex.audit
+```
+
+Run coverage and documentation independently for each publishable package:
+
+```bash
+(cd apps/boxic_feel && mix test --cover && mix docs --warnings-as-errors)
+(cd apps/boxic_dmn && mix test --cover && mix docs --warnings-as-errors)
+```
+
+The initial measured coverage floors are 40% for `boxic_feel` and 50% for
+`boxic_dmn`. Raise them as focused tests improve; do not lower them to
+accommodate a regression.
+
+Build and inspect both staged archives:
+
+```bash
+mix run scripts/build_hex_package.exs boxic_feel /tmp/boxic_feel.tar
+mix run scripts/build_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
+mix run scripts/inspect_hex_package.exs boxic_feel /tmp/boxic_feel.tar
+mix run scripts/inspect_hex_package.exs boxic_dmn /tmp/boxic_dmn.tar
+```
+
+Both packages support Elixir 1.19.x. CI tests the lower runtime boundary on
+Elixir 1.19.0 / OTP 26.2 and the current upper boundary on Elixir 1.19.5 /
+OTP 28.5.
+
+## Release checks
+
 - [ ] `mix format --check-formatted`, `mix compile --warnings-as-errors`, and `mix test` pass.
 - [ ] Staged Hex package builds succeed:
 

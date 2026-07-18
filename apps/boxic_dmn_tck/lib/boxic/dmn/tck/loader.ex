@@ -117,7 +117,9 @@ defmodule Boxic.DMN.TCK.Loader do
       document
     rescue
       exception ->
-        raise "invalid TCK XML #{path}: #{Exception.message(exception)}"
+        reraise RuntimeError,
+                [message: "invalid TCK XML #{path}: #{Exception.message(exception)}"],
+                __STACKTRACE__
     end
   end
 

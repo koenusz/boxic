@@ -825,7 +825,7 @@ defmodule Boxic.FEEL.Builtins do
       if start_position > 0, do: start_position - 1, else: String.length(value) + start_position
 
     count = if length, do: max(decimal_truncate(length), 0), else: String.length(value)
-    String.slice(value, max(index, 0), count) || ""
+    String.slice(value, max(index, 0), count)
   end
 
   defp round_at_scale(value, scale, mode, opts \\ []) do

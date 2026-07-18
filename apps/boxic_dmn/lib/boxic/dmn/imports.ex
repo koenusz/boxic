@@ -41,16 +41,16 @@ defmodule Boxic.DMN.Imports do
 
   defp imported_closure(model, candidates) do
     available = Map.new(candidates, &{&1.definitions.namespace, &1})
-    collect_imports(Map.keys(model.imports), available, MapSet.new(), [])
+    collect_imports(Map.keys(model.imports), available, %{}, [])
   end
 
   defp collect_imports([], _available, _seen, result), do: Enum.reverse(result)
 
   defp collect_imports([namespace | rest], available, seen, result) do
-    if MapSet.member?(seen, namespace) do
+    if Map.has_key?(seen, namespace) do
       collect_imports(rest, available, seen, result)
     else
-      seen = MapSet.put(seen, namespace)
+      seen = Map.put(seen, namespace, true)
 
       case Map.get(available, namespace) do
         nil ->

@@ -30,7 +30,7 @@ defmodule Boxic.DMN.Evaluator do
       when is_binary(decision_name) and is_map(context) do
     with {:ok, context} <- coerce_input_context(model, context),
          {:ok, decision} <- find_decision(model, decision_name),
-         {:ok, value, _memo} <- evaluate_decision(model, decision, context, %{}, MapSet.new()) do
+         {:ok, value, _memo} <- evaluate_decision(model, decision, context, %{}, %{}) do
       {:ok, value}
     end
   end
@@ -67,11 +67,11 @@ defmodule Boxic.DMN.Evaluator do
       Map.has_key?(memo, decision.id) ->
         {:ok, Map.fetch!(memo, decision.id), memo}
 
-      MapSet.member?(visiting, decision.id) ->
+      Map.has_key?(visiting, decision.id) ->
         {:error, {:cyclic_decision_dependency, decision.id}}
 
       true ->
-        visiting = MapSet.put(visiting, decision.id)
+        visiting = Map.put(visiting, decision.id, true)
 
         with :ok <- Validator.validate_for_evaluation(model, decision),
              {:ok, dependency_context, memo} <-
@@ -801,7 +801,7 @@ defmodule Boxic.DMN.Evaluator do
     Enum.reduce_while(ids, {:ok, [], memo}, fn id, {:ok, outputs, memo} ->
       case Map.fetch(model.decisions, id) do
         {:ok, decision} ->
-          case evaluate_decision(model, decision, context, memo, MapSet.new()) do
+          case evaluate_decision(model, decision, context, memo, %{}) do
             {:ok, value, memo} -> {:cont, {:ok, outputs ++ [{decision.name, value}], memo}}
             {:error, _reason} = error -> {:halt, error}
           end
