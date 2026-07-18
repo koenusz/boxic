@@ -30,6 +30,11 @@ defmodule Boxic.FEEL.Time do
 
   @time_pattern ~r/^(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}(?:\.\d{1,9})?)(?<zone>Z|[+-]\d{2}:\d{2}(?::\d{2})?|@[A-Za-z_]+(?:\/[A-Za-z0-9_+.-]+)*)?$/
 
+  @doc """
+  Creates a validated FEEL time.
+
+      Boxic.FEEL.Time.new(12, 30, Decimal.new("15.5"), {:offset, 0})
+  """
   @spec new(integer(), integer(), Decimal.t() | integer(), zone()) :: {:ok, t()} | :error
   def new(hour, minute, second, zone \\ :floating) do
     second = decimal(second)
@@ -43,6 +48,11 @@ defmodule Boxic.FEEL.Time do
     end
   end
 
+  @doc """
+  Parses a FEEL time, preserving fractional seconds and zone identity.
+
+      Boxic.FEEL.Time.parse("12:30:15.5Z")
+  """
   @spec parse(String.t()) :: {:ok, t()} | :error
   def parse(value) when is_binary(value) do
     with captures when not is_nil(captures) <- Regex.named_captures(@time_pattern, value),
@@ -60,6 +70,11 @@ defmodule Boxic.FEEL.Time do
     end
   end
 
+  @doc """
+  Converts an Elixir time into a floating FEEL time.
+
+      Boxic.FEEL.Time.from_elixir(~T[12:30:15])
+  """
   @spec from_elixir(Time.t()) :: t()
   def from_elixir(%Elixir.Time{} = value) do
     {microsecond, precision} = value.microsecond
@@ -76,18 +91,33 @@ defmodule Boxic.FEEL.Time do
     %__MODULE__{hour: value.hour, minute: value.minute, second: fraction, zone: :floating}
   end
 
+  @doc """
+  Serializes a FEEL time.
+
+      Boxic.FEEL.Time.to_string(time)
+  """
   @spec to_string(t()) :: String.t()
   def to_string(%__MODULE__{} = value) do
     two(value.hour) <>
       ":" <> two(value.minute) <> ":" <> format_second(value.second) <> format_zone(value.zone)
   end
 
+  @doc """
+  Returns seconds since local midnight without applying a zone offset.
+
+      Boxic.FEEL.Time.local_seconds(time)
+  """
   @spec local_seconds(t()) :: Decimal.t()
   def local_seconds(%__MODULE__{} = value) do
     value.second
     |> Decimal.add(Decimal.new(value.hour * 3_600 + value.minute * 60))
   end
 
+  @doc """
+  Compares compatible FEEL times, returning `:unordered` for incompatible zones.
+
+      Boxic.FEEL.Time.compare(left, right)
+  """
   @spec compare(t(), t()) :: :lt | :eq | :gt | :unordered
   def compare(%__MODULE__{} = left, %__MODULE__{} = right) do
     case {comparison_seconds(left), comparison_seconds(right)} do
@@ -97,6 +127,11 @@ defmodule Boxic.FEEL.Time do
     end
   end
 
+  @doc """
+  Calculates `left - right` when the time values are comparable.
+
+      Boxic.FEEL.Time.difference(left, right)
+  """
   @spec difference(t(), t()) :: {:ok, Boxic.FEEL.Duration.t()} | :error
   def difference(%__MODULE__{} = left, %__MODULE__{} = right) do
     case {comparison_seconds(left), comparison_seconds(right)} do
@@ -112,6 +147,11 @@ defmodule Boxic.FEEL.Time do
     end
   end
 
+  @doc """
+  Adds seconds and wraps the result within one day.
+
+      Boxic.FEEL.Time.add_seconds(time, Decimal.new("0.5"))
+  """
   @spec add_seconds(t(), integer() | Decimal.t()) :: t()
   def add_seconds(%__MODULE__{} = value, seconds) do
     day = Decimal.new(86_400)

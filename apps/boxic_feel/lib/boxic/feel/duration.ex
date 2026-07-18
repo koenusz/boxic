@@ -17,6 +17,11 @@ defmodule Boxic.FEEL.Duration do
   @type kind :: :year_month | :day_time
   @type t :: %__MODULE__{kind: kind(), months: integer(), seconds: integer() | Decimal.t()}
 
+  @doc """
+  Parses an ISO 8601 year-month or day-time duration.
+
+      Boxic.FEEL.Duration.parse_iso8601("P1Y2M")
+  """
   @spec parse_iso8601(String.t()) :: {:ok, t()} | {:error, :invalid_duration}
   def parse_iso8601(value) when is_binary(value) do
     regex =
@@ -55,22 +60,47 @@ defmodule Boxic.FEEL.Duration do
     end
   end
 
+  @doc """
+  Creates a day-time duration from whole days.
+
+      Boxic.FEEL.Duration.from_days(2)
+  """
   @spec from_days(integer()) :: t()
   def from_days(days), do: %__MODULE__{kind: :day_time, months: 0, seconds: days * 86_400}
 
-  @spec from_seconds(integer()) :: t()
+  @doc """
+  Creates a day-time duration from seconds.
+
+      Boxic.FEEL.Duration.from_seconds(90)
+  """
+  @spec from_seconds(integer() | Decimal.t()) :: t()
   def from_seconds(seconds), do: %__MODULE__{kind: :day_time, months: 0, seconds: seconds}
 
+  @doc """
+  Negates a duration.
+
+      Boxic.FEEL.Duration.negate(duration)
+  """
   @spec negate(t()) :: t()
   def negate(%__MODULE__{kind: kind, months: months, seconds: seconds}) do
     %__MODULE__{kind: kind, months: -months, seconds: multiply(-1, seconds)}
   end
 
+  @doc """
+  Returns the absolute duration.
+
+      Boxic.FEEL.Duration.abs(duration)
+  """
   @spec abs(t()) :: t()
   def abs(%__MODULE__{kind: kind, months: months, seconds: seconds}) do
     %__MODULE__{kind: kind, months: Kernel.abs(months), seconds: abs_number(seconds)}
   end
 
+  @doc """
+  Adds durations of the same kind.
+
+      Boxic.FEEL.Duration.add(left, right)
+  """
   @spec add(t(), t()) :: t()
   def add(%__MODULE__{kind: kind} = left, %__MODULE__{kind: kind} = right) do
     %__MODULE__{
@@ -80,9 +110,19 @@ defmodule Boxic.FEEL.Duration do
     }
   end
 
+  @doc """
+  Subtracts `right` from `left`.
+
+      Boxic.FEEL.Duration.subtract(left, right)
+  """
   @spec subtract(t(), t()) :: t()
   def subtract(%__MODULE__{} = left, %__MODULE__{} = right), do: add(left, negate(right))
 
+  @doc """
+  Multiplies a duration by a decimal factor.
+
+      Boxic.FEEL.Duration.scale(duration, Decimal.new("1.5"))
+  """
   @spec scale(t(), Decimal.t()) :: t()
   def scale(%__MODULE__{kind: :year_month} = duration, factor) do
     months =
@@ -99,6 +139,11 @@ defmodule Boxic.FEEL.Duration do
     %{duration | months: 0, seconds: Decimal.mult(decimal(duration.seconds), factor)}
   end
 
+  @doc """
+  Divides two durations of the same kind.
+
+      Boxic.FEEL.Duration.ratio(left, right)
+  """
   @spec ratio(t(), t()) :: {:ok, Decimal.t()} | :error
   def ratio(%__MODULE__{kind: kind} = left, %__MODULE__{kind: kind} = right) do
     {left_value, right_value} =
@@ -113,6 +158,11 @@ defmodule Boxic.FEEL.Duration do
 
   def ratio(%__MODULE__{}, %__MODULE__{}), do: :error
 
+  @doc """
+  Compares durations of the same kind.
+
+      Boxic.FEEL.Duration.compare(left, right)
+  """
   @spec compare(t(), t()) :: :lt | :eq | :gt | :unordered
   def compare(%__MODULE__{kind: kind} = left, %__MODULE__{kind: kind} = right) do
     case kind do
@@ -123,6 +173,11 @@ defmodule Boxic.FEEL.Duration do
 
   def compare(%__MODULE__{}, %__MODULE__{}), do: :unordered
 
+  @doc """
+  Serializes a duration as ISO 8601 text.
+
+      Boxic.FEEL.Duration.to_string(duration)
+  """
   @spec to_string(t()) :: String.t()
   def to_string(%__MODULE__{kind: :year_month, months: months}) do
     sign = if months < 0, do: "-", else: ""
@@ -168,6 +223,11 @@ defmodule Boxic.FEEL.Duration do
     sign <> "P" <> date_part <> time_marker <> time_part
   end
 
+  @doc """
+  Adds a duration to an Elixir date.
+
+      Boxic.FEEL.Duration.add_to_date(~D[2026-01-01], duration)
+  """
   @spec add_to_date(Date.t(), t()) :: Date.t()
   def add_to_date(%Date{} = date, %__MODULE__{} = duration) do
     day_delta =
@@ -182,6 +242,11 @@ defmodule Boxic.FEEL.Duration do
     |> Date.add(day_delta)
   end
 
+  @doc """
+  Adds a duration to an Elixir date-time.
+
+      Boxic.FEEL.Duration.add_to_datetime(datetime, duration)
+  """
   @spec add_to_datetime(DateTime.t(), t()) :: DateTime.t()
   def add_to_datetime(%DateTime{} = datetime, %__MODULE__{} = duration) do
     shifted_date = add_months(DateTime.to_date(datetime), duration.months)
@@ -192,6 +257,11 @@ defmodule Boxic.FEEL.Duration do
     DateTime.add(shifted_datetime, truncate(duration.seconds), :second)
   end
 
+  @doc """
+  Adds a day-time duration to an Elixir time.
+
+      Boxic.FEEL.Duration.add_to_time(~T[12:00:00], duration)
+  """
   @spec add_to_time(Time.t(), t()) :: Time.t()
   def add_to_time(%Time{} = time, %__MODULE__{} = duration) do
     total_seconds =

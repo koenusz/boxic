@@ -20,6 +20,11 @@ defmodule Boxic.FEEL.ExternalFunctions do
         }
   @type t :: %__MODULE__{entries: %{optional(String.t()) => entry()}}
 
+  @doc """
+  Adds the external-function registry DSL to a module.
+
+      use Boxic.FEEL.ExternalFunctions
+  """
   defmacro __using__(_opts) do
     quote do
       import Boxic.FEEL.ExternalFunctions, only: [external: 2, external: 3]
@@ -28,12 +33,20 @@ defmodule Boxic.FEEL.ExternalFunctions do
     end
   end
 
+  @doc """
+  Registers an allowlisted host function in a registry module.
+
+      external "maximum", {MyApp.Math, :maximum},
+        parameters: [:number, :number],
+        returns: :number
+  """
   defmacro external(name, callable, opts \\ []) do
     quote bind_quoted: [name: name, callable: callable, opts: opts] do
       @boxic_external_functions {name, callable, opts}
     end
   end
 
+  @doc false
   defmacro __before_compile__(env) do
     entries = Module.get_attribute(env.module, :boxic_external_functions) |> Enum.reverse()
 
@@ -45,6 +58,13 @@ defmodule Boxic.FEEL.ExternalFunctions do
     end
   end
 
+  @doc """
+  Creates a registry, optionally from `{name, callable, options}` entries.
+
+      Boxic.FEEL.ExternalFunctions.new([
+        {"maximum", {MyApp.Math, :maximum}, parameters: [:number, :number]}
+      ])
+  """
   @spec new([{String.t(), callable(), keyword()}]) :: t()
   def new(entries \\ []) do
     Enum.reduce(entries, %__MODULE__{}, fn {name, callable, opts}, registry ->
@@ -52,6 +72,17 @@ defmodule Boxic.FEEL.ExternalFunctions do
     end)
   end
 
+  @doc """
+  Adds or replaces one allowlisted function.
+
+      Boxic.FEEL.ExternalFunctions.register(
+        registry,
+        "maximum",
+        {MyApp.Math, :maximum},
+        parameters: [:number, :number],
+        returns: :number
+      )
+  """
   @spec register(t(), String.t(), callable(), keyword()) :: t()
   def register(%__MODULE__{} = registry, name, callable, opts \\ [])
       when is_binary(name) and (is_function(callable) or is_tuple(callable)) do
@@ -64,6 +95,11 @@ defmodule Boxic.FEEL.ExternalFunctions do
     %{registry | entries: Map.put(registry.entries, name, entry)}
   end
 
+  @doc """
+  Converts a registry value or registry module into a FEEL evaluation context.
+
+      context = Boxic.FEEL.ExternalFunctions.to_context(MyApp.DecisionFunctions)
+  """
   @spec to_context(t() | module()) :: map()
   def to_context(module) when is_atom(module), do: module.external_functions() |> to_context()
 
@@ -74,6 +110,14 @@ defmodule Boxic.FEEL.ExternalFunctions do
     end)
   end
 
+  @doc """
+  Invokes a registered function after applying its boundary conversions.
+
+      Boxic.FEEL.ExternalFunctions.invoke(registry, "maximum", [
+        Decimal.new("1"),
+        Decimal.new("2")
+      ])
+  """
   @spec invoke(t(), String.t(), [term()]) :: {:ok, term()} | {:error, Error.t()}
   def invoke(%__MODULE__{entries: entries}, name, args) do
     with {:ok, entry} <- fetch_entry(entries, name),

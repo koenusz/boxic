@@ -1,10 +1,5 @@
 defmodule Boxic.FEEL.AST do
-  @moduledoc """
-  Structural validation for FEEL abstract syntax trees.
-
-  Parsing uses this boundary before returning an AST. Callers constructing an
-  AST directly can use `validate/1` before passing it to the evaluator.
-  """
+  @moduledoc false
 
   alias Boxic.FEEL.Error
 

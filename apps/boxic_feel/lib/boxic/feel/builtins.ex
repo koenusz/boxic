@@ -1,7 +1,5 @@
 defmodule Boxic.FEEL.Builtins do
-  @moduledoc """
-  FEEL built-in function registry and invocation.
-  """
+  @moduledoc false
 
   alias Boxic.FEEL.Duration
   alias Boxic.FEEL.DateTime, as: FeelDateTime

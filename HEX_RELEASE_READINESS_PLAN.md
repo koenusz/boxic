@@ -12,8 +12,8 @@ to Hex. The package-specific release procedure remains in
 - [ ] Complete licensing and repository identity (files and CI complete;
       ownership and public-repository checks remain).
 - [x] Configure both Hex packages.
-- [ ] Refactor the main FEEL and DMN modules.
-- [ ] Complete public API documentation.
+- [x] Refactor the main FEEL and DMN modules.
+- [x] Complete public API documentation.
 - [ ] Add static quality and package CI gates.
 - [ ] Pass clean-consumer smoke tests.
 - [ ] Publish `boxic_feel` 0.1.0.
@@ -169,11 +169,11 @@ Candidate modules:
 
 ### DMN
 
-- [ ] Extract XML loading and normalization from `Boxic.DMN`.
-- [ ] Extract validation from `Boxic.DMN`.
-- [ ] Extract decision evaluation from `Boxic.DMN`.
-- [ ] Extract decision-table evaluation.
-- [ ] Extract import discovery and resolution.
+- [x] Extract XML loading and normalization from `Boxic.DMN`.
+- [x] Extract validation from `Boxic.DMN`.
+- [x] Extract decision evaluation from `Boxic.DMN`.
+- [x] Extract decision-table evaluation.
+- [x] Extract import discovery and resolution.
 - [x] Preserve the existing public DMN evaluation entry points.
 
 Candidate modules:
@@ -221,7 +221,7 @@ Candidate modules:
 
 ### Public API
 
-- [ ] Add `@doc` documentation and examples to every intended public FEEL
+- [x] Add `@doc` documentation and examples to every intended public FEEL
       function.
 - [x] Add `@doc` documentation and examples to every intended public DMN
       function.
@@ -240,8 +240,9 @@ Candidate modules:
 - [x] Document the TCK compatibility result and its scope.
 - [x] Document the intentional Java integration limitation.
 - [x] Document the external-function trust boundary.
-- [ ] Ensure package documentation links reference only included or public
-      resources.
+- [x] Ensure package-authored documentation links reference only included or
+      public resources. Visibility of generated source links remains tracked
+      separately under WP-01 and WP-07.
 - [x] Add `CHANGELOG.md` to each package.
 
 ### Acceptance criteria

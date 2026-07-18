@@ -22,9 +22,19 @@ defmodule Boxic.FEEL.DateTime do
 
   @type t :: %__MODULE__{date: Date.t(), time: FeelTime.t()}
 
+  @doc """
+  Combines a date and FEEL time without discarding zone identity.
+
+      Boxic.FEEL.DateTime.new(~D[2026-01-01], time)
+  """
   @spec new(Date.t(), FeelTime.t()) :: t()
   def new(%Date{} = date, %FeelTime{} = time), do: %__MODULE__{date: date, time: time}
 
+  @doc """
+  Parses a FEEL date-time.
+
+      Boxic.FEEL.DateTime.parse("2026-01-01T12:30:00Z")
+  """
   @spec parse(String.t()) :: {:ok, t()} | :error
   def parse(value) when is_binary(value) do
     case String.split(value, "T", parts: 2) do
@@ -46,11 +56,21 @@ defmodule Boxic.FEEL.DateTime do
   defp normalize_end_of_day(_date, "24:" <> _rest), do: :error
   defp normalize_end_of_day(date, time), do: {:ok, date, time}
 
+  @doc """
+  Serializes a FEEL date-time.
+
+      Boxic.FEEL.DateTime.to_string(value)
+  """
   @spec to_string(t()) :: String.t()
   def to_string(%__MODULE__{date: date, time: time}) do
     Date.to_iso8601(date) <> "T" <> FeelTime.to_string(time)
   end
 
+  @doc """
+  Compares compatible FEEL date-times.
+
+      Boxic.FEEL.DateTime.compare(left, right)
+  """
   @spec compare(t(), t()) :: :lt | :eq | :gt | :unordered
   def compare(%__MODULE__{} = left, %__MODULE__{} = right) do
     case {instant_seconds(left), instant_seconds(right)} do
@@ -60,6 +80,11 @@ defmodule Boxic.FEEL.DateTime do
     end
   end
 
+  @doc """
+  Adds a year-month or day-time duration.
+
+      Boxic.FEEL.DateTime.add_duration(value, duration)
+  """
   @spec add_duration(t(), Duration.t()) :: {:ok, t()} | :error
   def add_duration(%__MODULE__{} = value, %Duration{kind: :year_month} = duration) do
     {:ok, %{value | date: Duration.add_to_date(value.date, duration)}}
@@ -97,6 +122,11 @@ defmodule Boxic.FEEL.DateTime do
      }}
   end
 
+  @doc """
+  Calculates `left - right` when both values share a comparable timeline.
+
+      Boxic.FEEL.DateTime.difference(left, right)
+  """
   @spec difference(t(), t()) :: {:ok, Duration.t()} | :error
   def difference(%__MODULE__{} = left, %__MODULE__{} = right) do
     with {:ok, left_seconds} <- instant_seconds(left),
@@ -119,6 +149,12 @@ defmodule Boxic.FEEL.DateTime do
     |> Decimal.add(FeelTime.local_seconds(time))
   end
 
+  @doc """
+  Converts a zoned FEEL date-time to seconds on a common timeline.
+
+      Boxic.FEEL.DateTime.instant_seconds(value)
+  """
+  @spec instant_seconds(t()) :: {:ok, Decimal.t()} | :error
   def instant_seconds(%__MODULE__{date: date, time: %FeelTime{zone: {:offset, offset}} = time}) do
     seconds =
       date
