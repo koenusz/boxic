@@ -14,7 +14,7 @@ defmodule Boxic.FEEL.Time do
   stored as `Decimal` for up to nanosecond precision, while `zone` explicitly
   records floating, numeric-offset, or named-zone identity.
 
-  Named-zone validation uses the IANA database through `tzdata`; the value
+  Named-zone validation uses the IANA database through `tz`; the value
   representation remains independent of that resolver.
   """
 
@@ -181,7 +181,7 @@ defmodule Boxic.FEEL.Time do
   defp parse_zone("Z"), do: {:ok, {:offset, 0}}
 
   defp parse_zone("@" <> name) do
-    if name == "Etc/GMT" or Tzdata.zone_exists?(name), do: {:ok, {:iana, name}}, else: :error
+    if iana_zone?(name), do: {:ok, {:iana, name}}, else: :error
   end
 
   defp parse_zone(<<sign, hour::binary-size(2), ?:, minute::binary-size(2), rest::binary>>)
@@ -214,6 +214,16 @@ defmodule Boxic.FEEL.Time do
   defp valid_zone?({:offset, seconds}), do: is_integer(seconds) and abs(seconds) <= 14 * 3_600
   defp valid_zone?({:iana, name}), do: is_binary(name) and name != ""
   defp valid_zone?(_zone), do: false
+
+  defp iana_zone?(name) do
+    case Tz.TimeZoneDatabase.time_zone_periods_from_wall_datetime(
+           ~N[2000-01-01 00:00:00],
+           name
+         ) do
+      {:error, :time_zone_not_found} -> false
+      _result -> true
+    end
+  end
 
   defp decimal(%Decimal{} = value), do: value
   defp decimal(value), do: Decimal.new(value)

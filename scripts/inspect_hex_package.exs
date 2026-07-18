@@ -71,7 +71,7 @@ defmodule Boxic.InspectHexPackage do
 
   defp verify_requirements!("boxic_feel", requirements) do
     names = Enum.map(requirements, &requirement_name/1)
-    assert_equal!("boxic_feel dependencies", Enum.sort(names), ~w(decimal tzdata))
+    assert_equal!("boxic_feel dependencies", Enum.sort(names), ~w(decimal tz))
   end
 
   defp verify_requirements!("boxic_dmn", requirements) do

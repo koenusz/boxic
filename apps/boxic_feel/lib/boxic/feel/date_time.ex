@@ -101,7 +101,7 @@ defmodule Boxic.FEEL.DateTime do
     with {:ok, datetime} <- to_elixir_datetime(value, zone),
          {whole_seconds, fraction} <- split_seconds(seconds),
          shifted <-
-           DateTime.add(datetime, whole_seconds, :second, Tzdata.TimeZoneDatabase),
+           DateTime.add(datetime, whole_seconds, :second, Tz.TimeZoneDatabase),
          {:ok, result} <- from_elixir_datetime(shifted, fraction) do
       {:ok, result}
     else
@@ -190,7 +190,7 @@ defmodule Boxic.FEEL.DateTime do
     second = time.second |> Decimal.round(0, :down) |> Decimal.to_integer()
 
     with {:ok, elixir_time} <- Elixir.Time.new(time.hour, time.minute, second),
-         {:ok, datetime} <- DateTime.new(date, elixir_time, zone, Tzdata.TimeZoneDatabase) do
+         {:ok, datetime} <- DateTime.new(date, elixir_time, zone, Tz.TimeZoneDatabase) do
       {:ok, datetime.utc_offset + datetime.std_offset}
     else
       _ -> :error
@@ -201,7 +201,7 @@ defmodule Boxic.FEEL.DateTime do
     second = time.second |> Decimal.round(0, :down) |> Decimal.to_integer()
 
     with {:ok, elixir_time} <- Elixir.Time.new(time.hour, time.minute, second) do
-      case DateTime.new(date, elixir_time, zone, Tzdata.TimeZoneDatabase) do
+      case DateTime.new(date, elixir_time, zone, Tz.TimeZoneDatabase) do
         {:ok, datetime} -> {:ok, datetime}
         {:ambiguous, first, _second} -> {:ok, first}
         _ -> :error

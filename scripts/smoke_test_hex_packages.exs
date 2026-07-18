@@ -84,14 +84,7 @@ defmodule Boxic.SmokeTestHexPackages do
   end
 
   defp write_private_key!(path) do
-    private_key = :public_key.generate_key({:rsa, 2048, 65_537})
-
-    pem =
-      :public_key.pem_encode([
-        :public_key.pem_entry_encode(:RSAPrivateKey, private_key)
-      ])
-
-    File.write!(path, pem)
+    run!("openssl", ["genrsa", "-out", path, "2048"], cd: Path.dirname(path))
   end
 
   defp start_repository!(repository) do

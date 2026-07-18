@@ -9,8 +9,7 @@ to Hex. The package-specific release procedure remains in
 - [x] Complete the initial code-quality and Hex-readiness review.
 - [x] Make the TCK regression gate expect the 18 Java-specific unsupported
       FEEL cases.
-- [ ] Complete licensing and repository identity (files and CI complete;
-      ownership and public-repository checks remain).
+- [x] Complete licensing and repository identity.
 - [x] Configure both Hex packages.
 - [x] Refactor the main FEEL and DMN modules.
 - [x] Complete public API documentation.
@@ -35,9 +34,9 @@ Reasons:
   not required to use the same license.
 - Hex accepts `Apache-2.0` as a package license identifier.
 
-Before applying the license, confirm the correct legal person or company to
-name as the copyright holder and confirm that no employer or previous
-contributor has competing ownership rights.
+The confirmed copyright holder name is Koen Johannes Wilhelmus van Dijk.
+Confirmation of any employer or previous-contributor ownership claims remains
+the copyright holder's responsibility.
 
 ### Package order
 
@@ -66,9 +65,7 @@ depend on a compatible Hex version of `boxic_feel`; it must not ship with an
 
 ## WP-01: Licensing and repository identity
 
-- [ ] Confirm the Boxic copyright holder.
-      Blocked pending confirmation of the exact legal person or company name;
-      Git metadata alone is not sufficient legal confirmation.
+- [x] Confirm the Boxic copyright holder as Koen Johannes Wilhelmus van Dijk.
 - [x] Add the unmodified Apache-2.0 license text as `/LICENSE`.
 - [x] Add identical license files to `apps/boxic_feel/LICENSE` and
       `apps/boxic_dmn/LICENSE`.
@@ -77,11 +74,8 @@ depend on a compatible Hex version of `boxic_feel`; it must not ship with an
       pinned revision in the third-party notice.
 - [x] State that the TCK corpus is not included in either Hex package.
 - [x] Add a CI check that the three Boxic license files remain identical.
-- [ ] Make the canonical source repository publicly accessible.
-- [ ] Confirm all package links work without authentication.
-      Both repository items are blocked locally: GitHub currently returns 404
-      for the configured repository and the available `gh` credential is
-      invalid.
+- [x] Make the canonical source repository publicly accessible.
+- [x] Confirm all package links work without authentication.
 
 ### Acceptance criteria
 
@@ -307,10 +301,10 @@ Example assertion:
 
 ## WP-07: First publication
 
-- [ ] Reconfirm that the `boxic_feel` and `boxic_dmn` package names are
+- [x] Reconfirm that the `boxic_feel` and `boxic_dmn` package names are
       available.
-- [ ] Confirm the source repository and documentation links are public.
-- [ ] Confirm the Hex account, package ownership, two-factor authentication,
+- [x] Confirm the source repository and documentation links are public.
+- [x] Confirm the Hex account, package ownership, two-factor authentication,
       and publication key are ready.
 - [ ] Run every item in `RELEASE_CHECKLIST.md` on the exact release commit.
 - [ ] Inspect both final unpacked tarballs.
@@ -322,7 +316,7 @@ Example assertion:
 - [ ] Verify the `boxic_dmn` HexDocs site.
 - [ ] Create package-specific Git tags.
 - [ ] Create GitHub release notes.
-- [ ] Record the DMN specification version and TCK commit in both changelogs.
+- [x] Record the DMN specification version and TCK commit in both changelogs.
 
 ## Definition of done
 
@@ -332,8 +326,8 @@ Example assertion:
 - [x] HexDocs builds without warnings.
 - [x] Package-specific READMEs and changelogs are complete.
 - [x] No scaffold or internal work-package language remains in public modules.
-- [ ] Static analysis and all tests pass.
-- [ ] FEEL reports exactly the 18 known Java cases as unsupported.
-- [ ] DMN reports zero unsupported cases.
+- [x] Static analysis and all tests pass.
+- [x] FEEL reports exactly the 18 known Java cases as unsupported.
+- [x] DMN reports zero unsupported cases.
 - [x] Fresh external projects can install and execute both release archives.
 - [ ] Package metadata, public links, versions, tags, and release notes agree.
