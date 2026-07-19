@@ -47,7 +47,7 @@ defmodule Boxic.SmokeTestHexPackages do
 
     File.mkdir_p!(tarballs)
     File.cp!(feel_archive, Path.join(tarballs, "boxic_feel-0.1.0.tar"))
-    File.cp!(dmn_archive, Path.join(tarballs, "boxic_dmn-0.1.0.tar"))
+    File.cp!(dmn_archive, Path.join(tarballs, "boxic_dmn-0.2.0.tar"))
     copy_locked_packages!(root, tarballs)
     write_private_key!(private_key)
 
@@ -140,7 +140,7 @@ defmodule Boxic.SmokeTestHexPackages do
   defp smoke_test_dmn!(workspace, env) do
     project = Path.join(workspace, "dmn_consumer")
     create_project!(project, "dmn_consumer", "DmnConsumer", env)
-    write_mix_file!(project, "DmnConsumer", [{:boxic_dmn, "~> 0.1.0"}])
+    write_mix_file!(project, "DmnConsumer", [{:boxic_dmn, "~> 0.2.0"}])
     fetch_and_compile!(project, env)
 
     unless File.dir?(Path.join([project, "deps", "boxic_feel"])) do

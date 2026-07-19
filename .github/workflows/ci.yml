@@ -107,7 +107,7 @@ jobs:
 
       - name: Run application tests
         working-directory: apps/${{ matrix.app }}
-        run: mix test
+        run: mix test ${{ matrix.app == 'boxic_dmn_tck' && '--exclude compatibility' || '' }}
 
   coverage:
     name: Coverage / ${{ matrix.app }}
@@ -193,9 +193,17 @@ jobs:
             /tmp/boxic_feel.tar /tmp/boxic_dmn.tar
 
   compatibility:
-    name: Compatibility regression
+    name: Compatibility / ${{ matrix.suite }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: feel
+            baseline: compatibility/feel-implemented-0dbcaf9b.json
+          - suite: dmn
+            baseline: compatibility/dmn-implemented-0dbcaf9b.json
 
     steps:
       - uses: actions/checkout@v4
@@ -209,21 +217,17 @@ jobs:
       - name: Install dependencies
         run: mix deps.get
 
-      - name: Generate strict compatibility reports
-        run: |
-          mix tck --suite feel --profile implemented --report artifacts/feel-implemented --format json
-          mix tck --suite dmn --profile implemented --report artifacts/dmn-implemented --format json
+      - name: Generate strict compatibility report
+        run: mix tck --suite ${{ matrix.suite }} --profile implemented --report artifacts/${{ matrix.suite }}-implemented --format json
 
-      - name: Enforce compatibility regression gates (18 Java cases expected for FEEL)
-        run: |
-          mix run scripts/check_tck_regression.exs compatibility/feel-implemented-0dbcaf9b.json artifacts/feel-implemented
-          mix run scripts/check_tck_regression.exs compatibility/dmn-implemented-0dbcaf9b.json artifacts/dmn-implemented
+      - name: Enforce compatibility regression gate
+        run: mix run scripts/check_tck_regression.exs ${{ matrix.baseline }} artifacts/${{ matrix.suite }}-implemented
 
       - name: Retain compatibility reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: compatibility-reports-${{ github.run_id }}
+          name: compatibility-${{ matrix.suite }}-${{ github.run_id }}
           path: artifacts/
           if-no-files-found: error
           retention-days: 14

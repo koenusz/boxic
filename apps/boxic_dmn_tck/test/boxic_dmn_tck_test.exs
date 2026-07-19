@@ -172,6 +172,7 @@ defmodule Boxic.DMN.TCKTest do
   end
 
   @tag timeout: 900_000
+  @tag :compatibility
   test "implemented profile is an explicit passing baseline" do
     result = TCK.run(suite: "feel", profile: "implemented")
     expected_passes = 2_042
@@ -212,6 +213,7 @@ defmodule Boxic.DMN.TCKTest do
   end
 
   @tag timeout: 900_000
+  @tag :compatibility
   test "DMN implemented profile is an explicit passing decision-table baseline" do
     result = TCK.run(suite: "dmn", profile: "implemented")
 

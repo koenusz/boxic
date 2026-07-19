@@ -4,6 +4,7 @@ defmodule Boxic.InspectHexPackage do
   @outer_files ~w(VERSION CHECKSUM metadata.config contents.tar.gz)
   @required_files ~w(mix.exs README.md LICENSE CHANGELOG.md)
   @forbidden_prefixes ~w(test/ compatibility/ artifacts/ scripts/ tck/ vendor/)
+  @versions %{"boxic_feel" => "0.1.0", "boxic_dmn" => "0.2.0"}
 
   def run([app, archive]) when app in ~w(boxic_feel boxic_dmn) do
     archive = Path.expand(archive)
@@ -13,7 +14,7 @@ defmodule Boxic.InspectHexPackage do
 
     metadata = outer |> fetch!("metadata.config") |> consult_metadata!()
     assert_equal!("package name", metadata["name"], app)
-    assert_equal!("package version", metadata["version"], "0.1.0")
+    assert_equal!("package version", metadata["version"], Map.fetch!(@versions, app))
     assert_equal!("package licenses", metadata["licenses"], ["Apache-2.0"])
 
     files =
