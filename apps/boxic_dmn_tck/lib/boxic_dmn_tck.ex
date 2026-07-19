@@ -202,7 +202,7 @@ defmodule Boxic.DMN.TCK do
   defp execute_cases(cases, opts) do
     max_concurrency =
       Keyword.get_lazy(opts, :max_concurrency, fn ->
-        min(System.schedulers_online(), 8)
+        System.schedulers_online()
       end)
 
     cases
