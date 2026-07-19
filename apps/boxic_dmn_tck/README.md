@@ -28,6 +28,22 @@ mix tck --suite feel --all --soft-fail
 mix tck --suite dmn --all --soft-fail
 ```
 
+Audit the distinct XML-writer profile without evaluating the complete corpus:
+
+```bash
+mix tck.writer --profile implemented
+```
+
+The writer audit loads each distinct selected DMN model, applies serialization
+preflight, writes and reloads supported models, and verifies byte idempotence.
+It reports supported, explicitly rejected, and failed counts separately.
+Documents from a DMN namespace other than Boxic's pinned output version are
+expected rejections rather than implicit conversions.
+
+For the pinned revision and implemented profile, the writer audit finds 69
+distinct models: 0 supported, 69 rejected for `:dmn_version_mismatch`, and 0
+failed.
+
 Run a complete, non-blocking compatibility snapshot explicitly:
 
 ```bash

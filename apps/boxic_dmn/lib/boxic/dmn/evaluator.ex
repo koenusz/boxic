@@ -418,7 +418,7 @@ defmodule Boxic.DMN.Evaluator do
     case String.split(href, "#", parts: 2) do
       [namespace, _id] ->
         case Map.get(model.imports, namespace) do
-          alias_name when is_binary(alias_name) ->
+          %{name: alias_name} when is_binary(alias_name) ->
             Map.update(context, alias_name, %{node.name => value}, &Map.put(&1, node.name, value))
 
           _ ->
@@ -679,7 +679,7 @@ defmodule Boxic.DMN.Evaluator do
       case String.split(type, ".", parts: 2) do
         [alias_name, local_name] ->
           Enum.find_value(model.imports, fn
-            {namespace, ^alias_name} ->
+            {namespace, %{name: ^alias_name}} ->
               Map.get(model.item_definitions, namespace <> "#" <> local_name)
 
             _entry ->

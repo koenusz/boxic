@@ -10,6 +10,7 @@ defmodule Boxic.DMN do
   alias Boxic.DMN.Model
   alias Boxic.DMN.{Evaluator, Validator}
   alias Boxic.DMN.XML.Loader
+  alias Boxic.DMN.XML.Writer
 
   @typedoc "An error returned while reading or decoding a DMN document."
   @type load_error ::
@@ -67,6 +68,34 @@ defmodule Boxic.DMN do
   """
   @spec validate(Model.t()) :: :ok | {:error, [validation_error()]}
   defdelegate validate(model), to: Validator
+
+  @doc """
+  Encodes a normalized DMN model as deterministic DMN XML.
+
+  The model must originate from the pinned DMN profile and have complete
+  serialization fidelity. Supported options are:
+
+    * `:format` — `:pretty` (default) or `:compact`;
+    * `:xml_declaration` — whether to emit the UTF-8 XML declaration, defaulting
+      to `true`.
+
+  Pretty output uses two-space indentation, LF line endings, and one final
+  newline. Compact output contains no presentation whitespace. FEEL text is
+  escaped but otherwise preserved.
+  """
+  @spec encode_xml(Model.t(), keyword()) ::
+          {:ok, String.t()} | {:error, [Boxic.DMN.SerializationError.t()]}
+  def encode_xml(model, opts \\ []), do: Writer.encode(model, opts)
+
+  @doc """
+  Checks whether a normalized model can be encoded without data loss.
+
+  This runs the same model, option, version, fidelity, identifier, reference,
+  and unsupported-expression checks as `encode_xml/2` without producing XML.
+  """
+  @spec validate_serializable(Model.t(), keyword()) ::
+          :ok | {:error, [Boxic.DMN.SerializationError.t()]}
+  def validate_serializable(model, opts \\ []), do: Writer.validate_serializable(model, opts)
 
   @doc """
   Evaluates a named decision using the supplied input context.

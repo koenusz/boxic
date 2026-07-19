@@ -14,6 +14,7 @@ defmodule Boxic.DMN.XML.Loader do
   alias Boxic.DMN.Model.FunctionDefinition
   alias Boxic.DMN.Model.FilterExpression
   alias Boxic.DMN.Model.InformationRequirement
+  alias Boxic.DMN.Model.Import
   alias Boxic.DMN.Model.InputData
   alias Boxic.DMN.Model.InputClause
   alias Boxic.DMN.Model.Invocation
@@ -26,7 +27,60 @@ defmodule Boxic.DMN.XML.Loader do
   alias Boxic.DMN.Model.Relation
   alias Boxic.DMN.Model.RelationColumn
   alias Boxic.DMN.Model.Variable
+  alias Boxic.DMN.Compatibility
   alias Boxic.DMN.Imports
+
+  @normalized_element_names ~w(
+    definitions import itemDefinition itemComponent typeRef allowedValues
+    inputData variable decision informationRequirement requiredInput
+    requiredDecision knowledgeRequirement requiredKnowledge
+    businessKnowledgeModel encapsulatedLogic formalParameter decisionService
+    outputDecision inputDecision inputData literalExpression text decisionTable
+    input inputExpression inputValues output outputValues defaultOutputEntry
+    rule inputEntry outputEntry context contextEntry invocation binding parameter
+    functionDefinition relation column row list conditional if then else filter
+    in match for some every return satisfies
+  )
+
+  @retained_attributes %{
+    "definitions" => ~w(id name namespace expressionLanguage typeLanguage),
+    "import" => ~w(name namespace locationURI importType),
+    "itemDefinition" => ~w(id name isCollection),
+    "itemComponent" => ~w(id name isCollection),
+    "inputData" => ~w(id name),
+    "variable" => ~w(id name typeRef),
+    "decision" => ~w(id name),
+    "informationRequirement" => [],
+    "requiredInput" => ~w(href),
+    "requiredDecision" => ~w(href),
+    "knowledgeRequirement" => [],
+    "requiredKnowledge" => ~w(href),
+    "businessKnowledgeModel" => ~w(id name),
+    "encapsulatedLogic" => [],
+    "formalParameter" => ~w(id name typeRef),
+    "decisionService" => ~w(id name),
+    "outputDecision" => ~w(href),
+    "inputDecision" => ~w(href),
+    "literalExpression" => ~w(id typeRef expressionLanguage),
+    "decisionTable" => ~w(id hitPolicy aggregation outputLabel),
+    "input" => ~w(id label),
+    "inputExpression" => ~w(typeRef),
+    "output" => ~w(id name label typeRef),
+    "rule" => ~w(id),
+    "context" => ~w(id),
+    "contextEntry" => ~w(id),
+    "invocation" => ~w(id typeRef),
+    "parameter" => ~w(name),
+    "functionDefinition" => ~w(id),
+    "relation" => ~w(id),
+    "column" => ~w(id name typeRef),
+    "list" => ~w(id),
+    "conditional" => ~w(id),
+    "filter" => ~w(id),
+    "for" => ~w(id iteratorVariable),
+    "some" => ~w(id iteratorVariable),
+    "every" => ~w(id iteratorVariable)
+  }
 
   @doc """
   Loads a DMN document from either an XML string or a file path.
@@ -71,6 +125,17 @@ defmodule Boxic.DMN.XML.Loader do
         end)
 
       merged = Imports.merge(model, imported_models)
+
+      merged =
+        if imported_models == [] do
+          merged
+        else
+          add_fidelity_loss(
+            merged,
+            {:resolved_import_graph, "load_file/1 merged sibling DMN documents"}
+          )
+        end
+
       {:ok, %{merged | issues: merged.issues ++ Enum.reverse(import_issues)}}
     end
   end
@@ -116,6 +181,11 @@ defmodule Boxic.DMN.XML.Loader do
   end
 
   defp build_model(document) do
+    source_profile =
+      document
+      |> namespace_uri()
+      |> Compatibility.source_profile()
+
     definitions = %Definitions{
       id: attr(document, "id"),
       name: attr(document, "name"),
@@ -150,18 +220,105 @@ defmodule Boxic.DMN.XML.Loader do
 
     %Model{
       definitions: definitions,
+      source_profile: source_profile,
       imports:
         document
         |> nodes("./*[local-name()='import']")
-        |> Map.new(&{attr(&1, "namespace"), attr(&1, "name")}),
+        |> Map.new(fn import ->
+          namespace = attr(import, "namespace")
+
+          {namespace,
+           %Import{
+             name: attr(import, "name"),
+             namespace: namespace,
+             location_uri: attr(import, "locationURI"),
+             import_type: attr(import, "importType")
+           }}
+        end),
       input_data: input_data,
       decisions: decisions,
       bkms: bkms,
       item_definitions: item_definitions,
       decision_services: decision_services,
+      serialization_fidelity: serialization_fidelity(document),
       issues: input_issues ++ decision_issues ++ bkm_issues ++ service_issues
     }
   end
+
+  defp serialization_fidelity(document) do
+    known_losses =
+      [
+        {"description", "description"},
+        {"documentation", "documentation"},
+        {"extensionElements", "extension elements"},
+        {"authorityRequirement", "authority requirements"},
+        {"annotationClause", "decision-table annotation clauses"},
+        {"annotationEntry", "decision-table annotation entries"},
+        {"DMNDI", "DMNDI layout"},
+        {"DMNDiagram", "DMNDI layout"},
+        {"encapsulatedDecision", "encapsulated decision references"}
+      ]
+      |> Enum.flat_map(fn {local_name, label} ->
+        count = length(nodes(document, ".//*[local-name()='#{local_name}']"))
+        if count == 0, do: [], else: [{:discarded_xml_content, label, count}]
+      end)
+
+    unknown_losses =
+      document
+      |> nodes(".//*")
+      |> Enum.map(&local_name/1)
+      |> Enum.reject(&(&1 in @normalized_element_names))
+      |> Enum.frequencies()
+      |> Enum.sort()
+      |> Enum.map(fn {name, count} -> {:unsupported_xml_element, name, count} end)
+
+    attribute_losses =
+      document
+      |> nodes("descendant-or-self::*")
+      |> Enum.flat_map(&discarded_attributes/1)
+      |> Enum.frequencies()
+      |> Enum.sort()
+      |> Enum.map(fn {{element, attribute}, count} ->
+        {:discarded_xml_attribute, element, attribute, count}
+      end)
+
+    losses = Enum.uniq(known_losses ++ unknown_losses ++ attribute_losses)
+
+    case losses do
+      [] -> :complete
+      losses -> {:lossy, losses}
+    end
+  end
+
+  defp discarded_attributes(element) do
+    element_name = local_name(element)
+    retained = Map.get(@retained_attributes, element_name, [])
+
+    element
+    |> nodes("./@*")
+    |> Enum.flat_map(fn attribute ->
+      case attribute_identity(attribute) do
+        {nil, name} ->
+          if name in retained, do: [], else: [{element_name, name}]
+
+        {namespace, name} ->
+          [{element_name, "{#{namespace}}#{name}"}]
+      end
+    end)
+  end
+
+  defp attribute_identity(attribute) do
+    case elem(attribute, 2) do
+      {namespace, local_name} -> {to_string(namespace), to_string(local_name)}
+      local_name -> {nil, to_string(local_name)}
+    end
+  end
+
+  defp add_fidelity_loss(%Model{serialization_fidelity: :complete} = model, loss),
+    do: %{model | serialization_fidelity: {:lossy, [loss]}}
+
+  defp add_fidelity_loss(%Model{serialization_fidelity: {:lossy, losses}} = model, loss),
+    do: %{model | serialization_fidelity: {:lossy, losses ++ [loss]}}
 
   defp parse_item_definition(node) do
     function_item = node |> nodes("./*[local-name()='functionItem']") |> List.first()
@@ -524,10 +681,10 @@ defmodule Boxic.DMN.XML.Loader do
     end
   end
 
-  defp text_child(node), do: xpath_string(node, "./*[local-name()='text']")
+  defp text_child(node), do: xpath_raw_string(node, "./*[local-name()='text']")
 
   defp child_text(node, child),
-    do: xpath_string(node, "./*[local-name()='#{child}']/*[local-name()='text']")
+    do: xpath_raw_string(node, "./*[local-name()='#{child}']/*[local-name()='text']")
 
   defp child_text_value(node, child),
     do: xpath_string(node, "./*[local-name()='#{child}']/text()")
@@ -544,8 +701,24 @@ defmodule Boxic.DMN.XML.Loader do
     end
   end
 
+  defp xpath_raw_string(node, path) do
+    query = ~c"string(" ++ String.to_charlist(path) ++ ~c")"
+
+    case :xmerl_xpath.string(query, node) do
+      {:xmlObj, :string, value} -> value |> to_string() |> empty_to_nil()
+      value -> value |> to_string() |> empty_to_nil()
+    end
+  end
+
   defp local_name(node) do
     node |> xpath_string("local-name(.)")
+  end
+
+  defp namespace_uri(node) when is_tuple(node) do
+    case elem(node, 2) do
+      {namespace, _local_name} -> to_string(namespace)
+      _unqualified_name -> nil
+    end
   end
 
   defp struct_name(%module{}),

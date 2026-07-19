@@ -27,12 +27,14 @@ defmodule Boxic.DMN.Model do
 
   defstruct [
     :definitions,
+    :source_profile,
     imports: %{},
     decisions: %{},
     input_data: %{},
     bkms: %{},
     item_definitions: %{},
     decision_services: %{},
+    serialization_fidelity: :complete,
     issues: []
   ]
 
@@ -42,13 +44,27 @@ defmodule Boxic.DMN.Model do
           | {atom(), term(), term(), term()}
   @type t :: %__MODULE__{
           definitions: Definitions.t(),
-          imports: %{optional(String.t()) => String.t()},
+          source_profile: Boxic.DMN.Compatibility.source_profile() | nil,
+          imports: %{optional(String.t()) => Boxic.DMN.Model.Import.t()},
           decisions: %{optional(String.t()) => Boxic.DMN.Model.Decision.t()},
           input_data: %{optional(String.t()) => Boxic.DMN.Model.InputData.t()},
           bkms: map(),
           item_definitions: map(),
           decision_services: map(),
+          serialization_fidelity: :complete | {:lossy, [term()]},
           issues: [issue()]
+        }
+end
+
+defmodule Boxic.DMN.Model.Import do
+  @moduledoc "Normalized DMN import declaration."
+  defstruct [:name, :namespace, :location_uri, :import_type]
+
+  @type t :: %__MODULE__{
+          name: String.t() | nil,
+          namespace: String.t() | nil,
+          location_uri: String.t() | nil,
+          import_type: String.t() | nil
         }
 end
 
