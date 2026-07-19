@@ -6,9 +6,10 @@ on:
     branches: [main]
 
 jobs:
-  quality:
+  static-analysis:
+    name: Static analysis
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +38,26 @@ jobs:
       - name: Credo
         run: mix credo --strict
 
+      - name: Hex dependency retirement audit
+        run: mix hex.audit
+
+  dialyzer:
+    name: Dialyzer
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup latest supported Elixir and OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.0"
+          otp-version: "29.0.1"
+
+      - name: Install dependencies
+        run: mix deps.get
+
       - name: Cache Dialyzer PLTs
         uses: actions/cache@v4
         with:
@@ -46,21 +67,118 @@ jobs:
       - name: Dialyzer
         run: mix dialyzer
 
-      - name: Hex dependency retirement audit
-        run: mix hex.audit
+  application-tests:
+    name: ${{ matrix.app }} / OTP ${{ matrix.otp }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: boxic_feel
+            otp: "29.0.1"
+          - app: boxic_dmn
+            otp: "29.0.1"
+          - app: boxic_dmn_tck
+            otp: "29.0.1"
+          - app: boxic_feel
+            otp: "27.3"
+          - app: boxic_dmn
+            otp: "27.3"
 
-      - name: Unit tests
-        run: mix cmd mix test
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Coverage
-        run: |
-          cd apps/boxic_feel && mix test --cover
-          cd ../boxic_dmn && mix test --cover
+      - name: Setup Elixir and OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.0"
+          otp-version: ${{ matrix.otp }}
+
+      - name: Install XML tooling
+        if: matrix.app == 'boxic_dmn'
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Run application tests
+        working-directory: apps/${{ matrix.app }}
+        run: mix test
+
+  coverage:
+    name: Coverage / ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [boxic_feel, boxic_dmn]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup latest supported Elixir and OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.0"
+          otp-version: "29.0.1"
+
+      - name: Install XML tooling
+        if: matrix.app == 'boxic_dmn'
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Run coverage
+        working-directory: apps/${{ matrix.app }}
+        run: mix test --cover
+
+  documentation:
+    name: Documentation / ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [boxic_feel, boxic_dmn]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup latest supported Elixir and OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.0"
+          otp-version: "29.0.1"
+
+      - name: Install dependencies
+        run: mix deps.get
 
       - name: Build documentation
-        run: |
-          cd apps/boxic_feel && mix docs --warnings-as-errors
-          cd ../boxic_dmn && mix docs --warnings-as-errors
+        working-directory: apps/${{ matrix.app }}
+        run: mix docs --warnings-as-errors
+
+  package:
+    name: Hex package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup latest supported Elixir and OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.0"
+          otp-version: "29.0.1"
+
+      - name: Install dependencies
+        run: mix deps.get
 
       - name: Build and inspect Hex packages
         run: |
@@ -73,6 +191,23 @@ jobs:
         run: |
           mix run scripts/smoke_test_hex_packages.exs \
             /tmp/boxic_feel.tar /tmp/boxic_dmn.tar
+
+  compatibility:
+    name: Compatibility regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup latest supported Elixir and OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.0"
+          otp-version: "29.0.1"
+
+      - name: Install dependencies
+        run: mix deps.get
 
       - name: Generate strict compatibility reports
         run: |
@@ -92,36 +227,3 @@ jobs:
           path: artifacts/
           if-no-files-found: error
           retention-days: 14
-
-  supported-runtimes:
-    name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - elixir: "1.20.0"
-            otp: "27.3"
-          - elixir: "1.20.0"
-            otp: "29.0.1"
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Elixir and OTP
-        uses: erlef/setup-beam@v1
-        with:
-          elixir-version: ${{ matrix.elixir }}
-          otp-version: ${{ matrix.otp }}
-
-      - name: Install dependencies
-        run: mix deps.get
-
-      - name: Compile
-        run: mix compile --warnings-as-errors
-
-      - name: Run application tests
-        run: |
-          cd apps/boxic_feel && mix test
-          cd ../boxic_dmn && mix test
