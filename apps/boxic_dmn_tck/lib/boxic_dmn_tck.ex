@@ -181,9 +181,7 @@ defmodule Boxic.DMN.TCK do
       |> maybe_filter_group(opts)
       |> maybe_filter_label(opts)
 
-    results =
-      selected_cases
-      |> Enum.map(&Runner.execute/1)
+    results = execute_cases(selected_cases, opts)
 
     summary = summarize(results, length(cases), length(suite_cases))
     Reporter.write(results, summary, opts)
@@ -200,6 +198,21 @@ defmodule Boxic.DMN.TCK do
   def profile_groups("feel", "implemented"), do: @feel_implemented_groups
   def profile_groups("dmn", "implemented"), do: @dmn_implemented_groups
   def profile_groups(_suite, _profile), do: []
+
+  defp execute_cases(cases, opts) do
+    max_concurrency =
+      Keyword.get_lazy(opts, :max_concurrency, fn ->
+        min(System.schedulers_online(), 8)
+      end)
+
+    cases
+    |> Task.async_stream(&Runner.execute/1,
+      ordered: true,
+      max_concurrency: max_concurrency,
+      timeout: :infinity
+    )
+    |> Enum.map(fn {:ok, result} -> result end)
+  end
 
   defp maybe_filter_suite(cases, opts) do
     case Keyword.get(opts, :suite) do

@@ -72,6 +72,20 @@ defmodule Boxic.DMN.TCKTest do
     assert result.status in [:passed, :failed, :unsupported, :missing, :error]
   end
 
+  test "parallel execution preserves deterministic result order and statuses" do
+    serial = TCK.run(group: "0001-input-data-string", max_concurrency: 1)
+    parallel = TCK.run(group: "0001-input-data-string", max_concurrency: 4)
+
+    project = fn result ->
+      Enum.map(result.results, fn entry ->
+        {entry.case.group, entry.case.id, entry.case.decision_name, entry.status}
+      end)
+    end
+
+    assert project.(parallel) == project.(serial)
+    assert parallel.summary == serial.summary
+  end
+
   test "malformed test metadata becomes an explicit error case" do
     root = temporary_corpus_root()
     group = Path.join(root, "TestCases/compliance-level-3/broken-case")
