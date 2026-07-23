@@ -1,4 +1,5 @@
-<definitions id="library" name="library" namespace="urn:boxic:test:library">
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="library" name="library" namespace="urn:boxic:test:library">
   <itemDefinition name="Person">
     <itemComponent name="name"><typeRef>string</typeRef></itemComponent>
   </itemDefinition>

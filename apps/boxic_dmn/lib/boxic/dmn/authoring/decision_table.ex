@@ -8,6 +8,7 @@ defmodule Boxic.DMN.Authoring.DecisionTable do
 
   alias Boxic.DMN.AuthoringError
   alias Boxic.DMN.Model
+  alias Boxic.DMN.Validator
   alias Boxic.DMN.Model.{DecisionRule, DecisionTable, InputClause, OutputClause}
 
   @type result :: {:ok, Model.t()} | {:error, AuthoringError.t()}
@@ -249,6 +250,12 @@ defmodule Boxic.DMN.Authoring.DecisionTable do
   end
 
   defp update_table(model, decision_id, update) do
+    with :ok <- authoring_safe?(model) do
+      update_table_decision(model, decision_id, update)
+    end
+  end
+
+  defp update_table_decision(model, decision_id, update) do
     case Map.fetch(model.decisions, decision_id) do
       :error ->
         {:error, error(:decision_not_found, [:decisions, decision_id], "Decision was not found.")}
@@ -257,7 +264,25 @@ defmodule Boxic.DMN.Authoring.DecisionTable do
         case update.(table) do
           {:ok, updated_table} ->
             updated_decision = %{decision | expression: updated_table}
-            {:ok, %{model | decisions: Map.put(model.decisions, decision_id, updated_decision)}}
+
+            updated_model = %{
+              model
+              | decisions: Map.put(model.decisions, decision_id, updated_decision)
+            }
+
+            case Validator.validate(updated_model, for: :authoring) do
+              :ok ->
+                {:ok, updated_model}
+
+              {:error, diagnostics} ->
+                {:error,
+                 %AuthoringError{
+                   code: :invalid_authored_model,
+                   path: [:decisions, decision_id],
+                   message: "The edit would leave the model invalid for authoring.",
+                   details: %{diagnostics: Enum.map(diagnostics, &Boxic.DMN.Diagnostic.to_map/1)}
+                 }}
+            end
 
           {:error, %AuthoringError{}} = error ->
             error
@@ -271,6 +296,18 @@ defmodule Boxic.DMN.Authoring.DecisionTable do
            "Decision does not contain a decision table."
          )}
     end
+  end
+
+  defp authoring_safe?(%Model{serialization_fidelity: :complete}), do: :ok
+
+  defp authoring_safe?(%Model{serialization_fidelity: {:lossy, losses}}) do
+    {:error,
+     %AuthoringError{
+       code: :unsafe_fidelity,
+       path: [:serialization_fidelity],
+       message: "The model contains unretained XML content and cannot be edited safely.",
+       details: %{losses: losses}
+     }}
   end
 
   defp find_index(values, id, kind) do

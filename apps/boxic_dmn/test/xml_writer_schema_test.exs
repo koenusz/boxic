@@ -1,10 +1,10 @@
 defmodule Boxic.DMN.XMLWriterSchemaTest do
   use ExUnit.Case, async: true
 
-  @model_namespace "https://www.omg.org/spec/DMN/20211108/MODEL/"
+  @model_namespace "https://www.omg.org/spec/DMN/20230324/MODEL/"
 
   @tag :schema
-  test "generated decision-table XML validates against the vendored DMN 1.4 schema" do
+  test "generated decision-table XML validates against the packaged DMN 1.5 schema" do
     unless System.find_executable("xmllint") do
       flunk("xmllint is required for the focused schema compatibility test")
     end
@@ -40,7 +40,7 @@ defmodule Boxic.DMN.XMLWriterSchemaTest do
   @tag :schema
   test "generated imports, BKMs, boxed contexts, and decision services validate against the schema" do
     assert {:ok, model} =
-             Boxic.DMN.load_xml("""
+             Boxic.DMN.inspect_xml("""
              <definitions xmlns="#{@model_namespace}" id="defs" name="Boxed schema" namespace="urn:boxed">
                <import name="types" namespace="urn:types"
                  locationURI="types.dmn" importType="#{@model_namespace}"/>
@@ -82,7 +82,7 @@ defmodule Boxic.DMN.XMLWriterSchemaTest do
     on_exit(fn -> File.rm(path) end)
     File.write!(path, xml)
 
-    schema = Path.expand("../../../vendor/dmn-tck/TestCases/DMN14.xsd", __DIR__)
+    schema = Path.expand("../priv/schema/dmn-1.5/DMN15.xsd", __DIR__)
 
     {output, status} =
       System.cmd("xmllint", ["--noout", "--schema", schema, path], stderr_to_stdout: true)

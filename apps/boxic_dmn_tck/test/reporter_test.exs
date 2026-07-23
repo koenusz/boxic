@@ -16,25 +16,43 @@ defmodule Boxic.DMN.TCK.ReporterTest do
                report: path,
                format: "json",
                tck_commit: "abc123",
+               source_commit: "def456",
+               source_dirty: true,
                suite: "feel",
                profile: "implemented"
              )
 
     payload = path |> File.read!() |> Jason.decode!()
 
-    assert payload["metadata"]["report_schema_version"] == "1.0"
+    assert payload["metadata"]["report_schema_version"] == "2.1"
     assert payload["metadata"]["dmn_tck_commit"] == "abc123"
+    assert payload["metadata"]["source_commit"] == "def456"
+    assert payload["metadata"]["source_dirty"] == true
     assert payload["metadata"]["suite"] == "feel"
+    assert payload["metadata"]["engine_version"] == "0.1.0"
+    assert payload["metadata"]["feel_package_version"] == "0.1.0"
+    assert payload["metadata"]["dmn_package_version"] == "0.2.0"
+    assert payload["metadata"]["dmn_specification_version"] == "1.5"
+
+    assert payload["metadata"]["dmn_model_namespace"] ==
+             "https://www.omg.org/spec/DMN/20230324/MODEL/"
+
+    assert payload["metadata"]["feel_namespace"] ==
+             "https://www.omg.org/spec/DMN/20230324/FEEL/"
 
     assert Map.take(payload["metadata"], [
              "engine_version",
              "feel_package_version",
              "dmn_package_version",
              "dmn_specification_version",
+             "dmn_model_namespace",
+             "feel_namespace",
+             "source_commit",
+             "source_dirty",
              "elixir_version",
              "otp_version"
            ])
-           |> map_size() == 6
+           |> map_size() == 10
 
     assert {:ok, _date, _offset} = DateTime.from_iso8601(payload["metadata"]["execution_date"])
     assert payload["summary"]["compatibility_percent"] == 100.0
@@ -63,18 +81,24 @@ defmodule Boxic.DMN.TCK.ReporterTest do
              Reporter.write([sample_result()], sample_summary(),
                report: base,
                format: "both",
-               tck_commit: "abc123"
+               tck_commit: "abc123",
+               source_commit: "def456",
+               source_dirty: true
              )
 
     assert File.exists?(base <> ".json")
     csv = File.read!(base <> ".csv")
 
     assert csv =~
-             "report_schema_version,engine_version,feel_package_version,dmn_package_version,dmn_tck_commit,dmn_specification_version,elixir_version,otp_version,execution_date,suite,profile,compatibility_percent,suite_coverage_percent,coverage_percent,group,id,status,decision,expected_error,expected,actual,error,case_file,compliance_level"
+             "report_schema_version,engine_version,feel_package_version,dmn_package_version,dmn_tck_commit,dmn_specification_version,dmn_model_namespace,feel_namespace,source_commit,source_dirty,elixir_version,otp_version,execution_date,suite,profile,compatibility_percent,suite_coverage_percent,coverage_percent,group,id,status,decision,expected_error,expected,actual,error,case_file,compliance_level"
 
     assert csv =~ "\"abc123\""
+    assert csv =~ "\"def456\""
     assert csv =~ "\"report-group\""
     refute csv =~ "%Decimal{"
+
+    [header, row] = String.split(csv, "\n", trim: true)
+    assert length(String.split(header, ",")) == length(Regex.scan(~r/"(?:[^"]|"")*"/, row))
   end
 
   defp sample_result do

@@ -25,34 +25,48 @@ defmodule Boxic.FEEL.ExternalFunctionsTest do
     )
 
     external("explode", {HostFunctions, :explode}, parameters: [:feel], returns: :feel)
+    external("count", {HostFunctions, :identity}, parameters: [:number], returns: :number)
   end
 
-  test "an allowlisted Elixir function is callable from FEEL and may shadow a built-in" do
-    context = Registry.external_functions() |> ExternalFunctions.to_context()
+  test "an allowlisted Elixir function is callable from an isolated environment" do
+    assert {:ok, result} =
+             Boxic.FEEL.evaluate("max(123.45, 456.78)", %{}, external_functions: Registry)
 
-    assert {:ok, result} = Boxic.FEEL.evaluate("max(123.45, 456.78)", context)
     assert Decimal.equal?(result, Decimal.new("456.78"))
 
-    assert {:ok, cosine} = Boxic.FEEL.evaluate("cos(123)", context)
+    assert {:ok, cosine} =
+             Boxic.FEEL.evaluate("cos(123)", %{}, external_functions: Registry)
+
     assert Decimal.equal?(Decimal.round(cosine, 8), Decimal.new("-0.88796891"))
+
+    assert {:ok, count} =
+             Boxic.FEEL.evaluate("count(7)", %{},
+               external_functions: Registry,
+               external_function_precedence: :registered
+             )
+
+    assert Decimal.equal?(count, Decimal.new(7))
   end
 
   test "the boundary converts integer, character, and vararg values" do
-    context = ExternalFunctions.to_context(Registry)
+    opts = [external_functions: Registry]
 
-    assert {:ok, integer} = Boxic.FEEL.evaluate("integer(456)", context)
+    assert {:ok, integer} = Boxic.FEEL.evaluate("integer(456)", %{}, opts)
     assert Decimal.equal?(integer, Decimal.new(456))
-    assert {:ok, "a"} = Boxic.FEEL.evaluate(~S|char("a")|, context)
-    assert {:ok, "foo bar baz"} = Boxic.FEEL.evaluate(~S|join("foo", "bar", "baz")|, context)
+    assert {:ok, "a"} = Boxic.FEEL.evaluate(~S|char("a")|, %{}, opts)
+    assert {:ok, "foo bar baz"} = Boxic.FEEL.evaluate(~S|join("foo", "bar", "baz")|, %{}, opts)
   end
 
   test "invalid arity, conversion, and host exceptions remain structured FEEL errors" do
-    context = ExternalFunctions.to_context(Registry)
+    opts = [external_functions: Registry]
 
-    assert {:error, %{code: :arity_error}} = Boxic.FEEL.evaluate("max(1)", context)
-    assert {:error, %{code: :type_error}} = Boxic.FEEL.evaluate(~S|char("abc")|, context)
+    assert {:error, %{code: :arity_error}} = Boxic.FEEL.evaluate("max(1)", %{}, opts)
+    assert {:error, %{code: :type_error}} = Boxic.FEEL.evaluate(~S|char("abc")|, %{}, opts)
 
-    assert {:error, %{code: :external_function_error, message: "host failure"}} =
-             Boxic.FEEL.evaluate("explode(1)", context)
+    assert {:error,
+            %{
+              code: :external_function_error,
+              message: "registered external function failed"
+            }} = Boxic.FEEL.evaluate("explode(1)", %{}, opts)
   end
 end

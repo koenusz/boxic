@@ -145,7 +145,7 @@ defmodule Boxic.DMN.XML.SerializationValidator do
   defp profile_errors(%Model{source_profile: profile}) do
     pinned = Compatibility.pinned_profile().source_profile
 
-    if profile in [nil, pinned] do
+    if profile == pinned do
       []
     else
       [

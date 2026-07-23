@@ -6,8 +6,9 @@ defmodule Boxic.DMN.TCK.Reporter do
   alias Boxic.FEEL.Duration
   alias Boxic.FEEL.DateTime, as: FeelDateTime
   alias Boxic.FEEL.Time, as: FeelTime
+  alias Boxic.DMN.Compatibility
 
-  @schema_version "1.0"
+  @schema_version "2.1"
   @formats [:csv, :json, :both]
 
   @spec write(list(), map(), keyword()) :: :ok
@@ -104,13 +105,19 @@ defmodule Boxic.DMN.TCK.Reporter do
     do: %{"type" => "opaque", "encoding" => "erlang_external_term", "value" => encode_term(value)}
 
   defp metadata(opts) do
+    profile = Compatibility.pinned_profile()
+
     %{
       report_schema_version: @schema_version,
-      engine_version: "0.1.0",
-      feel_package_version: "0.1.0",
-      dmn_package_version: "0.1.0",
+      engine_version: application_version(:boxic_dmn_tck),
+      feel_package_version: application_version(:boxic_feel),
+      dmn_package_version: application_version(:boxic_dmn),
       dmn_tck_commit: tck_commit(opts),
-      dmn_specification_version: "1.4",
+      dmn_specification_version: profile.version,
+      dmn_model_namespace: profile.model_namespace,
+      feel_namespace: profile.feel_namespace,
+      source_commit: source_commit(opts),
+      source_dirty: source_dirty?(opts),
       elixir_version: System.version(),
       otp_version: otp_version(),
       execution_date: DateTime.utc_now() |> DateTime.to_iso8601(),
@@ -127,6 +134,10 @@ defmodule Boxic.DMN.TCK.Reporter do
       "dmn_package_version",
       "dmn_tck_commit",
       "dmn_specification_version",
+      "dmn_model_namespace",
+      "feel_namespace",
+      "source_commit",
+      "source_dirty",
       "elixir_version",
       "otp_version",
       "execution_date",
@@ -157,6 +168,10 @@ defmodule Boxic.DMN.TCK.Reporter do
             metadata.dmn_package_version,
             metadata.dmn_tck_commit,
             metadata.dmn_specification_version,
+            metadata.dmn_model_namespace,
+            metadata.feel_namespace,
+            metadata.source_commit,
+            metadata.source_dirty,
             metadata.elixir_version,
             metadata.otp_version,
             metadata.execution_date,
@@ -231,6 +246,32 @@ defmodule Boxic.DMN.TCK.Reporter do
       commit ->
         commit
     end
+  end
+
+  defp application_version(application) do
+    case Application.spec(application, :vsn) do
+      nil -> "unknown"
+      version -> to_string(version)
+    end
+  end
+
+  defp source_commit(opts) do
+    Keyword.get_lazy(opts, :source_commit, fn ->
+      case System.cmd("git", ["rev-parse", "HEAD"], stderr_to_stdout: true) do
+        {commit, 0} -> String.trim(commit)
+        _error -> "unknown"
+      end
+    end)
+  end
+
+  defp source_dirty?(opts) do
+    Keyword.get_lazy(opts, :source_dirty, fn ->
+      case System.cmd("git", ["status", "--porcelain"], stderr_to_stdout: true) do
+        {"", 0} -> false
+        {_status, 0} -> true
+        _error -> nil
+      end
+    end)
   end
 
   defp write_file(path, contents) do

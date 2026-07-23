@@ -109,20 +109,20 @@ and passes them as a list in the final Elixir argument.
 
 ### Call from FEEL
 
-Use the registry directly with FEEL:
+Supply the registry through the evaluator environment:
 
 ```elixir
-context =
-  MyApp.DecisionFunctions
-  |> Boxic.FEEL.ExternalFunctions.to_context()
+opts = [external_functions: MyApp.DecisionFunctions]
 
-{:ok, maximum} = Boxic.FEEL.evaluate("maximum(123, 456)", context)
+{:ok, maximum} = Boxic.FEEL.evaluate("maximum(123, 456)", %{}, opts)
 {:ok, "foo bar baz"} =
-  Boxic.FEEL.evaluate(~S|joinWords("foo", "bar", "baz")|, context)
+  Boxic.FEEL.evaluate(~S|joinWords("foo", "bar", "baz")|, %{}, opts)
 ```
 
-Registered context names take precedence over FEEL built-ins, so applications
-may deliberately replace a built-in for a particular evaluation.
+The registry is not merged into ordinary FEEL input data. Built-ins take
+precedence by default. Applications that deliberately replace a built-in for a
+particular trusted evaluation must pass
+`external_function_precedence: :registered`.
 
 ### Call from DMN
 
@@ -141,6 +141,10 @@ is host configuration and is not encoded in DMN XML:
 
 ```elixir
 Boxic.DMN.evaluate(model, "Price", inputs,
+  external_functions: MyApp.DecisionFunctions
+)
+
+Boxic.DMN.evaluate_service(model, "Pricing Service", arguments,
   external_functions: MyApp.DecisionFunctions
 )
 ```

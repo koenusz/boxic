@@ -6,7 +6,7 @@ defmodule Boxic.FEEL do
   an already parsed syntax tree through `evaluate_ast/2`.
   """
 
-  alias Boxic.FEEL.{AST, Error, Evaluator, Parser, Tokenizer}
+  alias Boxic.FEEL.{AST, Error, Evaluator, ExternalFunctions, Parser, Tokenizer}
 
   @type ast ::
           {:literal, term()}
@@ -73,10 +73,26 @@ defmodule Boxic.FEEL do
     with {:ok, ast} <- parse(expression), do: evaluate_ast(ast, context)
   end
 
+  @doc "Evaluates FEEL with a trusted external-function environment."
+  @spec evaluate(String.t(), context(), keyword()) :: {:ok, term()} | {:error, Error.t()}
+  def evaluate(expression, context, opts)
+      when is_binary(expression) and is_map(context) and is_list(opts) do
+    with {:ok, context} <- evaluator_context(context, opts),
+         {:ok, ast} <- parse(expression) do
+      evaluate_ast(ast, context)
+    end
+  end
+
   @doc "Evaluates an AST previously returned by `parse/1`."
   @spec evaluate_ast(ast(), context()) :: {:ok, term()} | {:error, Error.t()}
   def evaluate_ast(ast, context) when is_map(context) do
     with :ok <- AST.validate(ast), do: Evaluator.eval(ast, context)
+  end
+
+  @doc "Evaluates a parsed AST with a trusted external-function environment."
+  @spec evaluate_ast(ast(), context(), keyword()) :: {:ok, term()} | {:error, Error.t()}
+  def evaluate_ast(ast, context, opts) when is_map(context) and is_list(opts) do
+    with {:ok, context} <- evaluator_context(context, opts), do: evaluate_ast(ast, context)
   end
 
   @doc """
@@ -90,5 +106,35 @@ defmodule Boxic.FEEL do
   def evaluate_unary_test(test_expression, value, context \\ %{})
       when is_binary(test_expression) and is_map(context) do
     Evaluator.evaluate_unary_test(test_expression, value, context)
+  end
+
+  @doc "Evaluates a unary test with a trusted external-function environment."
+  @spec evaluate_unary_test(String.t(), term(), context(), keyword()) ::
+          {:ok, boolean()} | {:error, Error.t()}
+  def evaluate_unary_test(test_expression, value, context, opts)
+      when is_binary(test_expression) and is_map(context) and is_list(opts) do
+    with {:ok, context} <- evaluator_context(context, opts) do
+      Evaluator.evaluate_unary_test(test_expression, value, context)
+    end
+  end
+
+  defp evaluator_context(context, opts) do
+    case Keyword.get(opts, :external_functions) do
+      nil ->
+        {:ok, context}
+
+      registry ->
+        precedence = Keyword.get(opts, :external_function_precedence, :builtins)
+
+        if precedence in [:builtins, :registered] do
+          {:ok, ExternalFunctions.attach(context, registry, precedence)}
+        else
+          {:error,
+           Error.new(
+             :invalid_option,
+             "external_function_precedence must be :builtins or :registered"
+           )}
+        end
+    end
   end
 end

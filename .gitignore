@@ -24,6 +24,11 @@ erl_crash.dump
 /artifacts/*.csv
 /artifacts/*.json
 
+# Compatibility keeps compact JSON regression baselines. Full per-case CSV
+# exports and writer audit dumps are generated evidence, not source fixtures.
+/compatibility/*.csv
+/compatibility/writer-audit-*.json
+
 # Boxic vendors the official TCK input corpus, not the upstream website,
 # historical vendor results, Java runners, examples, or repository tooling.
 # Keep vendor/dmn-tck/TestCases, its schemas, license, README, PINNED_COMMIT,

@@ -96,10 +96,11 @@ defmodule Boxic.FEEL.ExternalFunctions do
   end
 
   @doc """
-  Converts a registry value or registry module into a FEEL evaluation context.
+  Compatibility adapter that merges a registry into a FEEL context.
 
-      context = Boxic.FEEL.ExternalFunctions.to_context(MyApp.DecisionFunctions)
+  New code should pass `external_functions:` to `Boxic.FEEL.evaluate/3`.
   """
+  @deprecated "pass external_functions: to Boxic.FEEL.evaluate/3 instead"
   @spec to_context(t() | module()) :: map()
   def to_context(module) when is_atom(module), do: module.external_functions() |> to_context()
 
@@ -108,6 +109,42 @@ defmodule Boxic.FEEL.ExternalFunctions do
       {name,
        {:external_function, fn args -> invoke(%__MODULE__{entries: entries}, name, args) end}}
     end)
+  end
+
+  @doc false
+  def attach(context, registry, precedence \\ :builtins)
+      when is_map(context) and precedence in [:builtins, :registered] do
+    registry = if is_atom(registry), do: registry.external_functions(), else: registry
+    Map.put(context, __MODULE__, {registry, precedence})
+  end
+
+  @doc false
+  def resolve(context, name) when is_map(context) and is_binary(name) do
+    builtin =
+      case Boxic.FEEL.Builtins.resolve(name) do
+        {:ok, nil} -> :error
+        found -> found
+      end
+
+    case Map.get(context, __MODULE__) do
+      {%__MODULE__{entries: entries} = registry, precedence} ->
+        external =
+          if Map.has_key?(entries, name) do
+            {:ok, {:external_function, fn args -> invoke(registry, name, args) end}}
+          else
+            :error
+          end
+
+        case {precedence, external, builtin} do
+          {:registered, {:ok, _} = found, _builtin} -> found
+          {_precedence, _external, {:ok, _} = found} -> found
+          {_precedence, {:ok, _} = found, _builtin} -> found
+          _ -> :error
+        end
+
+      _ ->
+        builtin
+    end
   end
 
   @doc """
@@ -209,10 +246,11 @@ defmodule Boxic.FEEL.ExternalFunctions do
   defp safe_call(callback) do
     {:ok, callback.()}
   rescue
-    exception -> {:error, Error.new(:external_function_error, Exception.message(exception))}
+    _exception ->
+      {:error, Error.new(:external_function_error, "registered external function failed")}
   catch
-    kind, reason ->
-      {:error, Error.new(:external_function_error, Exception.format_banner(kind, reason))}
+    _kind, _reason ->
+      {:error, Error.new(:external_function_error, "registered external function failed")}
   end
 
   defp from_elixir(value, :feel), do: {:ok, value}

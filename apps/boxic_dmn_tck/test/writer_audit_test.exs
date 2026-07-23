@@ -20,7 +20,7 @@ defmodule Boxic.DMN.TCK.WriterAuditTest do
     File.write!(
       supported,
       """
-      <definitions xmlns="https://www.omg.org/spec/DMN/20211108/MODEL/"
+      <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
         id="defs" name="Supported" namespace="urn:supported">
         <decision id="decision" name="Decision">
           <literalExpression><text>1</text></literalExpression>
@@ -35,6 +35,7 @@ defmodule Boxic.DMN.TCK.WriterAuditTest do
       <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
         id="defs" name="Rejected" namespace="urn:rejected">
         <decision id="decision" name="Decision">
+          <description>Boxic does not claim documentation round trips.</description>
           <literalExpression><text>1</text></literalExpression>
         </decision>
       </definitions>

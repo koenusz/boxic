@@ -1,5 +1,7 @@
-<definitions id="main" name="main" namespace="urn:boxic:test:main">
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="main" name="main" namespace="urn:boxic:test:main">
   <import namespace="urn:boxic:test:library" name="lib"
+    locationURI="library.dmn"
     importType="https://www.omg.org/spec/DMN/20230324/MODEL/"/>
   <inputData id="person" name="Person Input">
     <variable name="Person Input" typeRef="lib.Person"/>

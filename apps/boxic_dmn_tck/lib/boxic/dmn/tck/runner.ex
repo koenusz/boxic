@@ -5,6 +5,7 @@ defmodule Boxic.DMN.TCK.Runner do
 
   alias Boxic.DMN.TCK.Case
   alias Boxic.DMN.TCK.Comparator
+  alias Boxic.DMN.TCK.ModelLoader
 
   @type result :: %{case: Case.t(), status: atom(), actual: term(), error: term()}
 
@@ -77,7 +78,7 @@ defmodule Boxic.DMN.TCK.Runner do
   end
 
   defp evaluate(test_case) do
-    with {:ok, model} <- Boxic.DMN.load(test_case.model_path) do
+    with {:ok, %{source_profile: :dmn_1_5} = model} <- ModelLoader.load(test_case.model_path) do
       if test_case.metadata[:case_type] == "decisionService" do
         case Boxic.DMN.evaluate_service(
                model,

@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "profile": "implemented",
+    "suite": "feel",
+    "elixir_version": "1.20.0",
+    "otp_version": "29",
+    "feel_namespace": "https://www.omg.org/spec/DMN/20230324/FEEL/",
+    "dmn_model_namespace": "https://www.omg.org/spec/DMN/20230324/MODEL/",
+    "dmn_package_version": "0.2.0",
+    "dmn_specification_version": "1.5",
+    "dmn_tck_commit": "a162739daee85fb28e9d3bec2f306505992dae0f",
+    "engine_version": "0.1.0",
+    "feel_package_version": "0.1.0",
+    "report_schema_version": "2.1"
+  },
+  "summary": {
+    "corpus_total": 3545,
+    "suite_total": 2060,
+    "excluded_by_suite": 1485,
+    "total": 2060,
+    "disabled": 0,
+    "passed": 2042,
+    "failed": 0,
+    "unsupported": 18,
+    "missing": 0,
+    "error": 0,
+    "supported": 2042,
+    "compatibility_percent": 100.0,
+    "suite_coverage_percent": 99.13,
+    "coverage_percent": 57.6
+  },
+  "results": [
+    {"group": "0076-feel-external-java", "id": "boxed_001", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "incorrect_001", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "incorrect_002", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "incorrect_003", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_001", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_002", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_003", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_004", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_005", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_006", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_007", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_007_a", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_008", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_009", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_010", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_011", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "literal_012", "status": "unsupported"},
+    {"group": "0076-feel-external-java", "id": "varargs_001", "status": "unsupported"}
+  ]
+}

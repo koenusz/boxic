@@ -4,7 +4,7 @@ defmodule Boxic.DMN.DecisionTableAuthoringTest do
   alias Boxic.DMN.Authoring.DecisionTable, as: Authoring
   alias Boxic.DMN.Model.{DecisionRule, InputClause, OutputClause}
 
-  @model_namespace "https://www.omg.org/spec/DMN/20211108/MODEL/"
+  @model_namespace "https://www.omg.org/spec/DMN/20230324/MODEL/"
 
   setup do
     xml = """
@@ -149,5 +149,19 @@ defmodule Boxic.DMN.DecisionTableAuthoringTest do
 
     assert Enum.at(reloaded.decisions["decision"].expression.rules, 0).output_entries ==
              ["\"edited\""]
+  end
+
+  test "refuses edits when inspection found unretained XML content", %{model: model} do
+    model = %{model | serialization_fidelity: {:lossy, [:documentation]}}
+
+    assert {:error, error} =
+             Authoring.put_output_entry(model,
+               decision_id: "decision",
+               rule_id: "rule_a",
+               output_id: "output_a",
+               text: "\"unsafe\""
+             )
+
+    assert error.code == :unsafe_fidelity
   end
 end

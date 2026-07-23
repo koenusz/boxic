@@ -28,7 +28,8 @@ defmodule Boxic.DMN.Evaluator do
   @spec evaluate(Model.t(), String.t(), map()) :: {:ok, term()} | {:error, evaluation_error()}
   def evaluate(%Model{} = model, decision_name, context \\ %{})
       when is_binary(decision_name) and is_map(context) do
-    with {:ok, context} <- coerce_input_context(model, context),
+    with :ok <- Validator.validate(model, for: :evaluation),
+         {:ok, context} <- coerce_input_context(model, context),
          {:ok, decision} <- find_decision(model, decision_name),
          {:ok, value, _memo} <- evaluate_decision(model, decision, context, %{}, %{}) do
       {:ok, value}
@@ -39,26 +40,51 @@ defmodule Boxic.DMN.Evaluator do
           {:ok, term()} | {:error, evaluation_error()}
   def evaluate(%Model{} = model, decision_name, context, opts)
       when is_binary(decision_name) and is_map(context) and is_list(opts) do
-    external_context =
-      case Keyword.get(opts, :external_functions) do
-        nil -> %{}
-        registry -> ExternalFunctions.to_context(registry)
-      end
-
-    evaluate(model, decision_name, Map.merge(context, external_context))
+    with {:ok, context} <- attach_external_functions(context, opts) do
+      evaluate(model, decision_name, context)
+    end
   end
 
   @spec evaluate_service(Model.t(), String.t(), map() | list()) ::
           {:ok, term()} | {:error, evaluation_error()}
   def evaluate_service(%Model{} = model, service_name, arguments)
       when is_binary(service_name) and (is_map(arguments) or is_list(arguments)) do
-    with {:ok, service} <- find_service(model, service_name) do
+    evaluate_service(model, service_name, arguments, [])
+  end
+
+  @spec evaluate_service(Model.t(), String.t(), map() | list(), keyword()) ::
+          {:ok, term()} | {:error, evaluation_error()}
+  def evaluate_service(%Model{} = model, service_name, arguments, opts)
+      when is_binary(service_name) and (is_map(arguments) or is_list(arguments)) and is_list(opts) do
+    with :ok <- Validator.validate(model, for: :evaluation),
+         {:ok, outer_context} <- attach_external_functions(%{}, opts),
+         {:ok, service} <- find_service(model, service_name) do
       args =
         if is_map(arguments),
           do: Enum.map(arguments, fn {name, value} -> {:named_arg, name, value} end),
           else: arguments
 
-      invoke_decision_service(model, service, %{}, args)
+      invoke_decision_service(model, service, outer_context, args)
+    end
+  end
+
+  defp attach_external_functions(context, opts) do
+    case Keyword.get(opts, :external_functions) do
+      nil ->
+        {:ok, context}
+
+      registry ->
+        precedence = Keyword.get(opts, :external_function_precedence, :builtins)
+
+        if precedence in [:builtins, :registered] do
+          {:ok, ExternalFunctions.attach(context, registry, precedence)}
+        else
+          {:error,
+           Boxic.FEEL.Error.new(
+             :invalid_option,
+             "external_function_precedence must be :builtins or :registered"
+           )}
+        end
     end
   end
 

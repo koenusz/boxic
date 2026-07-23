@@ -9,6 +9,7 @@ defmodule Boxic.DMN.TCK.WriterAudit do
 
   alias Boxic.DMN.TCK
   alias Boxic.DMN.TCK.Loader
+  alias Boxic.DMN.TCK.ModelLoader
 
   @type result :: %{
           path: Path.t(),
@@ -61,8 +62,7 @@ defmodule Boxic.DMN.TCK.WriterAudit do
   end
 
   defp audit_path(path) do
-    with {:ok, xml} <- File.read(path),
-         {:ok, model} <- Boxic.DMN.load_xml(xml) do
+    with {:ok, model} <- ModelLoader.load(path) do
       case Boxic.DMN.validate_serializable(model) do
         :ok ->
           encode_and_reload(path, model)

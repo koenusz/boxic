@@ -1,6 +1,6 @@
 defmodule Boxic.FEEL.Evaluator do
   @moduledoc false
-  alias Boxic.FEEL.{Builtins, Duration, Error, Function, Range, Semantics}
+  alias Boxic.FEEL.{Builtins, Duration, Error, ExternalFunctions, Function, Range, Semantics}
   alias Boxic.FEEL.DateTime, as: FeelDateTime
   alias Boxic.FEEL.Time, as: FeelTime
 
@@ -198,6 +198,16 @@ defmodule Boxic.FEEL.Evaluator do
     {:ok, %Function{params: params, body: body, closure: context}}
   end
 
+  def eval({:call, {:identifier, name}, args_ast}, context) do
+    with {:ok, callee} <- resolve_callable(name, context),
+         {:ok, arg_values} <- eval_call_args(args_ast, context, []) do
+      case callee do
+        {:builtin, "range"} -> apply_range_function(arg_values, context)
+        _ -> apply_function(callee, arg_values)
+      end
+    end
+  end
+
   def eval({:call, callee_ast, args_ast}, context) do
     with {:ok, callee} <- eval(callee_ast, context),
          {:ok, arg_values} <- eval_call_args(args_ast, context, []) do
@@ -309,6 +319,19 @@ defmodule Boxic.FEEL.Evaluator do
 
   defp decimal_value(%Decimal{} = value), do: value
   defp decimal_value(value), do: decimal_new(value)
+
+  defp resolve_callable(name, context) do
+    case ExternalFunctions.resolve(context, name) do
+      {:ok, callable} ->
+        {:ok, callable}
+
+      :error ->
+        case Map.fetch(context, name) do
+          {:ok, callable} -> {:ok, callable}
+          :error -> {:error, error(:unknown_identifier, "unknown identifier #{inspect(name)}")}
+        end
+    end
+  end
 
   defp eval_call_args([], _context, acc), do: {:ok, Enum.reverse(acc)}
 

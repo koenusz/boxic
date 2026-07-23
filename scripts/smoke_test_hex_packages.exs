@@ -149,7 +149,8 @@ defmodule Boxic.SmokeTestHexPackages do
 
     File.write!(Path.join(project, "smoke.exs"), """
     xml = \"""
-    <definitions id="example" name="Example" namespace="https://example.com/boxic">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="example" name="Example" namespace="https://example.com/boxic">
       <decision id="greeting" name="Greeting">
         <literalExpression>
           <text>"Hello " + name</text>
@@ -159,7 +160,8 @@ defmodule Boxic.SmokeTestHexPackages do
     \"""
 
     {:ok, model} = Boxic.DMN.load_xml(xml)
-    :ok = Boxic.DMN.validate(model)
+    :ok = Boxic.DMN.validate(model, for: :evaluation)
+    :ok = Boxic.DMN.validate(model, for: :serialization)
     {:ok, "Hello Ada"} = Boxic.DMN.evaluate(model, "Greeting", %{"name" => "Ada"})
     """)
 

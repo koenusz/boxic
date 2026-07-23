@@ -201,9 +201,9 @@ jobs:
       matrix:
         include:
           - suite: feel
-            baseline: compatibility/feel-implemented-0dbcaf9b.json
+            baseline: compatibility/feel-implemented-a162739d.json
           - suite: dmn
-            baseline: compatibility/dmn-implemented-0dbcaf9b.json
+            baseline: compatibility/dmn-implemented-a162739d.json
 
     steps:
       - uses: actions/checkout@v6

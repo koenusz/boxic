@@ -18,7 +18,7 @@ defmodule Boxic.DMN.TCKTest do
            }
 
     pin_path = Path.expand("../../../vendor/dmn-tck/PINNED_COMMIT", __DIR__)
-    assert File.read!(pin_path) |> String.trim() == "0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13"
+    assert File.read!(pin_path) |> String.trim() == "a162739daee85fb28e9d3bec2f306505992dae0f"
 
     cases = Loader.load_all()
 
@@ -160,7 +160,8 @@ defmodule Boxic.DMN.TCKTest do
     File.write!(
       model_path,
       """
-      <definitions id="error_defs" name="error model" namespace="urn:test">
+      <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+        id="error_defs" name="error model" namespace="urn:test">
         <decision id="d1" name="Decision">
           <literalExpression><text>1 +</text></literalExpression>
         </decision>

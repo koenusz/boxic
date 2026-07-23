@@ -10,6 +10,7 @@ defmodule Boxic.DMN do
   alias Boxic.DMN.Model
   alias Boxic.DMN.{Evaluator, Validator}
   alias Boxic.DMN.XML.Loader
+  alias Boxic.DMN.XML.SchemaValidator
   alias Boxic.DMN.XML.Writer
 
   @typedoc "An error returned while reading or decoding a DMN document."
@@ -41,6 +42,7 @@ defmodule Boxic.DMN do
       Boxic.DMN.load("<definitions id=\"example\" namespace=\"urn:example\"/>")
   """
   @spec load(String.t()) :: {:ok, Model.t()} | {:error, load_error()}
+  @deprecated "use load_xml/1, load_xml/2, or load_file/1"
   defdelegate load(path_or_xml), to: Loader
 
   @doc """
@@ -56,8 +58,26 @@ defmodule Boxic.DMN do
 
       Boxic.DMN.load_xml("<definitions id=\"example\" namespace=\"urn:example\"/>")
   """
-  @spec load_xml(String.t()) :: {:ok, Model.t()} | {:error, load_error()}
+  @spec load_xml(String.t()) ::
+          {:ok, Model.t()} | {:error, load_error() | [Boxic.DMN.Diagnostic.t()]}
   defdelegate load_xml(xml), to: Loader
+
+  @doc "Loads DMN XML using only an explicitly supplied import map or resolver."
+  @spec load_xml(String.t(), keyword()) ::
+          {:ok, Model.t()} | {:error, load_error() | [Boxic.DMN.Diagnostic.t()]}
+  defdelegate load_xml(xml, opts), to: Loader
+
+  @doc """
+  Inspects a well-formed DMN document without claiming schema validity,
+  executability, or writability.
+  """
+  @spec inspect_xml(String.t()) ::
+          {:ok, Model.t()} | {:error, load_error() | [Boxic.DMN.Diagnostic.t()]}
+  defdelegate inspect_xml(xml), to: Loader
+
+  @doc "Validates XML against the packaged normative DMN 1.5 schema family."
+  @spec validate_xml_schema(String.t()) :: :ok | {:error, [Boxic.DMN.Diagnostic.t()]}
+  defdelegate validate_xml_schema(xml), to: SchemaValidator, as: :validate
 
   @doc """
   Validates a normalized DMN model.
@@ -68,6 +88,15 @@ defmodule Boxic.DMN do
   """
   @spec validate(Model.t()) :: :ok | {:error, [validation_error()]}
   defdelegate validate(model), to: Validator
+
+  @doc """
+  Validates an existing model for one public capability.
+
+  Supported capabilities are `:evaluation`, `:serialization`, and `:authoring`.
+  This form returns stable `Boxic.DMN.Diagnostic` values.
+  """
+  @spec validate(Model.t(), keyword()) :: :ok | {:error, [Boxic.DMN.Diagnostic.t()]}
+  defdelegate validate(model, opts), to: Validator
 
   @doc """
   Encodes a normalized DMN model as deterministic DMN XML.
@@ -126,4 +155,9 @@ defmodule Boxic.DMN do
   @spec evaluate_service(Model.t(), String.t(), map() | list()) ::
           {:ok, term()} | {:error, evaluation_error()}
   defdelegate evaluate_service(model, service_name, arguments), to: Evaluator
+
+  @doc "Evaluates a decision service with the same trusted host-function options as `evaluate/4`."
+  @spec evaluate_service(Model.t(), String.t(), map() | list(), keyword()) ::
+          {:ok, term()} | {:error, evaluation_error()}
+  defdelegate evaluate_service(model, service_name, arguments, opts), to: Evaluator
 end

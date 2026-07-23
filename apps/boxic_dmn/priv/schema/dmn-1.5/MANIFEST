@@ -1,0 +1,14 @@
+DMN specification: 1.5
+Adoption: August 2024
+Normative source: https://www.omg.org/spec/DMN/1.5
+
+SHA-256:
+6c26cd5d9066a8c669ef27414df9f1d5558a2a954f9a8afa0ffd323e24310153  DC.xsd
+a0f51e004950a2742337934591d949f6c3ca2810c3ec47186a4aea911ae10c7c  DI.xsd
+3ffdbc068815b0d94094a43c5c26b1fa1151e09d4a6a83ac637f347c637181f1  DMN15.xsd
+6e78fe9621d7360c96609523afef3da5ba4fee6a2ad53ec4cd12d126c7795c50  DMNDI15.xsd
+
+These normative machine-readable files are published by the Object Management
+Group with the DMN 1.5 specification. They remain subject to the notices and
+terms at the normative source and are not relicensed by Boxic's package
+LICENSE.

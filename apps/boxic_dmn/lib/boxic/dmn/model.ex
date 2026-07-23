@@ -107,7 +107,7 @@ end
 
 defmodule Boxic.DMN.Model.LiteralExpression do
   @moduledoc "Normalized FEEL literal expression."
-  defstruct [:id, :text, :type_ref, expression_language: "feel"]
+  defstruct [:id, :text, :type_ref, :expression_language]
 
   @type t :: %__MODULE__{
           id: String.t() | nil,

@@ -1,0 +1,7 @@
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="documented_definitions" name="Documented" namespace="urn:boxic:corpus:documented">
+  <decision id="documented" name="Documented">
+    <description>Content that the normalized writer does not retain.</description>
+    <literalExpression id="documented_expression"><text>1</text></literalExpression>
+  </decision>
+</definitions>

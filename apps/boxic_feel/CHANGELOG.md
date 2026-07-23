@@ -2,6 +2,13 @@
 
 All notable changes to `boxic_feel` will be documented in this file.
 
+## Unreleased
+
+- Add options-aware expression, AST, and unary-test evaluation with a private
+  trusted external-function environment.
+- Keep built-ins ahead of registered functions by default, allow explicit host
+  opt-in to registered precedence, and redact host exceptions.
+
 The project follows Semantic Versioning. While the package is below version
 1.0.0, breaking changes increment the minor version.
 

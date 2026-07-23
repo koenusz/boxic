@@ -30,6 +30,18 @@ defmodule Boxic.InspectHexPackage do
       unless required in files, do: Mix.raise("#{app} package is missing #{required}")
     end)
 
+    if app == "boxic_dmn" do
+      Enum.each(
+        ~w(CONFORMANCE.md CONSTRUCT_CAPABILITY_LEDGER.md
+           priv/schema/dmn-1.5/DMN15.xsd priv/schema/dmn-1.5/DMNDI15.xsd
+           priv/schema/dmn-1.5/DI.xsd priv/schema/dmn-1.5/DC.xsd
+           priv/schema/dmn-1.5/MANIFEST),
+        fn required ->
+          unless required in files, do: Mix.raise("#{app} package is missing #{required}")
+        end
+      )
+    end
+
     unless Enum.any?(files, &String.starts_with?(&1, "lib/")) do
       Mix.raise("#{app} package contains no library source")
     end

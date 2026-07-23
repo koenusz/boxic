@@ -3,7 +3,22 @@ defmodule Boxic.DMN.Imports do
   alias Boxic.DMN.Model
 
   def merge(%Model{} = model, candidates) do
-    merge_imported_models(model, imported_closure(model, candidates))
+    imported_models = imported_closure(model, candidates)
+    merged = merge_imported_models(model, imported_models)
+
+    if imported_models == [] do
+      merged
+    else
+      loss = {:resolved_import_graph, "imported models are merged for evaluation only"}
+
+      fidelity =
+        case merged.serialization_fidelity do
+          :complete -> {:lossy, [loss]}
+          {:lossy, losses} -> {:lossy, losses ++ [loss]}
+        end
+
+      %{merged | serialization_fidelity: fidelity}
+    end
   end
 
   defp merge_imported_models(model, imported_models) do

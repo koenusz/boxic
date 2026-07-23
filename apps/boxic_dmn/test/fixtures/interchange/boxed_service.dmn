@@ -1,0 +1,17 @@
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="service_definitions" name="Service corpus" namespace="urn:boxic:corpus:service">
+  <decision id="boxed" name="Boxed">
+    <context id="boxed_context">
+      <contextEntry id="base_entry">
+        <variable id="base_variable" name="base" typeRef="number"/>
+        <literalExpression id="base_expression"><text>1</text></literalExpression>
+      </contextEntry>
+      <contextEntry id="result_entry">
+        <literalExpression id="result_expression"><text>base + 1</text></literalExpression>
+      </contextEntry>
+    </context>
+  </decision>
+  <decisionService id="boxed_service" name="Boxed Service">
+    <outputDecision href="#boxed"/>
+  </decisionService>
+</definitions>

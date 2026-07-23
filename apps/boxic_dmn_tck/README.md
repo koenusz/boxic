@@ -82,7 +82,7 @@ replacement feature separate:
   Java interoperability.
 
 The Elixir replacement supports compile-time registration, typed argument and
-return conversion, variadic calls, built-in shadowing, structured host errors,
+return conversion, variadic calls, explicit precedence, structured host errors,
 and explicit injection into DMN evaluation. Model text can invoke registered
 names but cannot select arbitrary modules or functions. Usage instructions and
 complete examples are in the

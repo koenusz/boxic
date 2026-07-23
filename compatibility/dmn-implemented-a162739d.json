@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "profile": "implemented",
+    "suite": "dmn",
+    "elixir_version": "1.20.0",
+    "otp_version": "29",
+    "feel_namespace": "https://www.omg.org/spec/DMN/20230324/FEEL/",
+    "dmn_model_namespace": "https://www.omg.org/spec/DMN/20230324/MODEL/",
+    "dmn_package_version": "0.2.0",
+    "dmn_specification_version": "1.5",
+    "dmn_tck_commit": "a162739daee85fb28e9d3bec2f306505992dae0f",
+    "engine_version": "0.1.0",
+    "feel_package_version": "0.1.0",
+    "report_schema_version": "2.1"
+  },
+  "summary": {
+    "corpus_total": 3545,
+    "suite_total": 1485,
+    "excluded_by_suite": 2060,
+    "total": 1485,
+    "disabled": 0,
+    "passed": 1485,
+    "failed": 0,
+    "unsupported": 0,
+    "missing": 0,
+    "error": 0,
+    "supported": 1485,
+    "compatibility_percent": 100.0,
+    "suite_coverage_percent": 100.0,
+    "coverage_percent": 41.89
+  },
+  "results": []
+}

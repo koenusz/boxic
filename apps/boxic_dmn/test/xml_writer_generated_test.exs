@@ -113,7 +113,7 @@ defmodule Boxic.DMN.XMLWriterGeneratedTest do
         name: "Generated #{policy}",
         namespace: "urn:generated:#{String.downcase(policy)}"
       },
-      source_profile: :dmn_1_4,
+      source_profile: :dmn_1_5,
       serialization_fidelity: :complete,
       decisions: %{
         "decision" => %Decision{id: "decision", name: "Decision", expression: table}

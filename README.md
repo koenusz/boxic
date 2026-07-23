@@ -6,7 +6,7 @@ also nods to DMN's boxed expressions—decision tables, contexts, relations, and
 other visual forms that make executable decisions understandable.
 
 Boxic is a native Elixir implementation of the Decision Model and Notation
-(DMN) 1.4 standard and its Friendly Enough Expression Language (FEEL). It is an
+(DMN) 1.5 standard and its Friendly Enough Expression Language (FEEL). It is an
 umbrella project containing:
 
 - `boxic_feel`, the FEEL parser, evaluator, standard library, and Elixir
@@ -37,8 +37,8 @@ Evaluate FEEL directly:
 Load and evaluate a DMN model:
 
 ```elixir
-{:ok, model} = Boxic.DMN.load("priv/decisions/pricing.dmn")
-:ok = Boxic.DMN.validate(model)
+{:ok, model} = Boxic.DMN.load_file("priv/decisions/pricing.dmn")
+:ok = Boxic.DMN.validate(model, for: :evaluation)
 
 {:ok, price} =
   Boxic.DMN.evaluate(model, "Final Price", %{
@@ -180,7 +180,7 @@ standard spaced names such as `string length` and `date and time`.
 
 Boxic replaces Java reflection with an explicit, allowlisted BEAM integration.
 Trusted applications can register Elixir functions with typed argument and
-return conversion, variadic parameters, built-in shadowing, and structured
+return conversion, variadic parameters, explicit precedence, and structured
 error handling, then inject that registry into FEEL or DMN evaluation. Model
 text cannot resolve arbitrary modules, atoms, or functions.
 
@@ -193,8 +193,9 @@ defmodule MyApp.DecisionFunctions do
     returns: :number
 end
 
-context = Boxic.FEEL.ExternalFunctions.to_context(MyApp.DecisionFunctions)
-Boxic.FEEL.evaluate(~S|risk score(42, "gold")|, context)
+Boxic.FEEL.evaluate(~S|risk score(42, "gold")|, %{},
+  external_functions: MyApp.DecisionFunctions
+)
 
 Boxic.DMN.evaluate(model, "Risk", inputs,
   external_functions: MyApp.DecisionFunctions
@@ -206,14 +207,15 @@ for boundary types, variadic functions, trust guidance, and complete examples.
 
 ## DMN reference
 
-`Boxic.DMN.load/1` accepts either a DMN XML string or a file path. Loading
-normalizes XML namespaces into stable Elixir model structs; `validate/1`
-checks structural and reference integrity before execution. File-based loading
-also resolves namespace imports from sibling `.dmn` files.
+`Boxic.DMN.load_xml/1` and `load_file/1` are strict DMN 1.5 schema, profile,
+import, and model boundaries. `inspect_xml/1` provides best-effort inspection
+without promising execution or serialization. File loading resolves only
+declared relative imports; in-memory loading accepts explicit import sources
+through `load_xml/2` and never scans the filesystem or network.
 
 ### Supported model features
 
-- DMN 1.4 namespace-qualified definitions and metadata;
+- DMN 1.5 namespace-qualified definitions and metadata;
 - input data, item definitions, nested components, collections, and allowed
   values;
 - decisions and information requirements with dependency ordering, memoization,
@@ -225,8 +227,7 @@ also resolves namespace imports from sibling `.dmn` files.
 - namespace imports and qualified references across models;
 - typed input coercion, including recursively typed collections and contexts;
 - normalized multiword and punctuation-bearing FEEL names;
-- multiple-output decision tables, output defaults, allowed output values, and
-  rule annotations.
+- multiple-output decision tables, output defaults, and allowed output values.
 
 ### Decision tables
 
@@ -260,7 +261,7 @@ Evaluation resolves the decision by DMN ID or name and supplies inputs by DMN
 name:
 
 ```elixir
-{:ok, model} = Boxic.DMN.load(xml)
+{:ok, model} = Boxic.DMN.load_xml(xml)
 {:ok, %{"rate" => Decimal.new("0.20")}} =
   Boxic.DMN.evaluate(model, "Discount", %{"Customer Tier" => "gold"})
 ```
@@ -285,6 +286,8 @@ services.
 Validation reports malformed XML, invalid definitions, duplicate IDs or names,
 unresolved references, empty expressions, malformed table rules, unsupported
 policies, invalid aggregations, and invalid decision-service references.
+`validate/2` reports these through stable diagnostics for evaluation,
+serialization, and authoring capabilities independently.
 
 ## Testing and compliance
 
@@ -313,8 +316,9 @@ mix tck --all --soft-fail --report artifacts/tck-full --format both
 
 ### Current compatibility report
 
-The committed reports were generated on Elixir 1.19.1 / OTP 28 against DMN
-1.4 TCK commit `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13`.
+The committed baselines were generated on Elixir 1.20.0 / OTP 29 against the
+native DMN 1.5 corpus at TCK commit
+`a162739daee85fb28e9d3bec2f306505992dae0f`.
 
 | Suite | Passed | Unsupported | Failed / missing / error | Suite coverage | Supported-scope compatibility |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -336,10 +340,10 @@ The allowlisted Elixir external-function registry supplies the equivalent host
 integration for Elixir applications without pretending to implement Java
 interop.
 
-The source reports are
-[`compatibility/feel-implemented-0dbcaf9b.json`](compatibility/feel-implemented-0dbcaf9b.json)
+The compact regression baselines are
+[`compatibility/feel-implemented-a162739d.json`](compatibility/feel-implemented-a162739d.json)
 and
-[`compatibility/dmn-implemented-0dbcaf9b.json`](compatibility/dmn-implemented-0dbcaf9b.json).
+[`compatibility/dmn-implemented-a162739d.json`](compatibility/dmn-implemented-a162739d.json).
 See [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) for the compatibility delta and
 release procedure.
 

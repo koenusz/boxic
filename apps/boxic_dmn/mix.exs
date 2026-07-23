@@ -55,12 +55,13 @@ defmodule BoxicDmn.MixProject do
   end
 
   defp description do
-    "A native Elixir loader, validator, and evaluator for Decision Model and Notation 1.4 models."
+    "A native Elixir loader, validator, and evaluator for Decision Model and Notation 1.5 models."
   end
 
   defp package do
     [
-      files: ~w(lib mix.exs README.md LICENSE CHANGELOG.md),
+      files:
+        ~w(lib priv mix.exs README.md LICENSE CHANGELOG.md CONFORMANCE.md CONSTRUCT_CAPABILITY_LEDGER.md),
       licenses: ["Apache-2.0"],
       links: %{
         "Changelog" => "#{@source_url}/blob/main/apps/boxic_dmn/CHANGELOG.md",
@@ -73,13 +74,19 @@ defmodule BoxicDmn.MixProject do
   defp docs do
     [
       main: "readme",
-      extras: ["README.md", "CHANGELOG.md"],
+      extras: [
+        "README.md",
+        "CONFORMANCE.md",
+        "CONSTRUCT_CAPABILITY_LEDGER.md",
+        "CHANGELOG.md"
+      ],
       source_ref: "v#{@version}",
       groups_for_modules: [
         "Public API": [
           Boxic.DMN,
           Boxic.DMN.Authoring.DecisionTable,
           Boxic.DMN.AuthoringError,
+          Boxic.DMN.Diagnostic,
           Boxic.DMN.SerializationError
         ],
         "Normalized model": ~r/^Boxic\.DMN\.Model/

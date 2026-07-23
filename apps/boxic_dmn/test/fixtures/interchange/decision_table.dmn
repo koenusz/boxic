@@ -1,0 +1,24 @@
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="table_definitions" name="Table corpus" namespace="urn:boxic:corpus:table">
+  <inputData id="age" name="Age">
+    <variable id="age_variable" name="Age" typeRef="number"/>
+  </inputData>
+  <decision id="classification" name="Classification">
+    <variable id="classification_variable" name="Classification" typeRef="string"/>
+    <informationRequirement><requiredInput href="#age"/></informationRequirement>
+    <decisionTable id="classification_table" hitPolicy="UNIQUE">
+      <input id="age_input">
+        <inputExpression typeRef="number"><text>Age</text></inputExpression>
+      </input>
+      <output id="classification_output" name="classification" typeRef="string"/>
+      <rule id="adult_rule">
+        <inputEntry><text>&gt;= 18</text></inputEntry>
+        <outputEntry><text>"adult"</text></outputEntry>
+      </rule>
+      <rule id="minor_rule">
+        <inputEntry><text>&lt; 18</text></inputEntry>
+        <outputEntry><text>"minor"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

@@ -1,0 +1,7 @@
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="literal_definitions" name="Literal corpus" namespace="urn:boxic:corpus:literal">
+  <decision id="literal_decision" name="Literal Decision">
+    <variable id="literal_variable" name="Literal Decision" typeRef="number"/>
+    <literalExpression id="literal_expression"><text>1</text></literalExpression>
+  </decision>
+</definitions>

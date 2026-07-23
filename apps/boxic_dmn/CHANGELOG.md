@@ -5,6 +5,21 @@ All notable changes to `boxic_dmn` will be documented in this file.
 The project follows Semantic Versioning. While the package is below version
 1.0.0, breaking changes increment the minor version.
 
+## Unreleased
+
+- Make formally released DMN 1.5 (`20230324`) the sole executable and emitted
+  profile; retain explicit best-effort inspection for older documents.
+- Add strict schema/profile/model loading, packaged normative schemas, bounded
+  secure XML handling, and stable public diagnostics.
+- Replace sibling scanning with declared, confined file imports and explicit
+  in-memory import maps/resolvers.
+- Centralize definitions/local FEEL language inheritance and preserve omitted
+  declarations in the normalized model.
+- Add capability-specific validation and decision-service evaluator options.
+- Isolate trusted external functions from model input, define built-in
+  precedence, and redact host failures.
+- Publish the conformance contract and construct capability ledger.
+
 ## 0.2.0 - 2026-07-19
 
 - Add deterministic DMN 1.4 XML encoding through `Boxic.DMN.encode_xml/2`.

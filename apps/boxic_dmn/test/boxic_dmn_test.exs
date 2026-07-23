@@ -20,7 +20,7 @@ defmodule Boxic.DMNTest do
 
   test "loads a namespace-qualified literal decision into normalized structs" do
     xml = """
-    <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/"
+    <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20230324/MODEL/"
       id="defs" name="demo" namespace="urn:demo">
       <dmn:inputData id="customer" name="Customer">
         <dmn:variable id="customer_var" name="Customer" typeRef="string"/>
@@ -37,7 +37,7 @@ defmodule Boxic.DMNTest do
     </dmn:definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert model.definitions.id == "defs"
     assert model.definitions.namespace == "urn:demo"
     assert %InputData{name: "Customer"} = model.input_data["customer"]
@@ -56,7 +56,8 @@ defmodule Boxic.DMNTest do
 
   test "evaluation accepts an explicit external-function registry" do
     xml = """
-    <definitions id="defs" name="external" namespace="urn:external">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="external" namespace="urn:external">
       <decision id="decision" name="Decision">
         <literalExpression><text>max(123, 456)</text></literalExpression>
       </decision>
@@ -71,6 +72,73 @@ defmodule Boxic.DMNTest do
     assert Decimal.equal?(result, Decimal.new(456))
   end
 
+  test "decision services receive the isolated external-function environment" do
+    xml = """
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="service external" namespace="urn:service-external">
+      <decision id="decision" name="Decision">
+        <literalExpression><text>max(123, 456)</text></literalExpression>
+      </decision>
+      <decisionService id="service" name="Service">
+        <outputDecision href="#decision"/>
+      </decisionService>
+    </definitions>
+    """
+
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
+
+    assert {:ok, result} =
+             Boxic.DMN.evaluate_service(model, "Service", [],
+               external_functions: ExternalRegistry
+             )
+
+    assert Decimal.equal?(result, Decimal.new(456))
+  end
+
+  test "external-function environment reaches BKMs and decision-table outputs" do
+    xml = """
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="nested external" namespace="urn:nested-external">
+      <businessKnowledgeModel id="choose" name="choose">
+        <variable id="choose_variable" name="choose"/>
+        <encapsulatedLogic id="choose_logic">
+          <formalParameter id="left_parameter" name="left" typeRef="number"/>
+          <formalParameter id="right_parameter" name="right" typeRef="number"/>
+          <literalExpression id="choose_expression"><text>max(left, right)</text></literalExpression>
+        </encapsulatedLogic>
+      </businessKnowledgeModel>
+      <decision id="bkm_decision" name="BKM Decision">
+        <knowledgeRequirement><requiredKnowledge href="#choose"/></knowledgeRequirement>
+        <literalExpression id="bkm_expression"><text>choose(1, 2)</text></literalExpression>
+      </decision>
+      <decision id="table_decision" name="Table Decision">
+        <decisionTable id="table" hitPolicy="UNIQUE">
+          <input id="table_input"><inputExpression><text>1</text></inputExpression></input>
+          <output id="table_output" name="result" typeRef="number"/>
+          <rule id="table_rule">
+            <inputEntry><text>-</text></inputEntry>
+            <outputEntry><text>max(3, 4)</text></outputEntry>
+          </rule>
+        </decisionTable>
+      </decision>
+    </definitions>
+    """
+
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
+
+    assert {:ok, bkm_result} =
+             Boxic.DMN.evaluate(model, "BKM Decision", %{}, external_functions: ExternalRegistry)
+
+    assert Decimal.equal?(bkm_result, Decimal.new(2))
+
+    assert {:ok, table_result} =
+             Boxic.DMN.evaluate(model, "Table Decision", %{},
+               external_functions: ExternalRegistry
+             )
+
+    assert Decimal.equal?(table_result, Decimal.new(4))
+  end
+
   test "validator reports missing metadata and unresolved references" do
     xml = """
     <definitions id="defs" name="demo">
@@ -81,7 +149,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.inspect_xml(xml)
     assert {:error, errors} = Boxic.DMN.validate(model)
     assert {:missing_attribute, :definitions, :namespace} in errors
     assert {:missing_attribute, {:decision, "decision_1"}, :name} in errors
@@ -95,7 +163,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(malformed_table)
+    assert {:ok, model} = Boxic.DMN.inspect_xml(malformed_table)
     assert {:error, errors} = Boxic.DMN.validate(model)
     assert {:missing_table_component, {:decision_table, "table", :inputs}} in errors
     assert {:missing_table_component, {:decision_table, "table", :outputs}} in errors
@@ -107,14 +175,17 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(empty)
+    assert {:ok, model} = Boxic.DMN.inspect_xml(empty)
     assert {:error, errors} = Boxic.DMN.validate(model)
     assert {:missing_expression_text, "empty"} in errors
   end
 
   test "loader rejects malformed XML, non-definitions roots, and duplicate IDs" do
-    assert {:error, :invalid_xml} = Boxic.DMN.load("<definitions>")
-    assert {:error, :invalid_definitions_document} = Boxic.DMN.load("<decision/>")
+    assert {:error, [%Boxic.DMN.Diagnostic{code: :invalid_xml}]} =
+             apply(Boxic.DMN, :load, ["<definitions>"])
+
+    assert {:error, :invalid_definitions_document} =
+             apply(Boxic.DMN, :load, ["<decision/>"])
 
     duplicates = """
     <definitions id="defs" name="demo" namespace="urn:demo">
@@ -123,14 +194,15 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(duplicates)
+    assert {:ok, model} = Boxic.DMN.inspect_xml(duplicates)
     assert {:error, errors} = Boxic.DMN.validate(model)
     assert {:duplicate_id, "same"} in errors
   end
 
   test "evaluates literal decision dependencies and injects input data by DMN name" do
     xml = """
-    <definitions id="defs" name="dependency model" namespace="urn:dependencies">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="dependency model" namespace="urn:dependencies">
       <inputData id="input_amount" name="Amount">
         <variable name="Amount" typeRef="number"/>
       </inputData>
@@ -145,7 +217,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert :ok = Boxic.DMN.validate(model)
 
     assert {:ok, %Decimal{} = result} =
@@ -157,7 +229,8 @@ defmodule Boxic.DMNTest do
 
   test "detects cyclic decision dependencies during execution" do
     xml = """
-    <definitions id="defs" name="cycle" namespace="urn:cycle">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="cycle" namespace="urn:cycle">
       <decision id="a" name="A">
         <informationRequirement><requiredDecision href="#b"/></informationRequirement>
         <literalExpression><text>B</text></literalExpression>
@@ -169,14 +242,15 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert :ok = Boxic.DMN.validate(model)
     assert {:error, {:cyclic_decision_dependency, "a"}} = Boxic.DMN.evaluate(model, "A")
   end
 
   test "parses and evaluates a unique decision table with multiple outputs and defaults" do
     xml = """
-    <definitions id="defs" name="table" namespace="urn:table">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="table" namespace="urn:table">
       <inputData id="age" name="Age"><variable name="Age" typeRef="number"/></inputData>
       <decision id="category" name="Category">
         <informationRequirement><requiredInput href="#age"/></informationRequirement>
@@ -199,7 +273,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert :ok = Boxic.DMN.validate(model)
 
     assert {:ok, %{"label" => "adult", "adult" => true}} =
@@ -222,7 +296,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.inspect_xml(xml)
     assert {:error, errors} = Boxic.DMN.validate(model)
     assert {:unsupported_hit_policy, "invalid", "CUSTOM"} in errors
     assert {:entry_count_mismatch, "bad", :input_entries, 1, 0} in errors
@@ -230,7 +304,8 @@ defmodule Boxic.DMNTest do
 
   test "collect max aggregates all matching numeric outputs" do
     xml = """
-    <definitions id="defs" name="collect max" namespace="urn:table">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="collect max" namespace="urn:table">
       <inputData id="score" name="Score"><variable name="Score" typeRef="number"/></inputData>
       <decision id="maximum" name="Maximum">
         <informationRequirement><requiredInput href="#score"/></informationRequirement>
@@ -244,7 +319,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert :ok = Boxic.DMN.validate(model)
 
     assert {:ok, %Decimal{} = result} =
@@ -255,7 +330,8 @@ defmodule Boxic.DMNTest do
 
   test "evaluation coerces legacy lexical inputs and normalizes punctuation in FEEL names" do
     xml = """
-    <definitions id="defs" name="legacy inputs" namespace="urn:legacy">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="legacy inputs" namespace="urn:legacy">
       <inputData id="amount" name="Requested-Amount">
         <variable name="Requested-Amount" typeRef="number"/>
       </inputData>
@@ -266,14 +342,15 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert {:ok, result} = Boxic.DMN.evaluate(model, "Double", %{"Requested-Amount" => "21"})
     assert Decimal.equal?(result, Decimal.new(42))
   end
 
   test "normalizes multiword names in nested input contexts" do
     xml = """
-    <definitions id="defs" name="nested names" namespace="urn:nested-names">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="nested names" namespace="urn:nested-names">
       <inputData id="flight" name="Flight"><variable name="Flight"/></inputData>
       <decision id="number" name="Flight Number">
         <informationRequirement><requiredInput href="#flight"/></informationRequirement>
@@ -286,7 +363,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
 
     assert {:ok, "UA456"} =
              Boxic.DMN.evaluate(model, "Flight Number", %{
@@ -301,7 +378,8 @@ defmodule Boxic.DMNTest do
 
   test "coerces recursively typed collection components" do
     xml = """
-    <definitions id="defs" name="recursive item" namespace="urn:recursive-item">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="recursive item" namespace="urn:recursive-item">
       <itemDefinition name="Node">
         <itemComponent name="children" isCollection="true"><typeRef>Node</typeRef></itemComponent>
         <itemComponent name="value"><typeRef>number</typeRef></itemComponent>
@@ -314,7 +392,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
 
     context = %{
       "Tree" => %{
@@ -329,7 +407,8 @@ defmodule Boxic.DMNTest do
 
   test "business knowledge models can call themselves recursively" do
     xml = """
-    <definitions id="defs" name="recursive bkm" namespace="urn:recursive-bkm">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="recursive bkm" namespace="urn:recursive-bkm">
       <businessKnowledgeModel id="count_down" name="count down">
         <variable name="count down" typeRef="number"/>
         <encapsulatedLogic>
@@ -344,7 +423,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert {:ok, result} = Boxic.DMN.evaluate(model, "Result")
     assert Decimal.equal?(result, Decimal.new(0))
   end
@@ -363,12 +442,16 @@ defmodule Boxic.DMNTest do
     missing = Path.join(System.tmp_dir!(), "boxic-missing-#{System.unique_integer()}.dmn")
 
     assert {:error, {:file_error, ^missing, :enoent}} = Boxic.DMN.load_file(missing)
-    assert {:error, {:file_error, ^missing, :enoent}} = Boxic.DMN.load(missing)
-    assert {:error, :invalid_xml} = Boxic.DMN.load_xml("<definitions>")
-    assert {:error, :invalid_xml} = Boxic.DMN.load("<definitions>")
+    assert {:error, {:file_error, ^missing, :enoent}} = apply(Boxic.DMN, :load, [missing])
+
+    assert {:error, [%Boxic.DMN.Diagnostic{code: :invalid_xml}]} =
+             Boxic.DMN.load_xml("<definitions>")
+
+    assert {:error, [%Boxic.DMN.Diagnostic{code: :invalid_xml}]} =
+             apply(Boxic.DMN, :load, ["<definitions>"])
   end
 
-  test "file loading preserves malformed sibling import errors" do
+  test "file loading ignores undeclared sibling documents" do
     directory = Path.join(System.tmp_dir!(), "boxic-imports-#{System.unique_integer()}")
     File.mkdir_p!(directory)
     main = Path.join(directory, "main.dmn")
@@ -376,18 +459,28 @@ defmodule Boxic.DMNTest do
 
     on_exit(fn -> File.rm_rf!(directory) end)
 
-    File.write!(main, "<definitions id=\"main\" namespace=\"urn:main\"/>")
+    File.write!(
+      main,
+      """
+      <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+        id="main" name="main" namespace="urn:main">
+        <decision id="result" name="Result">
+          <literalExpression><text>1</text></literalExpression>
+        </decision>
+      </definitions>
+      """
+    )
+
     File.write!(malformed, "<definitions>")
 
     assert {:ok, model} = Boxic.DMN.load_file(main)
-    assert {:import_error, malformed, :invalid_xml} in model.issues
-    assert {:error, errors} = Boxic.DMN.validate(model)
-    assert {:import_error, malformed, :invalid_xml} in errors
+    assert :ok = Boxic.DMN.validate(model)
   end
 
   test "evaluates boxed conditional expressions" do
     xml = """
-    <definitions id="defs" name="boxed" namespace="urn:boxed">
+    <definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+      id="defs" name="boxed" namespace="urn:boxed">
       <decision id="choice" name="Choice">
         <conditional>
           <if><literalExpression><text>true</text></literalExpression></if>
@@ -398,7 +491,7 @@ defmodule Boxic.DMNTest do
     </definitions>
     """
 
-    assert {:ok, model} = Boxic.DMN.load(xml)
+    assert {:ok, model} = Boxic.DMN.load_xml(xml)
     assert :ok = Boxic.DMN.validate(model)
     assert {:ok, "selected"} = Boxic.DMN.evaluate(model, "Choice")
   end

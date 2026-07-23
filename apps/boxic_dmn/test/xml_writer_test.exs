@@ -1,7 +1,7 @@
 defmodule Boxic.DMN.XMLWriterTest do
   use ExUnit.Case, async: true
 
-  @model_namespace "https://www.omg.org/spec/DMN/20211108/MODEL/"
+  @model_namespace "https://www.omg.org/spec/DMN/20230324/MODEL/"
 
   test "writes deterministic schema-oriented XML and preserves decision-table semantics" do
     xml = """
@@ -66,7 +66,7 @@ defmodule Boxic.DMN.XMLWriterTest do
 
   test "rejects legacy, lossy, invalid, and unsupported models with structured errors" do
     assert {:ok, legacy} =
-             Boxic.DMN.load_xml("""
+             Boxic.DMN.inspect_xml("""
              <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
                id="defs" name="Legacy" namespace="urn:legacy">
                <decision id="decision" name="Decision">
@@ -231,7 +231,7 @@ defmodule Boxic.DMN.XMLWriterTest do
 
   test "preflight rejects invalid and duplicate identifiers" do
     assert {:ok, model} =
-             Boxic.DMN.load_xml("""
+             Boxic.DMN.inspect_xml("""
              <definitions xmlns="#{@model_namespace}" id="defs" name="Identifiers" namespace="urn:ids">
                <decision id="decision" name="Decision">
                  <decisionTable id="table">

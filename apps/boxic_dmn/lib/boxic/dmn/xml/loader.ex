@@ -28,7 +28,10 @@ defmodule Boxic.DMN.XML.Loader do
   alias Boxic.DMN.Model.RelationColumn
   alias Boxic.DMN.Model.Variable
   alias Boxic.DMN.Compatibility
+  alias Boxic.DMN.Diagnostic
   alias Boxic.DMN.Imports
+  alias Boxic.DMN.Validator
+  alias Boxic.DMN.XML.SchemaValidator
 
   @normalized_element_names ~w(
     definitions import itemDefinition itemComponent typeRef allowedValues
@@ -39,7 +42,9 @@ defmodule Boxic.DMN.XML.Loader do
     input inputExpression inputValues output outputValues defaultOutputEntry
     rule inputEntry outputEntry context contextEntry invocation binding parameter
     functionDefinition relation column row list conditional if then else filter
-    in match for some every return satisfies
+    in match for some every return satisfies description documentation extensionElements
+    authorityRequirement annotationClause annotationEntry DMNDI DMNDiagram
+    encapsulatedDecision
   )
 
   @retained_attributes %{
@@ -100,54 +105,344 @@ defmodule Boxic.DMN.XML.Loader do
           | :trailing_xml_content
           | :invalid_definitions_document
 
-  @doc "Loads a DMN document and its sibling imports from `path`."
-  @spec load_file(Path.t()) :: {:ok, Model.t()} | {:error, load_error()}
+  @doc "Loads a DMN document and the local files it explicitly imports."
+  @spec load_file(Path.t()) :: {:ok, Model.t()} | {:error, load_error() | [Diagnostic.t()]}
   def load_file(path) when is_binary(path) do
-    with {:ok, xml} <- read_file(path),
-         {:ok, model} <- load_xml(xml) do
-      {imported_models, import_issues} =
-        path
-        |> Path.dirname()
-        |> Path.join("*.dmn")
-        |> Path.wildcard()
-        |> Enum.reject(&(&1 == path))
-        |> Enum.reduce({[], []}, fn imported_path, {models, issues} ->
-          case File.read(imported_path) do
-            {:ok, imported_xml} ->
-              case load_xml(imported_xml) do
-                {:ok, imported} -> {[imported | models], issues}
-                {:error, reason} -> {models, [{:import_error, imported_path, reason} | issues]}
-              end
+    expanded_path = Path.expand(path)
+    import_root = Path.dirname(expanded_path)
 
-            {:error, reason} ->
-              {models, [{:import_file_error, imported_path, reason} | issues]}
-          end
-        end)
-
-      merged = Imports.merge(model, imported_models)
-
-      merged =
-        if imported_models == [] do
-          merged
-        else
-          add_fidelity_loss(
-            merged,
-            {:resolved_import_graph, "load_file/1 merged sibling DMN documents"}
-          )
-        end
-
-      {:ok, %{merged | issues: merged.issues ++ Enum.reverse(import_issues)}}
+    with {:ok, model} <- load_source_file(expanded_path),
+         {:ok, imported_models} <-
+           resolve_file_imports(model, expanded_path, import_root, MapSet.new([expanded_path])),
+         merged = Imports.merge(model, imported_models),
+         :ok <- validate_model(merged) do
+      {:ok, merged}
     end
   end
 
-  @doc "Loads a DMN document from an XML string."
-  @spec load_xml(String.t()) :: {:ok, Model.t()} | {:error, load_error()}
-  def load_xml(xml) when is_binary(xml) do
-    with {:ok, document} <- parse_xml(xml),
+  @doc "Loads a strictly validated DMN 1.5 document from an XML string."
+  @spec load_xml(String.t()) :: {:ok, Model.t()} | {:error, [Diagnostic.t()]}
+  def load_xml(xml) when is_binary(xml), do: load_xml(xml, imports: %{})
+
+  @doc """
+  Loads DMN XML with an explicit import source.
+
+  `:imports` may be a namespace-keyed map whose values are DMN XML binaries or
+  already inspected models. `:resolver` may be a one-argument function that
+  receives the normalized import declaration and returns either form.
+  """
+  @spec load_xml(String.t(), keyword()) :: {:ok, Model.t()} | {:error, [Diagnostic.t()]}
+  def load_xml(xml, opts) when is_binary(xml) and is_list(opts) do
+    with {:ok, model} <- load_source_xml(xml),
+         {:ok, imported_models} <-
+           resolve_explicit_imports(model, opts, MapSet.new([model.definitions.namespace])),
+         merged = Imports.merge(model, imported_models),
+         :ok <- validate_model(merged) do
+      {:ok, merged}
+    end
+  end
+
+  defp load_source_file(path) do
+    with {:ok, xml} <- read_file(path), do: load_source_xml(xml)
+  end
+
+  defp load_source_xml(xml) do
+    with {:ok, model} <- inspect_xml(xml),
+         :ok <- validate_profile(model),
+         :ok <- SchemaValidator.validate(xml) do
+      {:ok, model}
+    end
+  end
+
+  defp resolve_file_imports(model, importing_path, import_root, active_paths) do
+    model.imports
+    |> Map.values()
+    |> Enum.reduce_while({:ok, []}, fn import, {:ok, models} ->
+      with :ok <- validate_import_type(import, model),
+           {:ok, imported_path} <- local_import_path(import, importing_path, import_root, model),
+           :ok <- reject_import_cycle(imported_path, active_paths, model),
+           {:ok, imported} <- load_source_file(imported_path),
+           :ok <- validate_import_namespace(import, imported, model),
+           {:ok, transitive} <-
+             resolve_file_imports(
+               imported,
+               imported_path,
+               import_root,
+               MapSet.put(active_paths, imported_path)
+             ) do
+        {:cont, {:ok, models ++ [imported | transitive]}}
+      else
+        {:error, _diagnostics} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp resolve_explicit_imports(model, opts, active_namespaces) do
+    imports = Keyword.get(opts, :imports, %{})
+    resolver = Keyword.get(opts, :resolver)
+
+    model.imports
+    |> Map.values()
+    |> Enum.reduce_while({:ok, []}, fn import, {:ok, models} ->
+      with :ok <- validate_import_type(import, model),
+           :ok <- reject_namespace_cycle(import.namespace, active_namespaces, model),
+           {:ok, source} <- explicit_import_source(import, imports, resolver, model),
+           {:ok, imported} <- normalize_import_source(source, model, import),
+           :ok <- validate_import_namespace(import, imported, model),
+           {:ok, transitive} <-
+             resolve_explicit_imports(
+               imported,
+               opts,
+               MapSet.put(active_namespaces, import.namespace)
+             ) do
+        {:cont, {:ok, models ++ [imported | transitive]}}
+      else
+        {:error, _diagnostics} = error -> {:halt, error}
+      end
+    end)
+  end
+
+  defp explicit_import_source(import, imports, resolver, model) do
+    case Map.fetch(imports, import.namespace) do
+      {:ok, source} ->
+        {:ok, source}
+
+      :error when is_function(resolver, 1) ->
+        case resolver.(import) do
+          {:ok, source} ->
+            {:ok, source}
+
+          {:error, reason} ->
+            import_error(
+              :import_resolver_error,
+              import,
+              model,
+              "The explicit import resolver rejected the declaration.",
+              %{reason: reason}
+            )
+
+          other ->
+            import_error(
+              :invalid_import_resolver_result,
+              import,
+              model,
+              "The explicit import resolver returned an invalid result.",
+              %{result: other}
+            )
+        end
+
+      :error ->
+        import_error(
+          :missing_import,
+          import,
+          model,
+          "No explicit source was supplied for the declared import."
+        )
+    end
+  end
+
+  defp normalize_import_source(%Model{} = imported, _model, _import) do
+    with :ok <- validate_profile(imported), do: {:ok, imported}
+  end
+
+  defp normalize_import_source(xml, _model, _import) when is_binary(xml),
+    do: load_source_xml(xml)
+
+  defp normalize_import_source(source, model, import) do
+    import_error(
+      :invalid_import_source,
+      import,
+      model,
+      "An import source must be DMN XML or an inspected model.",
+      %{source: source}
+    )
+  end
+
+  defp reject_namespace_cycle(namespace, active_namespaces, model) do
+    if MapSet.member?(active_namespaces, namespace) do
+      {:error,
+       [
+         %Diagnostic{
+           code: :import_cycle,
+           category: :import,
+           path: [:imports, namespace],
+           message: "The declared import graph contains a namespace cycle.",
+           specification: "DMN 1.5",
+           source_profile: model.source_profile,
+           details: %{namespace: namespace}
+         }
+       ]}
+    else
+      :ok
+    end
+  end
+
+  defp validate_import_type(import, model) do
+    expected = Compatibility.pinned_profile().model_namespace
+
+    if import.import_type == expected do
+      :ok
+    else
+      import_error(
+        :unsupported_import_type,
+        import,
+        model,
+        "Only DMN 1.5 model imports are executable.",
+        %{actual: import.import_type, expected: expected}
+      )
+    end
+  end
+
+  defp local_import_path(import, importing_path, import_root, model) do
+    location = import.location_uri
+
+    cond do
+      location in [nil, ""] ->
+        import_error(
+          :missing_import_location,
+          import,
+          model,
+          "A local file import requires locationURI."
+        )
+
+      Path.type(location) == :absolute or Regex.match?(~r/^[A-Za-z][A-Za-z0-9+.-]*:/, location) ->
+        import_error(
+          :external_import_forbidden,
+          import,
+          model,
+          "Network and absolute-path imports are disabled by default."
+        )
+
+      true ->
+        candidate = importing_path |> Path.dirname() |> Path.join(location) |> Path.expand()
+        relative = Path.relative_to(candidate, import_root)
+
+        if relative == ".." or String.starts_with?(relative, "../") do
+          import_error(
+            :import_path_escape,
+            import,
+            model,
+            "The import resolves outside the root model directory."
+          )
+        else
+          {:ok, candidate}
+        end
+    end
+  end
+
+  defp reject_import_cycle(path, active_paths, model) do
+    if MapSet.member?(active_paths, path) do
+      {:error,
+       [
+         %Diagnostic{
+           code: :import_cycle,
+           category: :import,
+           path: [:imports],
+           message: "The declared import graph contains a cycle.",
+           specification: "DMN 1.5",
+           source_profile: model.source_profile,
+           details: %{path: path}
+         }
+       ]}
+    else
+      :ok
+    end
+  end
+
+  defp validate_import_namespace(import, imported, model) do
+    if imported.definitions.namespace == import.namespace do
+      :ok
+    else
+      import_error(
+        :import_namespace_mismatch,
+        import,
+        model,
+        "The imported definitions namespace does not match the declaration.",
+        %{actual: imported.definitions.namespace, expected: import.namespace}
+      )
+    end
+  end
+
+  defp import_error(code, import, model, message, details \\ %{}) do
+    {:error,
+     [
+       %Diagnostic{
+         code: code,
+         category: :import,
+         path: [:imports, import.namespace],
+         message: message,
+         specification: "DMN 1.5",
+         source_profile: model.source_profile,
+         details: Map.put(details, :location_uri, import.location_uri)
+       }
+     ]}
+  end
+
+  @doc "Inspects a well-formed DMN document without granting executable status."
+  @spec inspect_xml(String.t()) :: {:ok, Model.t()} | {:error, load_error() | [Diagnostic.t()]}
+  def inspect_xml(xml) when is_binary(xml) do
+    with :ok <- SchemaValidator.validate_safety(xml),
+         :ok <- SchemaValidator.validate_inspection_names(xml),
+         {:ok, document} <- parse_xml(xml),
+         :ok <- SchemaValidator.validate_document(document),
          :ok <- definitions_document?(document) do
       {:ok, build_model(document)}
     end
   end
+
+  defp validate_profile(%Model{source_profile: :dmn_1_5}), do: :ok
+
+  defp validate_profile(%Model{source_profile: source_profile}) do
+    {:error,
+     [
+       %Diagnostic{
+         code: :dmn_version_mismatch,
+         category: :executable_profile,
+         path: [:source_profile],
+         message: "The document is not in the executable DMN 1.5 profile.",
+         specification: "DMN 1.5",
+         source_profile: source_profile,
+         details: %{required: :dmn_1_5}
+       }
+     ]}
+  end
+
+  defp validate_model(model) do
+    case Validator.validate(model) do
+      :ok ->
+        :ok
+
+      {:error, errors} ->
+        errors =
+          Enum.reject(errors, fn
+            {:missing_id, _, _} -> true
+            {:missing_expression, _} -> true
+            _error -> false
+          end)
+
+        if errors == [] do
+          :ok
+        else
+          {:error,
+           errors
+           |> Enum.with_index()
+           |> Enum.map(fn {error, index} ->
+             %Diagnostic{
+               code: validation_code(error),
+               category: :dmn_model,
+               path: [:validation, index],
+               message: "The normalized DMN model is not valid.",
+               specification: "DMN 1.5",
+               source_profile: model.source_profile,
+               details: %{validation_error: error}
+             }
+           end)}
+        end
+    end
+  end
+
+  defp validation_code(error) when is_atom(error), do: error
+  defp validation_code(error) when is_tuple(error), do: elem(error, 0)
 
   defp read_file(path) do
     case File.read(path) do
@@ -161,7 +456,10 @@ defmodule Boxic.DMN.XML.Loader do
   defp parse_xml(xml) do
     try do
       {document, rest} =
-        :xmerl_scan.string(:binary.bin_to_list(xml), namespace_conformant: true)
+        :xmerl_scan.string(:binary.bin_to_list(xml),
+          namespace_conformant: true,
+          allow_entities: false
+        )
 
       if rest |> to_string() |> String.trim() == "",
         do: {:ok, document},
@@ -218,12 +516,22 @@ defmodule Boxic.DMN.XML.Loader do
         {item.name, item}
       end)
 
+    import_nodes = nodes(document, "./*[local-name()='import']")
+
+    duplicate_import_issues =
+      import_nodes
+      |> Enum.map(&attr(&1, "namespace"))
+      |> Enum.frequencies()
+      |> Enum.flat_map(fn
+        {_namespace, 1} -> []
+        {namespace, _count} -> [{:duplicate_import_namespace, namespace}]
+      end)
+
     %Model{
       definitions: definitions,
       source_profile: source_profile,
       imports:
-        document
-        |> nodes("./*[local-name()='import']")
+        import_nodes
         |> Map.new(fn import ->
           namespace = attr(import, "namespace")
 
@@ -241,7 +549,9 @@ defmodule Boxic.DMN.XML.Loader do
       item_definitions: item_definitions,
       decision_services: decision_services,
       serialization_fidelity: serialization_fidelity(document),
-      issues: input_issues ++ decision_issues ++ bkm_issues ++ service_issues
+      issues:
+        input_issues ++
+          decision_issues ++ bkm_issues ++ service_issues ++ duplicate_import_issues
     }
   end
 
@@ -313,12 +623,6 @@ defmodule Boxic.DMN.XML.Loader do
       local_name -> {nil, to_string(local_name)}
     end
   end
-
-  defp add_fidelity_loss(%Model{serialization_fidelity: :complete} = model, loss),
-    do: %{model | serialization_fidelity: {:lossy, [loss]}}
-
-  defp add_fidelity_loss(%Model{serialization_fidelity: {:lossy, losses}} = model, loss),
-    do: %{model | serialization_fidelity: {:lossy, losses ++ [loss]}}
 
   defp parse_item_definition(node) do
     function_item = node |> nodes("./*[local-name()='functionItem']") |> List.first()
@@ -471,7 +775,7 @@ defmodule Boxic.DMN.XML.Loader do
           id: attr(expression, "id"),
           text: text_child(expression),
           type_ref: attr(expression, "typeRef"),
-          expression_language: attr(expression, "expressionLanguage") || "feel"
+          expression_language: attr(expression, "expressionLanguage")
         }
 
       "decisionTable" ->

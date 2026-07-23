@@ -1,7 +1,7 @@
 # Boxic DMN
 
 Boxic DMN is a native Elixir loader, validator, and evaluator for Decision
-Model and Notation (DMN) 1.4 models. It uses `boxic_feel` for expression
+Model and Notation (DMN) 1.5 models. It uses `boxic_feel` for expression
 evaluation and does not require a JVM.
 
 ## Installation
@@ -22,7 +22,8 @@ Load XML explicitly, validate its normalized model, and evaluate a decision:
 
 ```elixir
 xml = """
-<definitions id="example" name="Example" namespace="https://example.com/boxic">
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/"
+  id="example" name="Example" namespace="https://example.com/boxic">
   <decision id="greeting" name="Greeting">
     <literalExpression>
       <text>"Hello " + name</text>
@@ -32,20 +33,29 @@ xml = """
 """
 
 with {:ok, model} <- Boxic.DMN.load_xml(xml),
-     :ok <- Boxic.DMN.validate(model),
+     :ok <- Boxic.DMN.validate(model, for: :evaluation),
      {:ok, greeting} <- Boxic.DMN.evaluate(model, "Greeting", %{"name" => "Ada"}) do
   greeting
 end
 ```
 
-Use `Boxic.DMN.load_file/1` for a filesystem path. It discovers sibling
-`.dmn` documents needed for namespace imports. The compatibility
-`Boxic.DMN.load/1` function accepts either XML-looking input or a path, but the
-explicit functions provide clearer errors.
+Use `Boxic.DMN.load_file/1` for a filesystem path. It resolves only declared
+relative `locationURI` imports below the root model directory. In-memory XML
+has no ambient authority; pass an `imports:` map or `resolver:` to
+`load_xml/2`. The compatibility `Boxic.DMN.load/1` function accepts either
+XML-looking input or a path, but new code should use the explicit functions.
 
 Loading returns `{:ok, %Boxic.DMN.Model{}}` or a documented load error.
-Validation returns `:ok` or `{:error, errors}`. Evaluation returns
-`{:ok, value}` or `{:error, reason}`.
+Capability validation returns `:ok` or stable `Boxic.DMN.Diagnostic` values:
+
+```elixir
+Boxic.DMN.validate(model, for: :evaluation)
+Boxic.DMN.validate(model, for: :serialization)
+Boxic.DMN.validate(model, for: :authoring)
+```
+
+Use `inspect_xml/1` for a best-effort view of older or unsupported documents;
+inspection does not grant executable or writable status.
 
 ## Edit and export decision tables
 
@@ -74,7 +84,7 @@ entry position in every rule. The caller provides stable IDs; Boxic does not
 generate random identifiers. UI-only draft, selection, undo, and persistence
 state remains an application concern.
 
-`encode_xml/2` emits deterministic DMN 1.4 XML. Its options are:
+`encode_xml/2` emits deterministic DMN 1.5 XML. Its options are:
 
 ```elixir
 [format: :pretty | :compact, xml_declaration: true | false]
@@ -110,15 +120,19 @@ BOXIC_DMN_HEX_BUILD=true mix hex.publish
 
 ## Compatibility
 
-Boxic targets DMN 1.4. Against the vendored official DMN Technology
-Compatibility Kit revision `0dbcaf9b98bc3af4e36d44a7aed95e9e85703a13`, the
+Boxic targets DMN 1.5. Against the vendored official DMN Technology
+Compatibility Kit revision `a162739daee85fb28e9d3bec2f306505992dae0f`, the
 DMN suite passes all 1,485 selected cases. This result covers the DMN suite;
 the separate FEEL suite is reported by `boxic_feel`.
 
-The distinct XML-writer audit covers 69 models in that implemented profile.
-The vendored files use the newer `20230324` DMN namespace, so all 69 are
-explicitly rejected with `:dmn_version_mismatch`; none fail unexpectedly and
-none are implicitly converted to the pinned `20211108` DMN 1.4 output.
+Evaluator results, strict schema loading, imports, and native writer round
+trips are recorded as independent evidence. TCK models containing unmodeled
+extensions or DMNDI remain explicitly non-writable; they are never silently
+converted or presented as complete interchange coverage.
+
+See [CONFORMANCE.md](CONFORMANCE.md) for the public boundary and
+[CONSTRUCT_CAPABILITY_LEDGER.md](CONSTRUCT_CAPABILITY_LEDGER.md) for the exact
+modeled, executable, writable, and blocked construct surface.
 
 Java external-function integration is intentionally not implemented because
 Boxic runs on the BEAM rather than the JVM. Trusted host functions can instead
@@ -132,12 +146,18 @@ Pass an allowlisted external-function registry when evaluating:
 Boxic.DMN.evaluate(model, "Price", inputs,
   external_functions: MyApp.DecisionFunctions
 )
+
+Boxic.DMN.evaluate_service(model, "Pricing Service", arguments,
+  external_functions: MyApp.DecisionFunctions
+)
 ```
 
 Registry entries execute application code in the evaluator process. Construct
 registries only from trusted application configuration, never from model
-content or untrusted strings. Applications should isolate or time-limit
-functions that perform remote or long-running work.
+content or untrusted strings. The registry is kept outside ordinary FEEL
+context data. Built-ins win collisions unless the host explicitly passes
+`external_function_precedence: :registered`. Applications should isolate or
+time-limit functions that perform remote or long-running work.
 
 ## License
 

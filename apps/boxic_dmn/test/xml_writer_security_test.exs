@@ -119,7 +119,7 @@ defmodule Boxic.DMN.XMLWriterSecurityTest do
         name: "Security",
         namespace: "urn:security"
       },
-      source_profile: :dmn_1_4,
+      source_profile: :dmn_1_5,
       serialization_fidelity: :complete,
       decisions: %{
         "decision" => %Decision{
